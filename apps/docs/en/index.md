@@ -12,7 +12,7 @@ hero:
       text: Get Started
       link: /en/guide/
     - theme: alt
-      text: View on GitLab
+      text: View on Github
       link: https://github.com/dpbs-715/d-ui
 
 features:

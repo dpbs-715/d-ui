@@ -15,7 +15,7 @@ export const zh = defineConfig({
         items: [
           {
             text: '更新日志',
-            link: 'https://github.com/dpbs-715/d-ui/-/blob/main/CHANGELOG.md',
+            link: 'https://github.com/dpbs-715/d-ui/blob/master/CHANGELOG.md',
           },
           // {
           //   text: '参与贡献',

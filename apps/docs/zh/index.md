@@ -12,7 +12,7 @@ hero:
       text: 开始使用
       link: /guide/
     - theme: alt
-      text: 在 GitLab 上查看
+      text: 在 Github 上查看
       link: https://github.com/dpbs-715/d-ui
 
 features:

@@ -15,7 +15,7 @@ export const en = defineConfig({
         items: [
           {
             text: 'Changelog',
-            link: 'https://github.com/dpbs-715/d-ui/-/blob/main/CHANGELOG.md',
+            link: 'https://github.com/dpbs-715/d-ui/blob/master/CHANGELOG.md',
           },
           // {
           //   text: 'Contribute',
