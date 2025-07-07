@@ -64,7 +64,7 @@ jobs:
 
         # 安装依赖
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
         # 构建项目
         # 需要先构建 @mylib/ui 等包后再构建docs
