@@ -81,6 +81,14 @@ jobs:
           source: ./apps/docs/.vitepress/dist
           destination: ./_site
 
+      # 确保 docs 目录存在
+      - name: Ensure docs directory exists
+        run: mkdir -p docs
+
+        # 将 VitePress 构建结果（位于 apps/docs/.vitepress/dist）复制到 docs 目录
+      - name: Copy dist to docs
+        run: cp -r apps/docs/.vitepress/dist/* docs/
+
         # 上传 _site 的资源，用于后续部署
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
