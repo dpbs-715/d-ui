@@ -1,0 +1,77 @@
+{
+  "name": "d-ui",
+  "description": "This is a modern component library template based on Turborepo + Vue 3.5 + TypeScript.",
+  "version": "0.0.1",
+  "packageManager": "pnpm@10.12.4",
+  "author": "dpbs <840886454@qq.com>",
+  "keywords": [
+    "component library template",
+    "component library",
+    "ui framework",
+    "ui",
+    "turborepo",
+    "monorepo",
+    "vue3 typescript",
+    "vite6",
+    "turbo"
+  ],
+  "scripts": {
+    "dev": "turbo run dev",
+    "dev:docs": "pnpm -F @DLib/docs run dev",
+    "dev:play": "pnpm -F @DLib/playground run dev",
+    "build": "turbo run build",
+    "build:docs": "pnpm -F @DLib/docs run build",
+    "build:gulp": "gulp -f build/gulpfile.js",
+    "publish": "turbo run runPublish",
+    "lint:eslint": "eslint --max-warnings 0 \"**/*.{ts,tsx,js,jsx,cjs,mjs,vue}\" --fix",
+    "lint:format": "prettier --write \"**/*.{js,jsx,cjs,ts,tsx,mjs,mts,md,vue,scss,css,less,html,json}\"",
+    "lint:style": "stylelint \"**/*.{css,scss,less}\" --fix",
+    "lint:all": "pnpm run lint:eslint && pnpm run lint:style && pnpm run lint:format",
+    "clean": "turbo run clean --continue && rimraf .turbo dist && rm -rf node_modules",
+    "changeset:version": "pnpm changeset && pnpm changeset version",
+    "deps:update": "pnpm update -r --latest",
+    "deps:check": "pnpm outdated -r",
+    "preinstall": "npx only-allow pnpm",
+    "postinstall": "turbo run build",
+    "prepare": "husky install",
+    "rename-pkg:mac": "bash ./scripts/rename-package.sh"
+  },
+  "devDependencies": {
+    "@changesets/cli": "catalog:",
+    "@commitlint/cli": "catalog:",
+    "@DLib/commitlint-config": "workspace:*",
+    "@DLib/directives": "workspace:*",
+    "@DLib/eslint-config": "workspace:*",
+    "@DLib/hooks": "workspace:*",
+    "@DLib/prettier-config": "workspace:*",
+    "@DLib/stylelint-config": "workspace:*",
+    "@DLib/typescript-config": "workspace:*",
+    "@DLib/ui": "workspace:*",
+    "@DLib/utils": "workspace:*",
+    "eslint": "catalog:",
+    "husky": "catalog:",
+    "lint-staged": "catalog:",
+    "prettier": "catalog:",
+    "rimraf": "catalog:",
+    "rollup": "catalog:",
+    "stylelint": "catalog:",
+    "ts-node": "catalog:",
+    "turbo": "catalog:",
+    "typescript": "catalog:",
+    "vue": "catalog:",
+    "element-plus": "catalog:",
+    "@element-plus/icons-vue": "^2.3.1"
+  },
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=9.5"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "@algolia/client-search",
+        "search-insights"
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+<script setup lang="ts">
+import { reactive } from 'vue';
+import { CommonForm } from '@DLib/ui';
+import { useMixConfig } from '@DLib/hooks';
+
+const formData = reactive({});
+
+function mockApi() {
+  return new Promise((resolve) => {
+    resolve([
+      { name: '李四', card: '182313' },
+      { name: '王五', card: '212312328' },
+    ]);
+  });
+}
+const { form } = useMixConfig([
+  {
+    label: '字段',
+    field: 'card',
+    component: 'commonSelect',
+    span: 12,
+    props: {
+      api: mockApi,
+      labelField: 'name',
+      valueField: 'card',
+    },
+    form: true,
+  },
+]);
+</script>
+
+<template>
+  {{ formData }}
+  <el-divider />
+  <CommonForm
+    v-model="formData"
+    :config="form.config"
+  />
+</template>
+
+<style scoped></style>

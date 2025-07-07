@@ -1,0 +1,119 @@
+@use 'sass:color';
+
+@mixin self-style($base-color) {
+  color: $base-color;
+  background: transparent;
+  border: 1px solid $base-color;
+
+  &:hover {
+    color: $base-color;
+    background: transparent;
+    border-color: $base-color;
+    opacity: 0.8;
+  }
+}
+
+.CommonButton {
+  $types: (
+    primary: #0254b8,
+    success: #26bf6e,
+    warning: #fd7600,
+    danger: #d3433b,
+    info: #a9a9a9,
+    create: #0254b8,
+    delete: #ce4a00,
+  );
+
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  padding: 8px 15px;
+  font-size: 14px;
+  font-weight: var(--el-button-font-weight);
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  cursor: pointer;
+  outline: none;
+  border: 0;
+
+  // border-radius: 4px;
+  transition: 0.1s;
+
+  // 尺寸
+  &--medium {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  &--small {
+    height: 24px;
+    padding: 5px 11px;
+    font-size: 12px;
+  }
+
+  &--large {
+    height: 40px;
+    padding: 12px 19px;
+    font-size: 16px;
+  }
+
+  // 状态
+  &.is-disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &.is-round {
+    border-radius: 20px;
+  }
+
+  // 类型
+  @each $type, $color in $types {
+    &--#{$type} {
+      color: #fff;
+      background-color: $color;
+      border-color: $color;
+
+      &:hover {
+        $hover-color: color.mix(#fff, $color, 20%);
+
+        color: #fff;
+        background: $hover-color;
+        border-color: $hover-color;
+      }
+    }
+
+    &.is-plain.CommonButton--#{$type} {
+      color: $color;
+
+      // background: color.mix(#fff, $color, 90%);
+      background: transparent;
+      border: 1px solid color.mix(#fff, $color, 60%);
+
+      &:hover {
+        color: color.mix(#fff, $color, 20%);
+        border-color: color.mix(#fff, $color, 20%);
+      }
+    }
+
+    &--export,
+    &--import {
+      $text-color: var(--el-text-color-primary);
+
+      @include self-style($text-color);
+    }
+
+    &--delete {
+      @include self-style($color);
+    }
+
+    &--normal {
+      $text-color: var(--el-text-color-primary);
+
+      @include self-style($text-color);
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "@DLib/directives",
+  "version": "1.0.0",
+  "description": "@DLib directives library",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.mjs",
+  "types": "dist/types/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "build": "rimraf dist && rollup -c rollup.config.mjs",
+    "clean": "rimraf .turbo node_modules dist",
+    "runPublish": "pnpm publish"
+  },
+  "devDependencies": {
+    "@DLib/typescript-config": "workspace:*",
+    "@rollup/plugin-json": "catalog:",
+    "@rollup/plugin-terser": "catalog:",
+    "rollup": "catalog:",
+    "rollup-plugin-dts": "catalog:",
+    "rollup-plugin-esbuild": "catalog:",
+    "vue": "catalog:"
+  },
+  "peerDependencies": {
+    "vue": "catalog:"
+  }
+}

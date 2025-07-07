@@ -1,0 +1,28 @@
+{
+  "folders": [
+    {
+      "name": "@DLib/docs",
+      "path": "apps/docs",
+    },
+    {
+      "name": "@DLib/playground",
+      "path": "playground",
+    },
+    {
+      "name": "@DLib/utils",
+      "path": "packages/utils",
+    },
+    {
+      "name": "@DLib/ui",
+      "path": "packages/ui",
+    },
+    {
+      "name": "@DLib/hooks",
+      "path": "packages/hooks",
+    },
+    {
+      "name": "@DLib/directives",
+      "path": "packages/directives",
+    },
+  ],
+}

@@ -1,0 +1,86 @@
+@use './tableBaseStyle';
+
+.commonTable {
+  --el-component-size: 28px;
+  --el-border-radius-base: 1px;
+
+  .el-input,
+  :deep(.el-select) {
+    --el-input-text-color: var(--el-text-color-primary);
+    --el-input-hover-border-color: #4d87cd;
+    --el-input-focus-border-color: #0254b8;
+  }
+
+  :deep(.el-input__inner) {
+    font-family: var(--el-font-family);
+  }
+
+  .is-error :deep(.el-input__wrapper):hover {
+    --el-color-danger: rgb(211 67 59 / 60%);
+  }
+
+  .is-error :deep(.el-input__inner):not(:focus) {
+    font-weight: 800;
+  }
+
+  .is-error :deep(.el-input__inner::placeholder) {
+    font-weight: normal;
+  }
+
+  :deep(.el-select__wrapper.is-focused) {
+    box-shadow: 0 0 0 1px var(--el-input-focus-border-color) inset;
+  }
+
+  :deep(.el-select__wrapper.is-hovering) {
+    box-shadow: 0 0 0 1px var(--el-input-hover-border-color) inset;
+  }
+
+  color: var(--el-text-color-primary);
+
+  @include tableBaseStyle.border-style;
+
+  --el-fill-color-lighter: #f5f6f8;
+
+  :deep(.el-table__body) tr:hover > td.el-table__cell {
+    background-color: #e6eef8;
+  }
+
+  :deep(.el-table__header) {
+    th.el-table__cell {
+      color: var(--el-text-color-primary);
+      background-color: #f7f8fa;
+    }
+  }
+}
+
+.dark .commonTable {
+  --el-fill-color-lighter: #2d3a60;
+
+  :deep(.el-table__body) tr:hover > td.el-table__cell {
+    background-color: #2d3a60;
+  }
+
+  :deep(.el-table__header) {
+    th.el-table__cell {
+      color: var(--el-text-color-primary);
+      background-color: #3d4d7f;
+    }
+  }
+}
+
+.commonTableSymbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    position: absolute;
+    content: attr(bindUnit);
+  }
+}
+
+.commonTableSingleSelection {
+  :deep(.el-table__header) .el-table-column--selection .el-checkbox {
+    display: none;
+  }
+}

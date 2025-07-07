@@ -1,0 +1,30 @@
+{
+  "name": "@DLib/playground",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "clean": "rimraf .turbo node_modules dist",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@DLib/directives": "workspace:*",
+    "@DLib/hooks": "workspace:*",
+    "@DLib/typescript-config": "workspace:*",
+    "@DLib/ui": "workspace:*",
+    "@DLib/utils": "workspace:*",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "element-plus": "catalog:",
+    "@element-plus/icons-vue": "^2.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "catalog:",
+    "sass": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:",
+    "@vitejs/plugin-vue-jsx": "catalog:"
+  }
+}
