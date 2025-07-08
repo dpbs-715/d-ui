@@ -1,14 +1,14 @@
 @use 'sass:color';
 
-@mixin self-style($base-color, $bg-color) {
-  color: $base-color;
+@mixin self-style($border-color, $bg-color, $font-color) {
+  color: $font-color;
   background: $bg-color;
-  border: 1px solid $base-color;
+  border: 1px solid $border-color;
 
   &:hover {
-    color: $base-color;
+    color: $font-color;
     background: $bg-color;
-    border-color: $base-color;
+    border-color: $border-color;
     opacity: 0.8;
   }
 }
@@ -101,14 +101,14 @@
   &--normal {
     $text-color: var(--el-text-color-primary);
 
-    @include self-style($text-color, transparent);
+    @include self-style($text-color, transparent, $text-color);
   }
 
   &--delete {
-    @include self-style(#e6a23c, transparent);
+    @include self-style(#e6a23c, transparent, #e6a23c);
   }
 
   &--create {
-    @include self-style(#fff, #409eff);
+    @include self-style(#409eff, #409eff, #fff);
   }
 }

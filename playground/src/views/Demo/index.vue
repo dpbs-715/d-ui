@@ -1,43 +1,100 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { useRefCollect } from '@DLib/hooks/src/useRefCollect';
-import { useConfigs } from '@DLib/hooks/src/useConfigs';
-import type { CommonFormConfig } from '~/components';
-const { handleRef } = useRefCollect();
-const { config } = useConfigs<CommonFormConfig>([
+import { reactive, ref } from 'vue';
+import { useMixConfig } from '@DLib/hooks/src/useMixConfig';
+const queryParams = reactive({
+  pageNo: 1,
+  pageSize: 10,
+  field1: 'value',
+});
+const total = ref(0);
+const tableData = reactive([
   {
-    field: 'test1',
-    label: '测试1',
-    component: 'commonSelect',
-    props: {
-      bindOptions: [
-        {
-          label: '选项1',
-          value: '1',
-        },
-        {
-          label: '选项2',
-          value: '2',
-        },
-      ],
-    },
+    field1: 'value',
   },
   {
-    field: 'test2',
+    field1: 'value2',
+  },
+  {},
+  {},
+  {},
+]);
+const loading = ref(false);
+
+const { search, table } = useMixConfig([
+  {
+    field: 'field1',
+    label: '测试',
+    search: {
+      component: 'select',
+      props: {
+        options: [{ value: 'value', label: 'label' }],
+        onChange: (...args: any[]) => {
+          console.log(args);
+          search.getConfigByField('field2').label = 13123;
+        },
+      },
+    },
+    table: true,
+  },
+  {
+    field: 'field2',
     label: '测试2',
-    component: 'input',
+    search: true,
+    table: true,
   },
 ]);
 
-const formData = reactive({});
+function searchFun() {
+  console.log(11);
+  loading.value = true;
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
+}
 </script>
 
 <template>
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form1')"
-    v-model="formData"
-    :config="config"
-  />
+  <CommonTableLayout>
+    <template #search>
+      <CommonSearch
+        v-model="queryParams"
+        :config="search.config"
+        @search="searchFun"
+      />
+    </template>
+    <template #operation-left>
+      <CommonButton type="create">
+        新增
+      </CommonButton>
+      <CommonButton type="delete">
+        删除
+      </CommonButton>
+      <CommonButton type="export">
+        导出
+      </CommonButton>
+    </template>
+    <template #operation-right>
+      <CommonTableFieldsConfig :config="table.config" />
+    </template>
+    <template #table="{ tableHeight }">
+      <CommonTable
+        :height="tableHeight"
+        use-index
+        empty-text="/"
+        :data="tableData"
+        :loading="loading"
+        :config="table.config"
+      />
+    </template>
+    <template #pagination>
+      <CommonPagination
+        v-model:page="queryParams.pageNo"
+        v-model:limit="queryParams.pageSize"
+        :total="total"
+        @pagination="searchFun"
+      />
+    </template>
+  </CommonTableLayout>
 </template>
 
 <style scoped></style>

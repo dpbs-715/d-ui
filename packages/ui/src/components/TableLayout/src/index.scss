@@ -20,6 +20,12 @@
   .layout-operation {
     margin-bottom: 12px;
 
+    .operation-left {
+      :deep(button) {
+        margin-right: 12px;
+      }
+    }
+
     .operation-right {
       display: flex;
       justify-content: flex-end;

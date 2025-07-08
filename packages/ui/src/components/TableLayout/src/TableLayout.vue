@@ -27,11 +27,14 @@ const { tableHeight } = useTableHeight([searchRef, operationRef, paginationRef])
         class="layout-operation"
       >
         <el-row>
-          <el-col :span="4">
+          <el-col
+            :span="12"
+            class="operation-left"
+          >
             <slot name="operation-left" />
           </el-col>
           <el-col
-            :span="20"
+            :span="12"
             class="operation-right"
           >
             <slot name="operation-right" />
