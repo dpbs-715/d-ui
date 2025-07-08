@@ -33,25 +33,19 @@ export default {
       sm: 24,
       md: 12,
       lg: 6,
-      xl: 4,
+      xl: 6,
     },
     actionCol: 4,
   },
   //表格配置
   CommonTable: {
     ignoreHeight: 332,
-    headerRowStyle: {
-      height: '38px',
-      fontSize: '14px',
-    },
     headerCellStyle: { fontWeight: 400 },
-    cellStyle: { fontSize: '14px' },
     sortOrders: ['ascending', 'descending'],
     sortable: false,
     showOverflowTooltip: true,
     border: true,
     stripe: true,
-    size: 'small',
     defaultColMinWidth: 150,
     column: {
       align: 'center',
