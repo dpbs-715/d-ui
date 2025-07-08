@@ -30,7 +30,7 @@ const { config } = useConfigs<CommonFormConfig>([
 </script>
 
 <template>
-  <el-divider>默认使用small</el-divider>
+  <el-divider>默认</el-divider>
   <CommonForm
     v-model="formData"
     :config="config"
