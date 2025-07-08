@@ -39,7 +39,6 @@ export default {
   //表格配置
   CommonTable: {
     ignoreHeight: 332,
-    headerCellStyle: { fontWeight: 400 },
     sortOrders: ['ascending', 'descending'],
     sortable: false,
     showOverflowTooltip: true,
@@ -50,9 +49,5 @@ export default {
       align: 'center',
       headerAlign: 'center',
     },
-
-    /*tableV2*/
-    headerHeight: 38,
-    rowHeight: 32,
   },
 };

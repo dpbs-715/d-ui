@@ -48,7 +48,6 @@ function open() {
     v-model="drawer"
     class="TableHeaderConfig"
     title="表头配置"
-    :size="480"
     :direction="props.direction"
   >
     <template
