@@ -1,5 +1,5 @@
 <template>
-  <CommonDialog v-model:open="open">
+  <CommonDialog v-model="open">
     <div>弹窗测试2222</div>
   </CommonDialog>
   <el-button @click="open = true">

@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import type { ButtonEmits, ButtonProps } from './Button.types';
 import { computed, h } from 'vue';
-import { CirclePlus } from '@element-plus/icons-vue';
+import { CirclePlus, Delete } from '@element-plus/icons-vue';
 import exportIcon from './svgs/exportIcon.svg?raw';
 import importIcon from './svgs/importIcon.svg?raw';
 import { ElIcon } from 'element-plus';
@@ -47,6 +47,8 @@ const defaultIcon = computed(() => {
   switch (type) {
     case 'create':
       return CirclePlus;
+    case 'delete':
+      return Delete;
     case 'export':
       return h('span', { innerHTML: exportIcon });
     case 'import':
