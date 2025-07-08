@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, h } from 'vue';
+import { ref } from 'vue';
 import { CommonButton } from '~/components';
 import type { CommonTableFieldsConfigProps } from './TableFieldsConfig.types';
 import { ElCheckbox, ElPopover } from 'element-plus';
-import menu from './svgs/menu.svg?raw';
+import { Menu } from '@element-plus/icons-vue';
 defineOptions({
   name: 'CommonTableFieldsConfig',
   inheritAttrs: false,
@@ -14,13 +14,18 @@ const buttonRef = ref();
 </script>
 
 <template>
-  <CommonButton
-    ref="buttonRef"
-    type="normal"
-    :icon="h('span', { innerHTML: menu })"
+  <el-tooltip
+    content="字段配置"
+    placement="top"
   >
-    表头配置
-  </CommonButton>
+    <CommonButton
+      ref="buttonRef"
+      circle
+      plain
+      type="primary"
+      :icon="Menu"
+    />
+  </el-tooltip>
 
   <el-popover
     trigger="click"

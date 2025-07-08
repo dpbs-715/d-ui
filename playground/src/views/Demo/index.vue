@@ -62,7 +62,8 @@ function searchFun() {
         @search="searchFun"
       />
     </template>
-    <template #operation-left>
+    <template #operation-left />
+    <template #operation-right>
       <CommonButton type="create">
         新增
       </CommonButton>
@@ -72,8 +73,6 @@ function searchFun() {
       <CommonButton type="export">
         导出
       </CommonButton>
-    </template>
-    <template #operation-right>
       <CommonTableFieldsConfig :config="table.config" />
     </template>
     <template #table="{ tableHeight }">

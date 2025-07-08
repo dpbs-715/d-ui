@@ -96,6 +96,11 @@
     }
   }
 
+  &.is-circle {
+    padding: 6px;
+    border-radius: 50%;
+  }
+
   &--export,
   &--import,
   &--normal {

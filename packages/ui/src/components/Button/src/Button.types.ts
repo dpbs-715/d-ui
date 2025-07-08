@@ -19,6 +19,7 @@ export interface ButtonProps {
   round?: boolean;
   plain?: boolean;
   icon?: any;
+  circle?: boolean;
 }
 
 export interface ButtonEmits {

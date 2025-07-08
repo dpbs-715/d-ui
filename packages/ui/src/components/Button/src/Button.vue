@@ -8,6 +8,7 @@
         'is-round': round,
         'is-disabled': disabled,
         'is-plain': plain,
+        'is-circle': circle,
       },
     ]"
     type="button"
@@ -16,7 +17,7 @@
   >
     <el-icon
       v-if="icon || defaultIcon"
-      style="margin-right: 5px"
+      :style="{ marginRight: $slots.default ? '5px' : '0' }"
     >
       <component :is="icon || defaultIcon" />
     </el-icon>
@@ -41,6 +42,7 @@ const {
   disabled = false,
   round = false,
   icon = undefined,
+  circle = false,
 } = defineProps<ButtonProps>();
 
 const defaultIcon = computed(() => {
