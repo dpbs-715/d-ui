@@ -14,11 +14,11 @@
   "license": "MIT",
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "@DLib/directives": "workspace:*",
-    "@DLib/hooks": "workspace:*",
+    "dlib-directives": "workspace:*",
+    "dlib-hooks": "workspace:*",
     "@DLib/typescript-config": "workspace:*",
-    "@DLib/ui": "workspace:*",
-    "@DLib/utils": "workspace:*",
+    "dlib-ui": "workspace:*",
+    "dlib-utils": "workspace:*",
     "element-plus": "catalog:",
     "vue": "catalog:"
   },

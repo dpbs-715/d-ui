@@ -1,4 +1,4 @@
-# @DLib/ui
+# dlib-ui
 
 ## 1.0.0
 

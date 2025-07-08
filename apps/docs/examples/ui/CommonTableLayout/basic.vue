@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useMixConfig } from '@DLib/hooks';
+import { useMixConfig } from 'dlib-hooks';
 import {
   CommonTableLayout,
   CommonSearch,
@@ -8,7 +8,7 @@ import {
   CommonTable,
   CommonPagination,
   registerComponentDefaultPropsMap,
-} from '@DLib/ui';
+} from 'dlib-ui';
 registerComponentDefaultPropsMap({
   CommonSearch: {
     col: {

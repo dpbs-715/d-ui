@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonTable, type CommonTableConfig } from '@DLib/ui';
-import { useConfigs, useRefCollect } from '@DLib/hooks';
+import { CommonTable, type CommonTableConfig } from 'dlib-ui';
+import { useConfigs, useRefCollect } from 'dlib-hooks';
 import { ElInput } from 'element-plus';
 
 const { handleRef, getRefsValidateArr } = useRefCollect();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useConfigs } from '@DLib/hooks/src/useConfigs';
+import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import type { CommonFormConfig } from '~/components';
 import { provide, reactive } from 'vue';
 const queryParams = reactive({

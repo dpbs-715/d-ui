@@ -2,10 +2,10 @@
 
 ### Features 新增
 
-- **@DLib/ui:** [UI 组件库 ui component library](./packages/ui/CHANGELOG.md)
-- **@DLib/utils:** [工具库 utility library](./packages/utils/CHANGELOG.md)
-- **@DLib/hooks:** [Hooks 库 hooks library](./packages/hooks/CHANGELOG.md)
-- **@DLib/directives:** [自定义指令库 directives library](./packages/directives/CHANGELOG.md)
+- **dlib-ui:** [UI 组件库 ui component library](./packages/ui/CHANGELOG.md)
+- **dlib-utils:** [工具库 utility library](./packages/utils/CHANGELOG.md)
+- **dlib-hooks:** [Hooks 库 hooks library](./packages/hooks/CHANGELOG.md)
+- **dlib-directives:** [自定义指令库 directives library](./packages/directives/CHANGELOG.md)
 <!-- ### Other Changes -->
 - **@DLib/typescript-config:** TypeScript 配置
 - **@DLib/prettier-config:** Prettier 配置

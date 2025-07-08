@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/directives",
+  "name": "dlib-directives",
   "version": "1.0.0",
   "description": "@DLib directives library",
   "main": "dist/cjs/index.js",

@@ -9,11 +9,11 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@DLib/directives": "workspace:*",
-    "@DLib/hooks": "workspace:*",
+    "dlib-directives": "workspace:*",
+    "dlib-hooks": "workspace:*",
     "@DLib/typescript-config": "workspace:*",
-    "@DLib/ui": "workspace:*",
-    "@DLib/utils": "workspace:*",
+    "dlib-ui": "workspace:*",
+    "dlib-utils": "workspace:*",
     "vue": "catalog:",
     "vue-router": "catalog:",
     "element-plus": "catalog:",

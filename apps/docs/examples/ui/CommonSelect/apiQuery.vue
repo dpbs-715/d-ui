@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CommonForm } from '@DLib/ui';
-import { useMixConfig } from '@DLib/hooks';
+import { CommonForm } from 'dlib-ui';
+import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
 function mockApi(queryParams: any) {

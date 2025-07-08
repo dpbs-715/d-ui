@@ -1,4 +1,4 @@
-import { unique, chunk } from '@DLib/utils';
+import { unique, chunk } from 'dlib-utils';
 import { describe, expect, it } from 'vitest';
 
 describe('array工具', () => {

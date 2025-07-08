@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, h } from 'vue';
-import type { CommonTableConfig } from '~/@DLib/ui';
-import { useConfigs } from '@DLib/hooks';
+import type { CommonTableConfig } from '~/dlib-ui';
+import { useConfigs } from 'dlib-hooks';
 const hidden = ref(false);
 
 const { config, getConfigByField } = useConfigs<CommonTableConfig>([

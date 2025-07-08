@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { CommonForm, registerComponentDefaultPropsMap } from '@DLib/ui';
-import { useMixConfig } from '@DLib/hooks';
+import { CommonForm, registerComponentDefaultPropsMap } from 'dlib-ui';
+import { useMixConfig } from 'dlib-hooks';
 
 function getDictOptions(dictKey: string) {
   switch (dictKey) {

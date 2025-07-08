@@ -16,19 +16,19 @@ Install using a package manager:
 ::: code-group
 
 ```bash [npm]
-npm install @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+npm install dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 ```bash [yarn]
-yarn add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+yarn add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 ```bash [pnpm]
-pnpm add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+pnpm add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 ```bash [bun]
-bun add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+bun add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 :::
@@ -40,16 +40,16 @@ bun add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
 ```ts
 // Global import
 import { createApp } from 'vue';
-import UI from '@DLib/ui';
-import '@DLib/ui/style.css';
+import UI from 'dlib-ui';
+import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(UI);
 // Additionally, add the following configuration to tsconfig.json for type hints:
-// "types": ["@DLib/ui/global.d.ts"]
+// "types": ["dlib-ui/global.d.ts"]
 
 // Import on demand
-import { Button } from '@DLib/ui';
-import '@DLib/ui/style.css';
+import { Button } from 'dlib-ui';
+import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(Button);
 ```
@@ -57,25 +57,25 @@ app.use(Button);
 ### Utility Functions
 
 ```ts
-import { isString } from '@DLib/utils';
+import { isString } from 'dlib-utils';
 console.log(isString('hello')); // true
 ```
 
 ### Hooks
 
 ```ts
-import { useCounter } from '@DLib/hooks';
+import { useCounter } from 'dlib-hooks';
 const { count, increment, decrement } = useCounter();
 ```
 
 ### Directives
 
 ```ts
-import { vFocus } from '@DLib/directives';
+import { vFocus } from 'dlib-directives';
 // Global import
 app.directive('focus', vFocus);
 
 // Import on demand
-import { vFocus } from '@DLib/directives';
+import { vFocus } from 'dlib-directives';
 app.directive('focus', vFocus);
 ```

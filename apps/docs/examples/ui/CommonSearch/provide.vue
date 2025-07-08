@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { CommonSearch, type CommonFormConfig } from '@DLib/ui';
-import { useConfigs } from '@DLib/hooks/src/useConfigs';
+import { CommonSearch, type CommonFormConfig } from 'dlib-ui';
+import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import { provide, reactive } from 'vue';
 const queryParams = reactive({
   pageNo: 1,

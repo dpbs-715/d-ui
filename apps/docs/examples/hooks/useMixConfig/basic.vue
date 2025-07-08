@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useMixConfig } from '@DLib/hooks';
+import { useMixConfig } from 'dlib-hooks';
 const { table, search, form } = useMixConfig([
   {
     field: 'field1',

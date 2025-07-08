@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { useConfigs } from '@DLib/hooks/src/useConfigs';
-import { CommonForm } from '@DLib/ui';
-import type { CommonFormConfig } from '@DLib/ui';
+import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import { CommonForm } from 'dlib-ui';
+import type { CommonFormConfig } from 'dlib-ui';
 const formData = reactive({});
 const { config } = useConfigs<CommonFormConfig>([
   {

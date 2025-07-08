@@ -58,7 +58,7 @@ Additionally, the project includes automated scripts and continuous integration 
 
 ```bash
 # Please replace the following package names with your own. You can use the rename-pkg command to change @DLib to your own package name, for example: pnpm rename-pkg "@DLib" "@vue3-lib"
-pnpm add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+pnpm add dlib-ui dlib-utils dlib-hooks dlib-directives
 
 # Example installation:
 pnpm add @hmflib/ui @hmflib/utils @hmflib/hooks @hmflib/directives

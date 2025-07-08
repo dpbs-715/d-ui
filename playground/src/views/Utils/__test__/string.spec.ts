@@ -1,4 +1,4 @@
-import { capitalize, camelToKebab, isString } from '@DLib/utils';
+import { capitalize, camelToKebab, isString } from 'dlib-utils';
 import { describe, expect, it } from 'vitest';
 
 describe('string工具', () => {

@@ -38,7 +38,7 @@ export const zh = defineConfig({
         items: [{ text: 'Color色彩', link: '/basic/index' }],
       },
       {
-        text: '组件（@DLib/ui）',
+        text: '组件（dlib-ui）',
         items: [
           { text: 'Button 按钮', link: '/packages/ui/button/index' },
           { text: 'Dialog 弹窗', link: '/packages/ui/dialog/index' },
@@ -56,7 +56,7 @@ export const zh = defineConfig({
         ],
       },
       {
-        text: 'Hooks（@DLib/hooks）',
+        text: 'Hooks（dlib-hooks）',
         items: [
           { text: 'useCounter 计数器', link: '/packages/hooks/useCounter/index' },
           { text: 'useRefCollect 收集器', link: '/packages/hooks/useRefCollect/index' },
@@ -65,11 +65,11 @@ export const zh = defineConfig({
         ],
       },
       {
-        text: '指令（@DLib/directives）',
+        text: '指令（dlib-directives）',
         items: [{ text: 'vFocus 聚焦', link: '/packages/directives/vFocus/index' }],
       },
       {
-        text: '工具函数（@DLib/utils）',
+        text: '工具函数（dlib-utils）',
         items: [
           { text: '字符串工具', link: '/packages/utils/string/index' },
           { text: '数组工具', link: '/packages/utils/array/index' },

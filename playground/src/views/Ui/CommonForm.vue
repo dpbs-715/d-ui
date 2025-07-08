@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { useRefCollect } from '@DLib/hooks/src/useRefCollect';
-import { useConfigs } from '@DLib/hooks/src/useConfigs';
+import { useRefCollect } from 'dlib-hooks/src/useRefCollect';
+import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import type { CommonFormConfig } from '~/components';
 const { handleRef, getRefsValidateArr, clearRefsValidate } = useRefCollect();
 const { config } = useConfigs<CommonFormConfig>([

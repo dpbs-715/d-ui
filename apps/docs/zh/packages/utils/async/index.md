@@ -5,7 +5,7 @@
 > 包装异步任务,在时间范围内只执行一次。
 
 ```ts
-import { asyncOnce } from '@DLib/utils';
+import { asyncOnce } from 'dlib-utils';
 
 export function getApi(query) {
   return axios({

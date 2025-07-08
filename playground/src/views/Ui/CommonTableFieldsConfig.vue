@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
-import { useMixConfig } from '@DLib/hooks/src/useMixConfig';
+import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
 const { table } = useMixConfig([
   {
     label: '名称1',

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CreateComponent, type Config } from '@DLib/ui';
+import { CreateComponent, type Config } from 'dlib-ui';
 const config = ref<Config>({
   component: 'test',
 });

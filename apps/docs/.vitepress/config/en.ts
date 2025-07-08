@@ -30,19 +30,19 @@ export const en = defineConfig({
         items: [{ text: 'Introduction', link: 'en/guide/index' }],
       },
       {
-        text: 'Components (@DLib/ui)',
+        text: 'Components (dlib-ui)',
         items: [{ text: 'Button', link: 'en/packages/ui/button' }],
       },
       {
-        text: 'Hooks (@DLib/hooks)',
+        text: 'Hooks (dlib-hooks)',
         items: [{ text: 'useCounter', link: 'en/packages/hooks/useCounter' }],
       },
       {
-        text: 'Directives (@DLib/directives)',
+        text: 'Directives (dlib-directives)',
         items: [{ text: 'vFocus', link: 'en/packages/directives/vFocus' }],
       },
       {
-        text: 'Utilities (@DLib/utils)',
+        text: 'Utilities (dlib-utils)',
         items: [{ text: 'String Utils', link: 'en/packages/utils/string' }],
       },
     ],

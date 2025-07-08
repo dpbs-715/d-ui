@@ -1,4 +1,4 @@
-# @DLib/ui
+# dlib-ui
 
 Vue 3 组件库，基于 Vue 3 + TypeScript 构建的现代化组件库。
 
@@ -13,11 +13,11 @@ Vue 3 组件库，基于 Vue 3 + TypeScript 构建的现代化组件库。
 ## 安装
 
 ```bash
-npm install @DLib/ui
+npm install dlib-ui
 
-yarn add @DLib/ui
+yarn add dlib-ui
 
-pnpm add @DLib/ui
+pnpm add dlib-ui
 ```
 
 ## 快速开始
@@ -29,8 +29,8 @@ pnpm add @DLib/ui
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import VUI from '@DLib/ui';
-import '@DLib/ui/style.css';
+import VUI from 'dlib-ui';
+import 'dlib-ui/style.css';
 
 const app = createApp(App);
 app.use(VUI);
@@ -44,8 +44,8 @@ app.mount('#app');
 import { createApp } from 'vue';
 import App from './App.vue';
 
-import { Button } from '@DLib/ui';
-import '@DLib/ui/style.css';
+import { Button } from 'dlib-ui';
+import 'dlib-ui/style.css';
 
 const app = createApp(App);
 app.use(Button);
@@ -68,7 +68,7 @@ app.mount('#app');
 </template>
 
 <script setup lang="ts">
-import { VButton, VDialog } from '@DLib/ui';
+import { VButton, VDialog } from 'dlib-ui';
 import { ref } from 'vue';
 const open = ref(false);
 </script>

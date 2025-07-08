@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { useMixConfig } from '@DLib/hooks/src/useMixConfig';
+import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
 const queryParams = reactive({
   pageNo: 1,
   pageSize: 10,

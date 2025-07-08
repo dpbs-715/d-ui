@@ -9,19 +9,19 @@
       "path": "playground",
     },
     {
-      "name": "@DLib/utils",
+      "name": "dlib-utils",
       "path": "packages/utils",
     },
     {
-      "name": "@DLib/ui",
+      "name": "dlib-ui",
       "path": "packages/ui",
     },
     {
-      "name": "@DLib/hooks",
+      "name": "dlib-hooks",
       "path": "packages/hooks",
     },
     {
-      "name": "@DLib/directives",
+      "name": "dlib-directives",
       "path": "packages/directives",
     },
   ],

@@ -16,19 +16,19 @@ DLib-template 是一个基于 Vue3 的组件库和工具集模板项目，包含
 ::: code-group
 
 ```bash [npm]
-npm install @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+npm install dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 ```bash [yarn]
-yarn add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+yarn add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 ```bash [pnpm]
-pnpm add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+pnpm add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 ```bash [bun]
-bun add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+bun add dlib-ui dlib-utils dlib-hooks dlib-directives
 ```
 
 :::
@@ -42,46 +42,46 @@ bun add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
 ```ts
 // 全局引入
 import { createApp } from 'vue';
-import UI from '@DLib/ui';
-import '@DLib/ui/style.css';
+import UI from 'dlib-ui';
+import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(UI);
 //  tsconfig.json 还需要添加以下配置以获得类型提示：
-//  "types": ["@DLib/ui/dist/global.d.ts"]
+//  "types": ["dlib-ui/dist/global.d.ts"]
 
 // 按需引入
-import { Button } from '@DLib/ui';
-import '@DLib/ui/style.css';
+import { Button } from 'dlib-ui';
+import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(Button);
 
 //unplugin-vue-components方式
-import { dUIResolver } from '@DLib/ui';
+import { dUIResolver } from 'dlib-ui';
 //vite中配置使用ComponentResolver()
 ```
 
 ### 工具函数
 
 ```ts
-import { isString } from '@DLib/utils';
+import { isString } from 'dlib-utils';
 console.log(isString('hello')); // true
 ```
 
 ### Hooks
 
 ```ts
-import { useCounter } from '@DLib/hooks';
+import { useCounter } from 'dlib-hooks';
 const { count, increment, decrement } = useCounter();
 ```
 
 ### 指令
 
 ```ts
-import { vFocus } from '@DLib/directives';
+import { vFocus } from 'dlib-directives';
 // 全局引入
 app.directive('focus', vFocus);
 
 // 按需引入
-import { vFocus } from '@DLib/directives';
+import { vFocus } from 'dlib-directives';
 app.directive('focus', vFocus);
 ```

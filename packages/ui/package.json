@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/ui",
+  "name": "dlib-ui",
   "description": "@DLib ui library",
   "version": "1.0.0",
   "type": "module",
@@ -20,7 +20,7 @@
     "CHANGELOG.md"
   ],
   "publishConfig": {
-    "registry": "http://https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "build": "rimraf dist && vite build",

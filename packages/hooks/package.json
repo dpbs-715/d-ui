@@ -1,5 +1,5 @@
 {
-  "name": "@DLib/hooks",
+  "name": "dlib-hooks",
   "version": "1.0.0",
   "description": "@DLib hooks library",
   "main": "dist/cjs/index.js",

@@ -1,5 +1,5 @@
 import type { CommonFormConfig, CommonTableConfig } from '~/components';
-import { isArray, isFunction, isObject } from '@DLib/utils/src';
+import { isArray, isFunction, isObject } from 'dlib-utils/src';
 
 /**
  * 配置迭代器 给函数式配置追加参数等

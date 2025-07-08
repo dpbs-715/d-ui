@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CreateComponent, type Config } from '@DLib/ui';
+import { CreateComponent, type Config } from 'dlib-ui';
 
 const configValue = ref();
 const options = reactive<Record<any, any>>([

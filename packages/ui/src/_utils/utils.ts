@@ -1,4 +1,4 @@
-import { isObject } from '@DLib/utils/src';
+import { isObject } from 'dlib-utils/src';
 
 type PlainObject = Record<string, any>;
 

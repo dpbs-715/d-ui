@@ -8,7 +8,7 @@ import {
 } from './comMap';
 import { ComponentInternalInstance } from '@vue/runtime-core';
 import { ExpandHandler } from '~/components/CreateComponent/src/factoryTool.tsx';
-import { isString } from '@DLib/utils';
+import { isString } from 'dlib-utils';
 /**
  * 渲染配置函数
  * 根据提供的配置对象渲染一个组件或返回相应的字符串

@@ -1,4 +1,4 @@
-# @DLib/utils
+# dlib-utils
 
 ## 1.0.0
 

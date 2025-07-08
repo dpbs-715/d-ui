@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonTable, type CommonTableConfig } from '@DLib/ui';
-import { useConfigs } from '@DLib/hooks';
+import { CommonTable, type CommonTableConfig } from 'dlib-ui';
+import { useConfigs } from 'dlib-hooks';
 const { config } = useConfigs<CommonTableConfig>([
   {
     label: '名称1',

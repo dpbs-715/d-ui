@@ -5,7 +5,7 @@
 > 数组工具。
 
 ```ts
-import { unique, chunk } from '@DLib/utils';
+import { unique, chunk } from 'dlib-utils';
 
 unique(array); // 去重
 chunk(array); // 分块

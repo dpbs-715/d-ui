@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommonDialog } from '@DLib/ui';
+import { CommonDialog } from 'dlib-ui';
 const open = ref(false);
 </script>
 <style scoped lang="scss">

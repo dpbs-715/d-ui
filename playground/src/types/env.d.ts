@@ -1,5 +1,5 @@
 /// <reference types="vite/client" />
-/// <reference types="@DLib/ui/global.d.ts" />
+/// <reference types="dlib-ui/global.d.ts" />
 
 declare module '*.vue' {
   import type { DefineComponent } from 'vue';
@@ -8,5 +8,5 @@ declare module '*.vue' {
 }
 
 declare module 'DLib/ui' {
-  export * from '@DLib/ui';
+  export * from 'dlib-ui';
 }

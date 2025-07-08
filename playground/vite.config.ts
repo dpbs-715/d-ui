@@ -9,7 +9,7 @@ export default defineConfig({
     alias: {
       '@': resolve(__dirname, './src'),
       // 使用本地UI库，ui组件修改实时变化，提高调试效率。
-      '~/@DLib/ui': resolve(__dirname, '../packages/ui/src/index.ts'),
+      '~/dlib-ui': resolve(__dirname, '../packages/ui/src/index.ts'),
       '~': resolve(__dirname, '../packages/ui/src'),
     },
   },

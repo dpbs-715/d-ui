@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import * as utils from '@DLib/utils';
+import * as utils from 'dlib-utils';
 
 const allUtils = Object.entries(utils).map(([name, fn], index) => {
   return {

@@ -5,7 +5,7 @@ import {
   type Config,
   registerComponentDefaultSlotsMap,
   registerComponent,
-} from '@DLib/ui';
+} from 'dlib-ui';
 import { ElInput } from 'element-plus';
 
 registerComponent({

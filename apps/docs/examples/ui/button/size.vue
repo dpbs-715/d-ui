@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { CommonButton } from '@DLib/ui';
+import { CommonButton } from 'dlib-ui';
 </script>
 
 <style scoped></style>

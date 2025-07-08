@@ -16,7 +16,7 @@ export function dUIResolver(): ComponentResolver {
       if (name.startsWith('Common')) {
         return {
           name: name,
-          from: '@DLib/ui',
+          from: 'dlib-ui',
           sideEffects: undefined,
         };
       } else {

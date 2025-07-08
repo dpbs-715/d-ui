@@ -8,7 +8,7 @@ import {
   ComponentFunctionType,
 } from './cc.types';
 import { BaseMap, HtmlTags } from './baseMap';
-import { isFunction, isString } from '@DLib/utils';
+import { isFunction, isString } from 'dlib-utils';
 import { reactive } from 'vue';
 import defaultComponentProps from './defaultComponentProps.ts';
 

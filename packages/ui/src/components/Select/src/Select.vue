@@ -2,7 +2,7 @@
 import { useAttrs, ref, watch, nextTick } from 'vue';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
 import type { CommonSelectProps } from './Select.types';
-import { isArray, isEmpty, isFunction } from '@DLib/utils';
+import { isArray, isEmpty, isFunction } from 'dlib-utils';
 import { commonKeysMap } from '../../CreateComponent/src/comMap.ts';
 // 定义组件选项，包括组件的名称
 defineOptions({ name: 'CommonSelect' });

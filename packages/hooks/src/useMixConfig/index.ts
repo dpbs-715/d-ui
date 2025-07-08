@@ -1,5 +1,5 @@
 import { useConfigs, useConfigsResultType } from '../useConfigs';
-import { CommonFormConfig, CommonTableConfig, CommonTableLayoutConfig } from '@DLib/ui';
+import { CommonFormConfig, CommonTableConfig, CommonTableLayoutConfig } from 'dlib-ui';
 
 export interface mixResultType {
   table: useConfigsResultType<CommonTableConfig>;

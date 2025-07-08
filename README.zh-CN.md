@@ -56,7 +56,7 @@
 
 ```bash
 # 以下请替换为自己的包名，@DLib 可以通过 rename-pkg 命令，一键更改为属于自己的包名，如 pnpm rename-pkg "@DLib" "@vue3-lib"
-pnpm add @DLib/ui @DLib/utils @DLib/hooks @DLib/directives
+pnpm add dlib-ui dlib-utils dlib-hooks dlib-directives
 
 # 演示安装：
 pnpm add @hmflib/ui @hmflib/utils @hmflib/hooks @hmflib/directives

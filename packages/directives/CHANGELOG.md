@@ -1,4 +1,4 @@
-# @DLib/directives
+# dlib-directives
 
 ## 1.0.0
 

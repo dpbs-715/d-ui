@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue';
-import { CommonSelect, CommonTable, CommonForm } from '@DLib/ui';
-import { useMixConfig } from '@DLib/hooks';
+import { CommonSelect, CommonTable, CommonForm } from 'dlib-ui';
+import { useMixConfig } from 'dlib-hooks';
 
 const tableData = reactive([{}]);
 const formData = reactive({});

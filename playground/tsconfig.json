@@ -2,7 +2,7 @@
   "extends": "@DLib/typescript-config/vite.json",
   "compilerOptions": {
     "skipLibCheck": true,
-    // "types": ["vite/client", "@DLib/ui/global.d.ts"], // 已在env.d.ts引入了
+    // "types": ["vite/client", "dlib-ui/global.d.ts"], // 已在env.d.ts引入了
 
     /* Bundler mode */
     "moduleResolution": "bundler",
@@ -17,7 +17,7 @@
     "paths": {
       "@/*": ["src/*"],
       "~/*": ["../packages/ui/src/*"],
-      "~/@DLib/ui": ["../packages/ui/src/index.ts"]
+      "~/dlib-ui": ["../packages/ui/src/index.ts"]
     },
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]

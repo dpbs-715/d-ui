@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CreateComponent, type Config, registerComponent } from '@DLib/ui';
+import { CreateComponent, type Config, registerComponent } from 'dlib-ui';
 import { ElInput, ElSelect } from 'element-plus';
 registerComponent({
   demo: ElInput,

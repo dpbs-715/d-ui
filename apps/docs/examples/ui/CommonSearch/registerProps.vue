@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import {
-  CommonSearch,
-  type CommonFormConfig,
-  registerComponentDefaultPropsMap,
-} from '@DLib/ui';
-import { useConfigs } from '@DLib/hooks/src/useConfigs';
+import { CommonSearch, type CommonFormConfig, registerComponentDefaultPropsMap } from 'dlib-ui';
+import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import { reactive } from 'vue';
 registerComponentDefaultPropsMap({
   CommonSearch: {

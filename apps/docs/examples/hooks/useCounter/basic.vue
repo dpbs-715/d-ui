@@ -1,13 +1,17 @@
 <template>
   <div class="demo">
-    <button @click="increment">increment</button>
+    <button @click="increment">
+      increment
+    </button>
     <span>{{ count }}</span>
-    <button @click="decrement">decrement</button>
+    <button @click="decrement">
+      decrement
+    </button>
   </div>
 </template>
 
 <script setup>
-import { useCounter } from '@DLib/hooks';
+import { useCounter } from 'dlib-hooks';
 
 const { count, increment, decrement } = useCounter();
 </script>
