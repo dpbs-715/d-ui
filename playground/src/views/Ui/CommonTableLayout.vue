@@ -72,7 +72,7 @@ function searchFun() {
       <CommonButton type="delete">
         删除
       </CommonButton>
-      <CommonButton type="normal">
+      <CommonButton type="export">
         导出
       </CommonButton>
       <CommonButton type="create">
