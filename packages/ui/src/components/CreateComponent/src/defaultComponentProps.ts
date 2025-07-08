@@ -19,7 +19,6 @@ export default {
   },
   //表单配置
   CommonForm: {
-    size: 'small',
     col: {
       sm: 24,
       md: 12,
