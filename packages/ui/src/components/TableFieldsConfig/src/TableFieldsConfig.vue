@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { CommonButton } from '~/components';
+import { CommonButton } from '../../Button';
 import type { CommonTableFieldsConfigProps } from './TableFieldsConfig.types';
 import { ElCheckbox, ElPopover } from 'element-plus';
 import { Menu } from '@element-plus/icons-vue';
+import { vDraggable } from 'vue-draggable-plus';
+
 defineOptions({
   name: 'CommonTableFieldsConfig',
   inheritAttrs: false,
@@ -34,16 +36,18 @@ const buttonRef = ref();
     popper-class="TableHeaderConfig"
     width="auto"
   >
-    <div
-      v-for="(item, index) in props.config"
-      :key="index"
-      class="item"
-    >
-      <el-checkbox
-        :model-value="!item.hidden"
-        :label="item.label"
-        @click="item.hidden = !item.hidden"
-      />
+    <div v-draggable="[props.config, { animation: 150 }]">
+      <div
+        v-for="(item, index) in props.config"
+        :key="item.field + index"
+        class="item"
+      >
+        <el-checkbox
+          :model-value="!item.hidden"
+          :label="item.label"
+          @click="item.hidden = !item.hidden"
+        />
+      </div>
     </div>
   </el-popover>
 </template>

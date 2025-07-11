@@ -11,6 +11,19 @@
     arial, sans-serif;
 }
 
-.vp-doc table {
-  margin: 0;
+.vp-doc {
+  table {
+    margin: 0;
+  }
+
+  ul,
+  ol {
+    padding-left: 0;
+  }
+
+  th,
+  td,
+  tr {
+    border: none;
+  }
 }

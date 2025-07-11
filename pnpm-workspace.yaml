@@ -56,3 +56,4 @@ catalog:
   'ts-node':  ^10.9.2
   'element-plus': ^2.6.1
   'unplugin-vue-components': ^0.27.1
+  'vue-draggable-plus': ^0.6.0

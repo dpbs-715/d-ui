@@ -28,12 +28,13 @@
     "runPublish": "pnpm publish"
   },
   "devDependencies": {
+    "vue-draggable-plus": "catalog:",
     "@DLib/typescript-config": "workspace:*",
+    "@element-plus/icons-vue": "^2.3.1",
     "@types/node": "catalog:",
     "@vitejs/plugin-vue": "catalog:",
     "@vitejs/plugin-vue-jsx": "catalog:",
     "element-plus": "catalog:",
-    "@element-plus/icons-vue": "^2.3.1",
     "sass": "catalog:",
     "typescript": "catalog:",
     "unplugin-vue-components": "catalog:",
@@ -42,8 +43,8 @@
     "vue": "catalog:"
   },
   "peerDependencies": {
-    "element-plus": "catalog:",
     "@element-plus/icons-vue": "^2.3.1",
+    "element-plus": "catalog:",
     "vue": "catalog:"
   }
 }
