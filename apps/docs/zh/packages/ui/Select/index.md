@@ -21,7 +21,7 @@
 ## 获取请求数据
 
 > 下面我们模拟一个请求  
-> 在表单或者列表场景中会重复发送请求,可以使用组件库hooks asyncOnce 合并请求只发送一次
+> 在表单或者列表场景中会重复发送请求,可以使用组件库hooks asyncCache 合并请求只发送一次
 
 <demo vue="ui/CommonSelect/api.vue" />
 

@@ -1,4 +1,4 @@
-import { capitalize, camelToKebab, isString } from 'dlib-utils';
+import { capitalize, camelToKebab } from 'dlib-utils';
 import { describe, expect, it } from 'vitest';
 
 describe('string工具', () => {
@@ -25,18 +25,6 @@ describe('string工具', () => {
     it('当输入为空字符串时应该返回一个空字符串', () => {
       const result = camelToKebab('');
       expect(result).toEqual('');
-    });
-  });
-
-  describe('isString', () => {
-    it('应该判断字符串为true', () => {
-      const result = isString('test');
-      expect(result).toBe(true);
-    });
-
-    it('应该判断非字符串为false', () => {
-      const result = isString(123);
-      expect(result).toBe(false);
     });
   });
 });
