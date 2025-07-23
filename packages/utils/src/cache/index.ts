@@ -5,8 +5,15 @@ export enum CACHE_TYPE {
 }
 export const _memoryCache = new Map();
 
+interface CacheStorage {
+  getItem(key: string): string | null;
+  setItem(key: string, value: string): void;
+  removeItem(key: string): void;
+  clear(): void;
+}
+
 export class Cache {
-  storage: any;
+  storage: CacheStorage;
   constructor(
     type: CACHE_TYPE,
     private cacheKey: string,
@@ -18,27 +25,26 @@ export class Cache {
 
   set(data: any) {
     const cache = this.storage.getItem(this.cacheKey);
-    let o;
+    let o,
+      cacheData = {};
     if (cache) {
-      const cacheData = JSON.parse(cache);
-      o = {
-        ...cacheData,
-        [this.version]: {
-          data,
-          expireTime: this.expireTime,
-          time: Date.now(),
-        },
-      };
-    } else {
-      o = {
-        [this.version]: {
-          data,
-          expireTime: this.expireTime,
-          time: Date.now(),
-        },
-      };
+      cacheData = JSON.parse(cache);
     }
+
+    o = {
+      [this.version]: {
+        ...cacheData,
+        data,
+        expireTime: this.expireTime,
+        time: Date.now(),
+      },
+    };
+
     this.storage.setItem(this.cacheKey, JSON.stringify(o));
+  }
+
+  private isExpired(cacheEntry: { expireTime: number; time: number }): boolean {
+    return cacheEntry.expireTime > 0 && cacheEntry.time + cacheEntry.expireTime < Date.now();
   }
   get(): any {
     const cache = this.storage.getItem(this.cacheKey);
@@ -46,20 +52,20 @@ export class Cache {
       return null;
     }
     const cacheData = JSON.parse(cache);
-    if (!cacheData[this.version]) {
+    const versionData = cacheData[this.version];
+    if (!versionData) {
       return null;
     }
-    const { data, expireTime, time } = cacheData[this.version];
-    if (expireTime != this.expireTime) {
+    if (versionData.expireTime !== this.expireTime) {
       this.remove();
       return null;
     }
-    if (expireTime && time + expireTime < Date.now()) {
+    if (this.isExpired(versionData)) {
       this.remove();
       return null;
-    } else {
-      return data;
     }
+
+    return versionData.data;
   }
   remove() {
     const cache = this.storage.getItem(this.cacheKey);

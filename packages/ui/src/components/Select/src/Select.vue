@@ -358,6 +358,8 @@ watch(
     if (props.bindOptions && props.bindOptions.length > 0) {
       options.value = filterByQuery(props.bindOptions);
       parseOptions();
+    } else {
+      options.value = [];
     }
   },
   {

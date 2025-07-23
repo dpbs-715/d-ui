@@ -1,4 +1,11 @@
-import { CACHE_TYPE, Cache, _memoryCache } from '../cache';
+import { CACHE_TYPE, Cache } from '../cache';
+
+type CacheState = {
+  resolve: ((res: any) => void)[];
+  reject: ((err: any) => void)[];
+  isPending: boolean;
+};
+
 export function asyncCache(
   asyncFun: (...args: any[]) => Promise<any>,
   {
@@ -13,14 +20,7 @@ export function asyncCache(
     cacheType?: CACHE_TYPE | undefined;
   } = {},
 ) {
-  const map: Record<
-    string,
-    {
-      resolve: ((res: any) => void)[];
-      reject: ((err: any) => void)[];
-      isPending: boolean;
-    } | null
-  > = {};
+  const map: Record<string, CacheState | null> = {};
   return (...args: any[]) => {
     return new Promise((resolve, reject) => {
       const argsKey = JSON.stringify(args);
