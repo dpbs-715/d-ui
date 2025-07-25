@@ -46,7 +46,7 @@ const { form } = useMixConfig([
     props: {
       api: mockApi,
       orderBy: 'value',
-      orderType: 'asc',
+      orderType: 'desc',
       bindOptions,
     },
     form: true,
