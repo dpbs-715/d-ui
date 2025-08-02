@@ -1,7 +1,16 @@
 <script setup lang="ts">
 import { componentDefaultPropsMap, type Config, CreateComponent } from '~/components';
 import type { CommonFormConfig, CommonFormProps } from './Form.types';
-import { computed, getCurrentInstance, toValue, ref, nextTick } from 'vue';
+import {
+  computed,
+  getCurrentInstance,
+  toValue,
+  ref,
+  nextTick,
+  h,
+  type PropType,
+  defineComponent,
+} from 'vue';
 import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
 import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';
 defineOptions({
@@ -92,6 +101,41 @@ function collectFormRef(instance: any) {
         };
   }
 }
+
+const transformModel = defineComponent({
+  props: {
+    config: {
+      type: Object as PropType<CommonFormConfig>,
+      required: true,
+    },
+    formData: {
+      type: Object,
+      required: true,
+    },
+  },
+  emits: ['update:formData'],
+  setup: (props: any, { emit }: any) => {
+    return () => {
+      const modelMap: Record<string, any> = {};
+      const model = props.config.model;
+      for (const key in model) {
+        modelMap[key] = props.formData[model[key]];
+        modelMap[`onUpdate:${key}`] = (val: any) => {
+          emit('update:field', { field: model[key], value: val });
+        };
+      }
+
+      return h(CreateComponent, {
+        modelValue: props.formData[props.config.field],
+        [`onUpdate:modelValue`]: (val: any) => {
+          emit('update:field', { field: props.config.field, value: val });
+        },
+        ...modelMap,
+        config: getConfig(props.config),
+      });
+    };
+  },
+});
 </script>
 
 <template>
@@ -124,10 +168,10 @@ function collectFormRef(instance: any) {
               :name="item.field"
               :config="item"
             >
-              <CreateComponent
-                v-model="formData[item.field]"
-                v-model:label="formData[item.labelField || `${item.field}Name`]"
-                :config="getConfig(item)"
+              <transformModel
+                :config="item"
+                :form-data="formData"
+                @update:field="({ field, value }: Record<string, any>) => (formData[field] = value)"
               />
             </slot>
           </el-form-item>

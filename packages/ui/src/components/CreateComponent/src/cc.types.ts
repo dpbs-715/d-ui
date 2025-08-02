@@ -23,4 +23,6 @@ export type registerKeysMap = Record<string, string>;
 export interface baseConfig extends Config {
   field: string;
   label?: string;
+
+  model?: Record<string, string>;
 }

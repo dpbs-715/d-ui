@@ -196,6 +196,15 @@ export class RenderColumnsClass {
         configItem,
       },
     });
+    const modelMap: Record<string, any> = {};
+    const model = configItem.model;
+    for (const key in model) {
+      modelMap[key] = row[model[key]];
+      modelMap[`onUpdate:${key}`] = (val: any) => {
+        row[model[key]] = val;
+      };
+    }
+
     //如果有model指定配置时
     //支持指定字段名称双向绑定两个字段  传入字段的字符串名称
     return this.checkFormItem(
@@ -204,7 +213,7 @@ export class RenderColumnsClass {
         key={$index}
         config={cfg}
         vModel={row[configItem.field]}
-        vModel:label={row[configItem?.labelField || `${configItem.field}Name`]}
+        {...modelMap}
       />,
       { configItem: cfg, row, $index },
     );

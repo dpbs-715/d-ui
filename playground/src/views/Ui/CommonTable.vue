@@ -58,6 +58,30 @@ const { config, getConfigByField } = useConfigs<CommonTableConfig>([
   {
     label: '名称4',
     field: 'field4',
+    component: 'commonSelect',
+    model: {
+      label: 'testLabel',
+    },
+    props: {
+      bindOptions: [
+        {
+          label: '测试1',
+          value: '1',
+        },
+        {
+          label: '测试2',
+          value: '2',
+        },
+        {
+          label: '测试3',
+          value: '3',
+        },
+        {
+          label: '测试4',
+          value: '4',
+        },
+      ],
+    },
   },
   {
     label: '名称5',
@@ -105,16 +129,18 @@ setTimeout(() => {
 </script>
 
 <template>
+  {{ tableData }}
+
   <div style="display: flex; width: 1300px; height: 500px">
     <CommonTable
       fixed
       :data="tableData"
       :config="config"
     >
-      <template #field4="{ cellData, column, rowData, rowIndex, tableData }">
-        {{ rowIndex }} - {{ cellData }} - {{ column.label }} - {{ rowData.field3 }} -
-        {{ tableData.length }}}
-      </template>
+      <!--      <template #field4="{ cellData, column, rowData, rowIndex, tableData }">-->
+      <!--        {{ rowIndex }} - {{ cellData }} - {{ column.label }} - {{ rowData.field3 }} - -->
+      <!--        {{ tableData.length }}}-->
+      <!--      </template>-->
     </CommonTable>
   </div>
   <el-divider />

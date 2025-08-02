@@ -8,7 +8,10 @@ const { config } = useConfigs<CommonFormConfig>([
   {
     field: 'test1',
     label: '测试1',
-    component: 'select',
+    component: 'commonSelect',
+    model: {
+      label: 'test',
+    },
     rules: [
       {
         required: true,
@@ -17,7 +20,7 @@ const { config } = useConfigs<CommonFormConfig>([
       },
     ],
     props: {
-      options: [
+      bindOptions: [
         {
           label: '选项1',
           value: '1',
@@ -70,6 +73,7 @@ function clear() {
 </script>
 
 <template>
+  {{ formData }}
   <CommonForm
     :ref="(el) => handleRef(el, 'form1')"
     v-model="formData"
