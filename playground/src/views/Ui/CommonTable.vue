@@ -136,6 +136,7 @@ setTimeout(() => {
       fixed
       :data="tableData"
       :config="config"
+      @row-dblclick="() => console.log(1111)"
     >
       <!--      <template #field4="{ cellData, column, rowData, rowIndex, tableData }">-->
       <!--        {{ rowIndex }} - {{ cellData }} - {{ column.label }} - {{ rowData.field3 }} - -->

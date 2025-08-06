@@ -51,7 +51,7 @@ const { form } = useMixConfig([
     form: true,
   },
   {
-    label: '虚拟化',
+    label: '树下拉',
     field: 'field',
     component: 'commonSelect',
     span: 12,

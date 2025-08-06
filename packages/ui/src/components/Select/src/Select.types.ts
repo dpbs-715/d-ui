@@ -4,11 +4,11 @@ export interface CommonSelectProps {
   //字典名称
   dict?: string | string[];
   //请求参数
-  query?: Function;
+  query: Function;
   //值字段对照
-  valueField?: string;
+  valueField: string;
   //文本字段对照
-  labelField?: string;
+  labelField: string;
   //转化请求结果
   parseData?: Function;
   //只有一条数据时自动选中
@@ -24,7 +24,7 @@ export interface CommonSelectProps {
   //绑定选项
   bindOptions?: Record<any, any>[];
   //忽略的标签
-  ignoreByLabel?: string[];
+  ignoreByLabel: string[];
   //组件类型
   componentType?: 'ElSelectV2' | 'ElSelect' | 'ElTreeSelect';
   //多选时将结果合并的拼接符
@@ -36,4 +36,8 @@ export interface CommonSelectProps {
 
   //字典获取options
   getDictOptions?: Function;
+
+  modelValue?: string | number | Array<string | number>;
+  label?: string | number | Array<string | number>;
+  onChange?: Function | Array<Function>;
 }

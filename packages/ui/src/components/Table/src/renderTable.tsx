@@ -4,7 +4,7 @@ import { SORT_ORDERS, SORTABLE, sortChange, useTableV2Sort } from './useTableSor
 import { computed, ComputedRef, SlotsType } from 'vue';
 import { setDefaultSlotColumnProps } from '~/_utils/componentUtils.ts';
 import { RenderColumnsClass } from './renderColumns.tsx';
-import { componentDefaultPropsMap } from '~/components';
+import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 const defaultColMinWidth = componentDefaultPropsMap.CommonTable.defaultColMinWidth;
 
 export class RenderTableClass {

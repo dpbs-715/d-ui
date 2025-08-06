@@ -113,7 +113,7 @@ const transformModel = defineComponent({
       required: true,
     },
   },
-  emits: ['update:formData'],
+  emits: ['update:field'],
   setup: (props: any, { emit }: any) => {
     return () => {
       const modelMap: Record<string, any> = {};
