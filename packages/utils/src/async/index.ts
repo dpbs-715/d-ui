@@ -14,12 +14,12 @@ const asyncCacheHistory = new Map<string, any>();
  * 如果有情况是需要多次包装 需要检查包装记录使用下面方法
  * */
 export function asyncCacheWithHistory(asyncFn: any, ...args: any) {
-  const cache = asyncCacheHistory.get(asyncFn.name);
+  const cache = asyncCacheHistory.get(getFunctionHash(asyncFn));
   if (cache) {
     return cache;
   } else {
     let fn = asyncCache(asyncFn, ...args);
-    asyncCacheHistory.set(asyncFn.name, fn);
+    asyncCacheHistory.set(getFunctionHash(asyncFn), fn);
     return fn;
   }
 }
@@ -28,7 +28,7 @@ export function asyncCache(
   asyncFun: (...args: any[]) => Promise<any>,
   {
     expireTime = 0,
-    cacheKey = asyncFun.name,
+    cacheKey = getFunctionHash(asyncFun),
     version = 'v1.0.0',
     cacheType = undefined,
   }: {
@@ -85,4 +85,22 @@ export function asyncCache(
   fn.__DT__ = 'asyncCache';
 
   return fn;
+}
+
+function normalizeFunctionString(fnStr: string) {
+  return fnStr
+    .replace(/\s+/g, ' ') // 多个空白变成单个空格
+    .trim(); // 去掉首尾空格
+}
+function strToHash(str: string) {
+  let hash = 5381;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 33) ^ str.charCodeAt(i);
+  }
+  return Math.abs(hash).toString(36); // 或者 .toString(16)
+}
+function getFunctionHash(fn: Function) {
+  const rawFnStr = fn.toString();
+  const normalizedFnStr = normalizeFunctionString(rawFnStr);
+  return strToHash(normalizedFnStr);
 }
