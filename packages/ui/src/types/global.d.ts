@@ -1,6 +1,5 @@
 // // For this project development
 // import 'vue';
-import { CommonSelect } from '../components';
 
 /**
  * 用作给全局引入的UI组件类型提示：

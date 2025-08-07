@@ -6,6 +6,24 @@ type CacheState = {
   isPending: boolean;
 };
 
+//函数包装记录
+const asyncCacheHistory = new Map<string, any>();
+
+/**
+ * asyncCache是包装一次闭包存贮状态
+ * 如果有情况是需要多次包装 需要检查包装记录使用下面方法
+ * */
+export function asyncCacheWithHistory(asyncFn: any, ...args: any) {
+  const cache = asyncCacheHistory.get(asyncFn.name);
+  if (cache) {
+    return cache;
+  } else {
+    let fn = asyncCache(asyncFn, ...args);
+    asyncCacheHistory.set(asyncFn.name, fn);
+    return fn;
+  }
+}
+
 export function asyncCache(
   asyncFun: (...args: any[]) => Promise<any>,
   {
@@ -21,7 +39,8 @@ export function asyncCache(
   } = {},
 ) {
   const map: Record<string, CacheState | null> = {};
-  return (...args: any[]) => {
+
+  const fn = (...args: any[]) => {
     return new Promise((resolve, reject) => {
       const argsKey = JSON.stringify(args);
 
@@ -61,4 +80,9 @@ export function asyncCache(
         });
     });
   };
+
+  fn.__D__ = true;
+  fn.__DT__ = 'asyncCache';
+
+  return fn;
 }

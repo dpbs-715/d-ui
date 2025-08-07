@@ -1,6 +1,12 @@
+interface WrappedFunction extends Function {
+  __D__?: boolean;
+  __DT__?: string;
+  (...args: any[]): Promise<any>;
+}
+
 export interface CommonSelectProps {
   //请求api
-  api?: Function;
+  api?: WrappedFunction;
   //字典名称
   dict?: string | string[];
   //请求参数

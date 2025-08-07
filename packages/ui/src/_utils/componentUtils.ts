@@ -26,7 +26,7 @@ export const configIterator = (
           aimConfig[key][index] = config[key][index];
         }
       }
-    } else if (isFunction(config[key])) {
+    } else if (isFunction(config[key]) && !config[key][`__D__`]) {
       //处理函数追加参数
       aimConfig[key] = (...args: any) => config[key](...args, writeArgs);
     } else {

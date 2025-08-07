@@ -1,7 +1,7 @@
 import { computed, ComputedRef, Ref, SlotsType, ref, toValue, watch } from 'vue';
 import { CommonSelectProps } from './Select.types.ts';
 import { componentDefaultPropsMap, commonKeysMap } from '../../CreateComponent/src/comMap.ts';
-import { isArray, isEmpty, isFunction } from 'dlib-utils';
+import { asyncCacheWithHistory, CACHE_TYPE, isArray, isEmpty, isFunction } from 'dlib-utils';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
 
 export class RenderSelectClass {
@@ -14,59 +14,9 @@ export class RenderSelectClass {
   emits: any;
   options: Ref<Record<any, any>> = ref([]);
   loading: Ref<Boolean> = ref(false);
-
-  constructor(
-    props: CommonSelectProps,
-    slots: SlotsType,
-    emits: any,
-    {
-      model,
-      label,
-    }: {
-      model: any;
-      label: any;
-    },
-  ) {
-    this.emits = emits;
-    this.model = model;
-    this.label = label;
-    this.props = computed(() => {
-      const cleaned = Object.fromEntries(
-        Object.entries(props).filter(([_, v]) => {
-          return v !== undefined;
-        }),
-      );
-      return {
-        ...componentDefaultPropsMap.CommonSelect,
-        ...cleaned,
-      } as CommonSelectProps;
-    });
-    this.slots = slots;
-
-    this.preInit();
-    this.watchState();
-  }
-
-  getRef() {
-    return this.ref;
-  }
-
-  changeSelect(value: any) {
-    if (this.props.value.multiple) {
-      this.label.value = value.map((v: any) => {
-        return this.options.value.find((item: any) => item[this.props.value.valueField] === v)?.[
-          this.props.value.labelField
-        ];
-      });
-    } else {
-      const obj = this.options.value.find(
-        (item: any) => item[this.props.value.valueField] === value,
-      );
-      this.label.value = obj && obj[this.props.value.labelField];
-      this.emits('changeObj', obj);
-    }
-  }
-
+  /**
+   * 渲染选择器
+   * */
   renderSelect(Com: any) {
     const loading = toValue(this.loading);
     let props = toValue(this.props);
@@ -88,7 +38,9 @@ export class RenderSelectClass {
       </Com>
     );
   }
-
+  /**
+   * 渲染虚拟化选择器
+   * */
   renderSelectV2(Com: any) {
     let props = toValue(this.props);
     return (
@@ -105,11 +57,14 @@ export class RenderSelectClass {
       />
     );
   }
-
+  /**
+   * 渲染树形选择器
+   * */
   renderTreeSelect(Com: any) {
     let props = toValue(this.props);
     return (
       <Com
+        ref={(instance: any) => (this.ref = instance)}
         props={{
           label: props.labelField,
         }}
@@ -121,7 +76,9 @@ export class RenderSelectClass {
       />
     );
   }
-
+  /**
+   * 根据query参数过滤options
+   * */
   filterByQuery(localOptions: Record<any, any>) {
     let props = toValue(this.props);
 
@@ -163,7 +120,9 @@ export class RenderSelectClass {
       }) || []
     );
   }
-
+  /**
+   * 选项排序
+   * */
   sortOptions(options: Record<any, any>) {
     let props = toValue(this.props);
     const { orderBy, orderType } = props;
@@ -174,7 +133,9 @@ export class RenderSelectClass {
       });
     }
   }
-
+  /**
+   * 确认组件类型
+   * */
   determineComponentType(localOptions: Record<any, any>) {
     let props = toValue(this.props);
     if (props.componentType) {
@@ -183,7 +144,9 @@ export class RenderSelectClass {
       this.useComponent.value = localOptions?.length > 50 ? 'ElSelectV2' : 'ElSelect';
     }
   }
-
+  /**
+   * 追加options
+   * */
   handleAppendOptions(localOptions: Record<any, any>) {
     let props = toValue(this.props);
     if (!props.appendOptions) {
@@ -210,7 +173,9 @@ export class RenderSelectClass {
         })) || [];
     return [...filteredOptions, ...processedAppendOptions];
   }
-
+  /**
+   * 选项数据格式转化
+   * */
   processValueType(localOptions: Record<any, any>) {
     let props = toValue(this.props);
     let options = this.options;
@@ -231,7 +196,9 @@ export class RenderSelectClass {
       options.value = localOptions;
     }
   }
-
+  /**
+   * 当数据只有一条时默认选中
+   * */
   selectFirst() {
     let props = toValue(this.props);
     let options = this.options;
@@ -255,7 +222,9 @@ export class RenderSelectClass {
       }
     }
   }
-
+  /**
+   * 初步初始化options
+   * */
   async initOptions() {
     let loading = this.loading;
     let props = toValue(this.props);
@@ -269,15 +238,28 @@ export class RenderSelectClass {
           [commonKeysMap.page]: 1,
           [commonKeysMap.size]: 100,
         };
+        let api;
+
+        if (!props.api.__D__) {
+          api = asyncCacheWithHistory(props.api, {
+            expireTime: 5 * 1000,
+            cacheKey: props.api.name,
+            version: 'v1.0.0',
+            cacheType: CACHE_TYPE.memory,
+          });
+        } else {
+          api = props.api;
+        }
+
         if (props.query) {
           const o = props.query();
           if (Array.isArray(o)) {
-            queryApi = props.api(...o);
+            queryApi = api(...o);
           } else {
-            queryApi = props.api({ ...queryData, ...o });
+            queryApi = api({ ...queryData, ...o });
           }
         } else {
-          queryApi = props.api(queryData);
+          queryApi = api(queryData);
         }
         const res: any = await queryApi;
         if (props.parseData) {
@@ -303,7 +285,9 @@ export class RenderSelectClass {
       loading.value = false;
     }
   }
-
+  /**
+   * 处理options
+   * */
   parseOptions(options: Record<any, any>) {
     if (!this.props.value.api) {
       options = this.filterByQuery(options);
@@ -315,13 +299,9 @@ export class RenderSelectClass {
     this.selectFirst();
     this.emits('optionsReady', options);
   }
-
-  preInit() {
-    if (this.checkAllQuery()) {
-      this.initOptions();
-    }
-  }
-
+  /**
+   * 检查query种是否所有参数准备完成
+   * */
   checkAllQuery(): boolean {
     let props = toValue(this.props);
     let options = this.options;
@@ -347,7 +327,72 @@ export class RenderSelectClass {
     }
     return true;
   }
+  /**
+   * 初始化前置操作
+   * */
+  preInit() {
+    if (this.checkAllQuery()) {
+      this.initOptions();
+    }
+  }
+  /**
+   * 选项改变操作
+   * */
+  changeSelect(value: any) {
+    if (this.props.value.multiple) {
+      this.label.value = value.map((v: any) => {
+        return this.options.value.find((item: any) => item[this.props.value.valueField] === v)?.[
+          this.props.value.labelField
+        ];
+      });
+    } else {
+      const obj = this.options.value.find(
+        (item: any) => item[this.props.value.valueField] === value,
+      );
+      this.label.value = obj && obj[this.props.value.labelField];
+      this.emits('changeObj', obj);
+    }
+  }
+  constructor(
+    props: CommonSelectProps,
+    slots: SlotsType,
+    emits: any,
+    {
+      model,
+      label,
+    }: {
+      model: any;
+      label: any;
+    },
+  ) {
+    this.emits = emits;
+    this.model = model;
+    this.label = label;
+    this.props = computed(() => {
+      const cleaned = Object.fromEntries(
+        Object.entries(props).filter(([_, v]) => {
+          return v !== undefined;
+        }),
+      );
+      return {
+        ...componentDefaultPropsMap.CommonSelect,
+        ...cleaned,
+      } as CommonSelectProps;
+    });
+    this.slots = slots;
 
+    this.preInit();
+    this.watchState();
+  }
+  /**
+   * 获取Ref实例
+   * */
+  getRef() {
+    return this.ref;
+  }
+  /**
+   * 状态监听
+   * */
   watchState() {
     watch(
       () => this.props.value.dict,
@@ -355,11 +400,9 @@ export class RenderSelectClass {
         this.preInit();
       },
     );
-
     watch(this.props.value.query, () => {
       this.preInit();
     });
-
     watch(
       () => this.props.value.appendOptions,
       () => {
@@ -376,7 +419,9 @@ export class RenderSelectClass {
       },
     );
   }
-
+  /**
+   * 渲染入口
+   * */
   render() {
     switch (this.useComponent.value) {
       case 'ElSelect':
