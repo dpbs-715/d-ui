@@ -12,7 +12,7 @@ const bindOptions: any = reactive([
   { label: '选项6', value: 6 },
 ]);
 
-function mockApi7() {
+function mockApi() {
   return new Promise((resolve) => {
     const res = [
       { label: '选项1', value: 1 },
@@ -32,7 +32,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi7,
+      api: mockApi,
       orderBy: 'value',
       bindOptions,
     },
@@ -44,7 +44,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi7,
+      api: mockApi,
       orderBy: 'value',
       orderType: 'desc',
       bindOptions,

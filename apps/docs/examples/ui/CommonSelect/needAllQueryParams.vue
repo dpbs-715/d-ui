@@ -5,7 +5,7 @@ import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
 const loading = ref(false);
-function mockApi5(queryParams: any) {
+function mockApi(queryParams: any) {
   loading.value = true;
   return new Promise((resolve) => {
     loading.value = false;
@@ -36,7 +36,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi5,
+      api: mockApi,
       query: ({ formData }: any) => ({ param1: formData.param1, param2: formData.param2 }),
       needAllQueryParams: true,
     },

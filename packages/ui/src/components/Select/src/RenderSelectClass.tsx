@@ -1,7 +1,7 @@
 import { computed, ComputedRef, Ref, SlotsType, ref, toValue, watch } from 'vue';
 import { CommonSelectProps } from './Select.types.ts';
 import { componentDefaultPropsMap, commonKeysMap } from '../../CreateComponent/src/comMap.ts';
-import { asyncCacheWithHistory, CACHE_TYPE, isArray, isEmpty, isFunction } from 'dlib-utils';
+import { isArray, isEmpty, isFunction } from 'dlib-utils';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
 
 export class RenderSelectClass {
@@ -238,18 +238,7 @@ export class RenderSelectClass {
           [commonKeysMap.page]: 1,
           [commonKeysMap.size]: 100,
         };
-        let api;
-
-        if (!props.api.__D__) {
-          api = asyncCacheWithHistory(props.api, {
-            expireTime: 5 * 1000,
-            version: 'v1.0.0',
-            cacheType: CACHE_TYPE.sessionStorage,
-          });
-        } else {
-          api = props.api;
-        }
-
+        let api = props.api;
         if (props.query) {
           const o = props.query();
           if (Array.isArray(o)) {
