@@ -10,7 +10,7 @@ const sourceData = [
   { label: '选项2', value: '2' },
 ];
 
-function mockApi() {
+function mockApi8() {
   return new Promise((resolve) => {
     resolve(sourceData);
   });
@@ -22,7 +22,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi,
+      api: mockApi8,
       valueType: 'int',
     },
     form: true,

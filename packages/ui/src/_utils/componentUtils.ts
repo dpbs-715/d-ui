@@ -1,6 +1,7 @@
 import type { CommonFormConfig, CommonTableConfig } from '~/components';
 import { isArray, isFunction, isObject } from 'dlib-utils/src';
 
+const ignoreFunction = ['api'];
 /**
  * 配置迭代器 给函数式配置追加参数等
  * */
@@ -26,7 +27,7 @@ export const configIterator = (
           aimConfig[key][index] = config[key][index];
         }
       }
-    } else if (isFunction(config[key]) && !config[key][`__D__`]) {
+    } else if (isFunction(config[key]) && !config[key][`__D__`] && !ignoreFunction.includes(key)) {
       //处理函数追加参数
       aimConfig[key] = (...args: any) => config[key](...args, writeArgs);
     } else {

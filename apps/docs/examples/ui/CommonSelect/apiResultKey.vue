@@ -5,7 +5,7 @@ import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
 
-function mockApi() {
+function mockApi3() {
   return new Promise((resolve) => {
     resolve([
       { name: '李四', card: '182313' },
@@ -20,7 +20,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi,
+      api: mockApi3,
       labelField: 'name',
       valueField: 'card',
     },

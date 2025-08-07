@@ -4,7 +4,7 @@ import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
-function mockApi(queryParams: any) {
+function mockApi2(queryParams: any) {
   return new Promise((resolve) => {
     const res = [
       { label: '选项1', value: '1' },
@@ -25,7 +25,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi,
+      api: mockApi2,
     },
     form: true,
   },
@@ -35,7 +35,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      api: mockApi,
+      api: mockApi2,
       query: ({ formData }: any) => {
         return {
           field: formData.field,
