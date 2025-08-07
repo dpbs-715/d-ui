@@ -21,7 +21,7 @@
 ## 获取请求数据
 
 > 下面我们模拟一个请求  
-> 内部默认做了api的包装器 如果想自定义可以通过hooks asyncCache包装后传入会进行复写
+> 在表单或者列表场景中会重复发送请求,可以使用组件库hooks asyncCache 合并请求只发送一次
 
 <demo vue="ui/CommonSelect/api.vue" />
 
