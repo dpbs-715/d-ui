@@ -1,35 +1,57 @@
 <script setup lang="ts">
-import { asyncCache, CACHE_TYPE } from 'dlib-utils';
+import { reactive } from 'vue';
+import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
 
-function mockApi() {
+const formData = reactive({});
+function mockApi(queryParams: any) {
   return new Promise((resolve) => {
-    console.log('sendApi');
+    const res = [
+      { label: '选项1', value: '1' },
+      { label: '选项2', value: '2' },
+    ];
+    if (queryParams.field) {
+      res.push({ label: `${JSON.stringify(queryParams)}`, value: '3' });
+    }
     setTimeout(() => {
-      resolve({
-        code: 200,
-        data: {
-          name: 'mock',
-          age: 18,
-        },
-        message: 'success',
-      });
-    }, 5000);
+      resolve(res);
+    }, 2000);
   });
 }
-
-const mockApiPlus = asyncCache(mockApi, {
-  cacheType: CACHE_TYPE.localStorage,
-  version: 'v1.0.1',
-  expireTime: 1000 * 10,
-});
-
-mockApiPlus({ param1: 'data1', param2: 'data2' }).then((res) => {
-  console.log(res);
-});
+const { form } = useMixConfig([
+  {
+    label: '字段',
+    field: 'field',
+    component: 'commonSelect',
+    span: 12,
+    props: {
+      api: mockApi,
+    },
+    form: true,
+  },
+  {
+    label: '字段',
+    field: 'field2',
+    component: 'commonSelect',
+    span: 12,
+    props: {
+      api: mockApi,
+      query: ({ formData }: any) => {
+        return {
+          field: formData.field,
+        };
+      },
+    },
+    form: true,
+  },
+]);
 </script>
 
 <template>
-  <div />
+  <el-divider>第一个字段是第二个字段的搜索条件</el-divider>
+  <CommonForm
+    v-model="formData"
+    :config="form.config"
+  />
 </template>
 
 <style scoped></style>
