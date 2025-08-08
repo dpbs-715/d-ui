@@ -1,8 +1,8 @@
 **English** | [简体中文](./README.zh-CN.md)
 
-# A Monorepo Component Library Template Project Based on Turbo, Vue3.5+, and TypeScript5+, Helping to Quickly Build Your Own/Enterprise-Level Component Library🚀
+# A Monorepo dynamic component library project based on Turbo, Vue 3.5+, TypeScript 5+, suitable for various mid to backend projects, helping to quickly build your own enterprise level component library🚀
 
-This is a modern component library template based on `Turborepo + Vue 3.5 + TypeScript`, using Monorepo architecture to manage multiple packages, covering ESLint, Prettier, Stylelint, Commitlint + Husky + Lint-Staged, and TypeScript project specification configuration. This template provides a complete development environment, aiming to allow developers to focus on component development without worrying about the complexity of underlying configuration, helping to quickly build your own/enterprise-level component library (with detailed step-by-step comments included~).
+This is a modern component library based on `Turborepo + Vue 3.5 + TypeScript`, using Monorepo architecture to manage multiple packages, covering ESLint, Prettier, Stylelint, Commitlint + Husky + Lint-Staged, and TypeScript project specification configuration. This template provides a complete development environment, aiming to allow developers to focus on component development without worrying about the complexity of underlying configuration, helping to quickly build your own/enterprise-level component library (with detailed step-by-step comments included~).
 
 ## Document address
 

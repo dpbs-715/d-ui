@@ -1,6 +1,6 @@
-# 一个基于Turbo、Vue3.5+、TypeScript5+的 Monorepo 组件库模板项目，帮助快速搭建属于自己/企业级的组件库🚀
+# 一个基于Turbo、Vue3.5+、TypeScript5+的 Monorepo 动态组件库项目，适用于各类中后台项目，帮助快速搭建属于自己/企业级的组件库🚀
 
-这是一个基于 `Turborepo + Vue 3.5 + TypeScript` 的现代化组件库模板，采用 Monorepo 架构来管理多个包，涵盖了 ESLint、Prettier、Stylelint、Commitlint + Husky + Lint-Staged 和 TypeScript 的项目规范配置。此模板提供了一套完整的开发环境，旨在让开发者能够专注于组件的开发，而无需担心底层配置的复杂性，帮助快速搭建属于自己/企业级的组件库（还配备了详情的保姆级注释~）。
+这是一个基于 `Turborepo + Vue 3.5 + TypeScript` 的现代化组件库，采用 Monorepo 架构来管理多个包，涵盖了 ESLint、Prettier、Stylelint、Commitlint + Husky + Lint-Staged 和 TypeScript 的项目规范配置。此模板提供了一套完整的开发环境，旨在让开发者能够专注于组件的开发，而无需担心底层配置的复杂性，帮助快速搭建属于自己/企业级的组件库（还配备了详情的保姆级注释~）。
 
 ## 文档地址
 
