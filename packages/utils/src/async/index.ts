@@ -63,7 +63,10 @@ export function asyncCache(
       }
       const result = cache?.get();
       if (result) {
-        resolve(result);
+        state?.resolve.forEach((resolve: Function) => {
+          resolve(result);
+        });
+        delete map[argsKey];
         return;
       }
 

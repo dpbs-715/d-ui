@@ -244,7 +244,7 @@ export class RenderSelectClass {
           api = asyncCacheWithHistory(props.api, {
             expireTime: 5 * 1000,
             version: 'v1.0.0',
-            cacheType: CACHE_TYPE.sessionStorage,
+            cacheType: CACHE_TYPE.memory,
           });
         } else {
           api = props.api;
