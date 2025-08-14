@@ -18,7 +18,7 @@ export class Cache {
     type: CACHE_TYPE,
     private cacheKey: string,
     private version: string,
-    private expireTime: number,
+    private expireTime?: number,
   ) {
     this.storage = this.getCacheSource(type);
   }
@@ -44,7 +44,11 @@ export class Cache {
   }
 
   private isExpired(cacheEntry: { expireTime: number; time: number }): boolean {
-    return cacheEntry.expireTime > 0 && cacheEntry.time + cacheEntry.expireTime < Date.now();
+    return (
+      !!cacheEntry.expireTime &&
+      cacheEntry.expireTime > 0 &&
+      cacheEntry.time + cacheEntry.expireTime < Date.now()
+    );
   }
   get(): any {
     const cache = this.storage.getItem(this.cacheKey);

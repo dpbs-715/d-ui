@@ -75,6 +75,8 @@ export const zh = defineConfig({
           { text: '数组工具', link: '/packages/utils/array/index' },
           { text: '类型判断工具', link: '/packages/utils/is/index' },
           { text: '异步任务包装器', link: '/packages/utils/async/index' },
+          { text: '缓存工具', link: '/packages/utils/cache/index' },
+          { text: '克隆工具', link: '/packages/utils/clone/index' },
         ],
       },
     ],

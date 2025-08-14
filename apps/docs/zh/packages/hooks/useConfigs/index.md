@@ -10,6 +10,10 @@
 
 <demo vue="hooks/useConfigs/setHidden.vue" />
 
+## 设置字段禁用
+
+<demo vue="hooks/useConfigs/setDisabled.vue" />
+
 ## 根据Field获取配置实例
 
 <demo vue="hooks/useConfigs/getConfigByField.vue" />
