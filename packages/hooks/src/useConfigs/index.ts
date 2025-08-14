@@ -1,15 +1,18 @@
-import { computed, onUnmounted, Reactive, reactive } from 'vue';
+import { computed, ComputedRef, onUnmounted, Reactive, reactive } from 'vue';
 
 export interface useConfigsResultType<T> {
   config: T[];
   getConfigByField: (field: string) => T;
   setHidden: (fields: string[], state: boolean) => void;
+  setDisabled: (fields: string[], state: boolean) => void;
+  setDisabledAll: (state: boolean) => void;
 }
 export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
   const config: Reactive<T[]> = reactive(configData);
-  const configMap = computed(() => {
+  const configMap: ComputedRef<Map<string, any>> = computed(() => {
     return new Map(config.map((item: any) => [item.field, item]));
   });
+  const alwaysDisableFields = new Set();
   /**
    * 根据key设置隐藏显示
    * @param fields 字段key数组
@@ -20,6 +23,50 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
       const item: any = configMap.value.get(field);
       if (item) {
         item.hidden = state;
+      }
+    });
+  }
+  /**
+   * 根据key设置字段禁用
+   * @param fields 字段key数组
+   * @param state  隐藏隐藏状态
+   * */
+  function setDisabled(fields: string[], state: boolean) {
+    fields.forEach((field) => {
+      let alwaysDisableField = false;
+      if (field.startsWith('*')) {
+        alwaysDisableField = true;
+        field = field.substring(1);
+      }
+      const item: any = configMap.value.get(field);
+      if (item) {
+        if (!item.props) {
+          item.props = {};
+        }
+        if (alwaysDisableField) {
+          if (state) {
+            alwaysDisableFields.add(field);
+          } else {
+            alwaysDisableFields.delete(field);
+          }
+        }
+        item.props.disabled = state;
+      }
+    });
+  }
+  /**
+   * 设置全部字段禁用
+   * @param state  隐藏隐藏状态
+   * */
+  function setDisabledAll(state: boolean) {
+    Array.from(configMap.value.values()).forEach((item) => {
+      if (item) {
+        if (!item.props) {
+          item.props = {};
+        }
+        if (!alwaysDisableFields.has(item.field)) {
+          item.props.disabled = state;
+        }
       }
     });
   }
@@ -39,6 +86,8 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
   return {
     getConfigByField,
     setHidden,
+    setDisabled,
+    setDisabledAll,
     config,
   } as useConfigsResultType<T>;
 }

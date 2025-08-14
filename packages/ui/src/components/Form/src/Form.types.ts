@@ -28,7 +28,6 @@ export interface CommonFormBaseProps {
   labelWidth?: string | null;
   labelSuffix?: string;
   size?: '' | 'large' | 'default' | 'small';
-  disabled?: boolean;
   requireAsteriskPosition?: Boolean;
   statusIcon?: Boolean;
   showMessage?: Boolean;

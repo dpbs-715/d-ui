@@ -2,9 +2,9 @@
 
 ## Introduction
 
-DLib-template is a component library and toolkit template project based on Vue3, consisting of the following parts:
+DLib is a component library and toolset project based on Vue3 and elementPlus, consisting of the following parts:
 
-- UI Component Library: Provides commonly used UI components
+- UI Component Library: Provides commonly used UI components, including dynamic components
 - Utility Functions: Offers common utility functions
 - Hooks: Provides reusable composable functions
 - Directives: Offers commonly used directives
