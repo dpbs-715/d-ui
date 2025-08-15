@@ -1,5 +1,11 @@
 # dlib-utils
 
+## 1.0.3
+
+### Patch Changes
+
+- 添加deepClone函数
+
 ## 1.0.2
 
 ### Patch Changes

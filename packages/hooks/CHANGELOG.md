@@ -1,5 +1,11 @@
 # dlib-hooks
 
+## 1.0.2
+
+### Patch Changes
+
+- 优化config hooks
+
 ## 1.0.1
 
 ### Patch Changes
