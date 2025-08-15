@@ -12,6 +12,7 @@ export class RenderSelectClass {
   model: any;
   label: any;
   emits: any;
+  attrs: any;
   options: Ref<Record<any, any>> = ref([]);
   loading: Ref<Boolean> = ref(false);
   /**
@@ -211,13 +212,13 @@ export class RenderSelectClass {
 
       this.changeSelect(firstValue);
 
-      if (props.onChange) {
-        if (Array.isArray(props.onChange)) {
-          props.onChange.forEach((changeFun: any) => {
+      if (this.attrs.onChange) {
+        if (Array.isArray(this.attrs.onChange)) {
+          this.attrs.onChange.forEach((changeFun: any) => {
             changeFun(firstValue);
           });
         } else {
-          props.onChange(firstValue);
+          this.attrs.onChange(firstValue);
         }
       }
     }
@@ -356,6 +357,7 @@ export class RenderSelectClass {
     props: CommonSelectProps,
     slots: SlotsType,
     emits: any,
+    attrs: any,
     {
       model,
       label,
@@ -367,6 +369,7 @@ export class RenderSelectClass {
     this.emits = emits;
     this.model = model;
     this.label = label;
+    this.attrs = attrs;
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
         Object.entries(props).filter(([_, v]) => {

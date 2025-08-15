@@ -43,9 +43,9 @@ export const configIterator = (
       aimConfig.props = {};
     }
     if (isFunction(config.isDisabled)) {
-      aimConfig.props['disabled'] = config.isDisabled?.(writeArgs);
+      aimConfig.props['disabled'] = config.isDisabled?.(writeArgs) || config.props?.['disabled'];
     } else {
-      aimConfig.props['disabled'] = config.isDisabled;
+      aimConfig.props['disabled'] = config.isDisabled || config.props?.['disabled'];
     }
   }
 };

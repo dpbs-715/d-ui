@@ -43,7 +43,5 @@ export interface CommonSelectProps {
   //字典获取options
   getDictOptions?: Function;
 
-  modelValue?: string | number | Array<string | number>;
-  label?: string | number | Array<string | number>;
   onChange?: Function | Array<Function>;
 }

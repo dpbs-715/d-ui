@@ -62,6 +62,7 @@ export const zh = defineConfig({
           { text: 'useRefCollect 收集器', link: '/packages/hooks/useRefCollect/index' },
           { text: 'useConfigs 配置器', link: '/packages/hooks/useConfigs/index' },
           { text: 'useMixConfig 收集器', link: '/packages/hooks/useMixConfig/index' },
+          { text: 'useRepeatConfig 收集器', link: '/packages/hooks/useRepeatConfig/index' },
         ],
       },
       {

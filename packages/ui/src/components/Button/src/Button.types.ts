@@ -20,6 +20,7 @@ export interface ButtonProps {
   plain?: boolean;
   icon?: any;
   circle?: boolean;
+  loading?: boolean;
 }
 
 export interface ButtonEmits {

@@ -6,17 +6,25 @@
       size ? `CommonButton--${size}` : '',
       {
         'is-round': round,
-        'is-disabled': disabled,
+        'is-disabled': disabled || loading,
         'is-plain': plain,
         'is-circle': circle,
       },
     ]"
     type="button"
-    :disabled="disabled"
+    :disabled="disabled || loading"
     @click="handleClick"
   >
+    <template v-if="loading">
+      <el-icon
+        class="is-loading"
+        :style="{ marginRight: $slots.default ? '5px' : '0' }"
+      >
+        <Loading />
+      </el-icon>
+    </template>
     <el-icon
-      v-if="icon || defaultIcon"
+      v-else-if="icon || defaultIcon"
       :style="{ marginRight: $slots.default ? '5px' : '0' }"
     >
       <component :is="icon || defaultIcon" />
@@ -28,7 +36,7 @@
 <script setup lang="ts">
 import type { ButtonEmits, ButtonProps } from './Button.types';
 import { computed, h } from 'vue';
-import { CirclePlus, Delete } from '@element-plus/icons-vue';
+import { CirclePlus, Delete, Loading } from '@element-plus/icons-vue';
 import exportIcon from './svgs/exportIcon.svg?raw';
 import importIcon from './svgs/importIcon.svg?raw';
 import { ElIcon } from 'element-plus';
@@ -43,6 +51,7 @@ const {
   round = false,
   icon = undefined,
   circle = false,
+  loading = false,
 } = defineProps<ButtonProps>();
 
 const defaultIcon = computed(() => {

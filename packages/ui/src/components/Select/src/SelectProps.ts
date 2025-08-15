@@ -83,12 +83,4 @@ export const CommonSelectProviderProps = {
     type: Function,
     default: () => [],
   },
-  modelValue: {
-    type: [String, Number, Array],
-    default: null,
-  },
-  label: {
-    type: [String, Number, Array],
-    default: null,
-  },
 };

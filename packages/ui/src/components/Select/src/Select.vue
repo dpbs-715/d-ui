@@ -9,19 +9,19 @@ export default defineComponent<CommonSelectProps>({
   name: 'CommonSelect',
   props: CommonSelectProviderProps,
   emits: ['update:modelValue', 'update:label', 'changeObj', 'optionsReady'],
-  setup(props, { slots, expose, emit }) {
+  setup(props, { slots, expose, emit, attrs }) {
     const model = computed({
       get() {
         if (props.joinSplit && props.multiple) {
-          if (isString(props.modelValue)) {
-            return props.modelValue
+          if (isString(attrs.modelValue)) {
+            return attrs.modelValue
               ?.split(props.joinSplit)
               .filter((item: any) => item.trim() !== '');
           } else {
-            return props.modelValue;
+            return attrs.modelValue;
           }
         } else {
-          return props.modelValue;
+          return attrs.modelValue;
         }
       },
       set(value: any) {
@@ -36,13 +36,13 @@ export default defineComponent<CommonSelectProps>({
     const label = computed({
       get() {
         if (props.joinSplit && props.multiple) {
-          if (isString(props.label)) {
-            return props.label?.split(props.joinSplit);
+          if (isString(attrs.label)) {
+            return attrs.label?.split(props.joinSplit);
           } else {
-            return props.label;
+            return attrs.label;
           }
         } else {
-          return props.label;
+          return attrs.label;
         }
       },
       set(value: any) {
@@ -53,7 +53,8 @@ export default defineComponent<CommonSelectProps>({
         }
       },
     });
-    const renderSelect: RenderSelectClass = new RenderSelectClass(props, slots, emit, {
+
+    const renderSelect: RenderSelectClass = new RenderSelectClass(props, slots, emit, attrs, {
       model,
       label,
     });
