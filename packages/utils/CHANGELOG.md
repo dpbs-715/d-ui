@@ -1,5 +1,11 @@
 # dlib-utils
 
+## 1.0.4
+
+### Patch Changes
+
+- 支持多form引用同一配置对象、selectprops修改
+
 ## 1.0.3
 
 ### Patch Changes
