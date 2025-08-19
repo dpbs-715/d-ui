@@ -161,6 +161,10 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 
 <demo vue="ui/CommonTable/rules.vue" />
 
+## 行拖拽排序
+
+<demo vue="ui/CommonTable/drag.vue" />
+
 ## Table Props
 
 | 参数            | 类型                  | 默认值  | 说明                                       |
@@ -173,6 +177,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | useIndex        | `boolean`             | `false` | 是否显示索引列。                           |
 | useSelection    | `boolean`             | `false` | 是否显示多选列。                           |
 | singleSelection | `boolean`             | `false` | 启用selection单选。                        |
+| useDrag         | `boolean`             | `false` | 启用行拖拽。可以配合使用dragEnd事件        |
 
 ## Element Plus 原生支持 Props (`elTable`)
 

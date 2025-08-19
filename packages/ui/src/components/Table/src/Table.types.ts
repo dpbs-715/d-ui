@@ -126,4 +126,5 @@ export interface CommonTableProps {
   vScrollbarSize?: number;
   sortBy?: object;
   sortState?: object;
+  useDrag?: Boolean;
 }

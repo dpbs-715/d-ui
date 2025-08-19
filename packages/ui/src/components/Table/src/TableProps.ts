@@ -228,4 +228,8 @@ export const CommonTableProviderProps = {
   sortState: {
     type: Object,
   },
+  useDrag: {
+    type: Boolean,
+    default: false,
+  },
 };

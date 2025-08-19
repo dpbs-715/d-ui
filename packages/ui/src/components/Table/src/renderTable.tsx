@@ -4,15 +4,17 @@ import { SORT_ORDERS, SORTABLE, sortChange, useTableV2Sort } from './useTableSor
 import { computed, ComputedRef, SlotsType } from 'vue';
 import { setDefaultSlotColumnProps } from '~/_utils/componentUtils.ts';
 import { RenderColumnsClass } from './renderColumns.tsx';
+import { VueDraggable } from 'vue-draggable-plus';
 import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 const defaultColMinWidth = componentDefaultPropsMap.CommonTable.defaultColMinWidth;
 
 export class RenderTableClass {
   props: ComputedRef<CommonTableProps>;
   slots: any;
+  emits: any;
   tableRef: any;
   data: DataType;
-  constructor(props: CommonTableProps, slots: SlotsType) {
+  constructor(props: CommonTableProps, slots: SlotsType, emits: any) {
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
         Object.entries(props).filter(([_, v]) => {
@@ -26,6 +28,7 @@ export class RenderTableClass {
     });
     this.data = props.data || [];
     this.slots = slots;
+    this.emits = emits;
   }
   getTableRef() {
     return this.tableRef;
@@ -93,11 +96,37 @@ export class RenderTableClass {
       </ElAutoResizer>
     );
   }
+
+  onDragEnd(evt: any) {
+    const oldItem = this.data[evt.oldIndex];
+    const toItem = this.data[evt.newIndex];
+    this.data.splice(evt.oldIndex, 1);
+    this.data.splice(evt.newIndex, 0, oldItem);
+    this.emits('dragEnd', oldItem, toItem, evt);
+  }
+
+  useDrag(Com: any) {
+    if (this.props.value.useDrag) {
+      return (
+        <VueDraggable
+          animation="150"
+          vModel={this.props.value.data}
+          target="tbody"
+          onEnd={this.onDragEnd.bind(this)}
+        >
+          {Com}
+        </VueDraggable>
+      );
+    } else {
+      return Com;
+    }
+  }
+
   /**
    * 渲染elementPlus Table
    * */
   renderTable(Com: any) {
-    return (
+    return this.useDrag(
       <Com
         ref={(instance: any) => (this.tableRef = instance)}
         class={['commonTable', this.props.value.singleSelection && 'commonTableSingleSelection']}
@@ -110,7 +139,7 @@ export class RenderTableClass {
         {...this.props.value}
       >
         {this.renderTableSlots()}
-      </Com>
+      </Com>,
     );
   }
   /**
