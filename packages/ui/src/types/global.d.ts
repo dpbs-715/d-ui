@@ -1,6 +1,8 @@
 // // For this project development
 // import 'vue';
 
+import { CommonSelectOrDialog } from '../components';
+
 /**
  * 用作给全局引入的UI组件类型提示：
  * tsconfig.json 需要添加配置："types": ["dlib-ui/global.d.ts"]
@@ -22,6 +24,7 @@ declare module 'vue' {
     CommonTableLayout: (typeof import('dlib-ui'))['CommonTableLayout'];
     CommonTableFieldsConfig: (typeof import('dlib-ui'))['CommonTableFieldsConfig'];
     CommonSelect: (typeof import('dlib-ui'))['CommonSelect'];
+    CommonSelectOrDialog: (typeof import('dlib-ui'))['CommonSelectOrDialog'];
   }
 }
 

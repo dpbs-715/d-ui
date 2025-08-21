@@ -1,6 +1,6 @@
 interface WrappedFunction extends Function {
-  __D__?: boolean;
-  __DT__?: string;
+  __D__?: boolean; //标记
+  __DT__?: string; //标记类型
   (...args: any[]): Promise<any>;
 }
 
@@ -10,11 +10,11 @@ export interface CommonSelectProps {
   //字典名称
   dict?: string | string[];
   //请求参数
-  query: Function;
+  query?: Function;
   //值字段对照
-  valueField: string;
+  valueField?: string;
   //文本字段对照
-  labelField: string;
+  labelField?: string;
   //转化请求结果
   parseData?: Function;
   //只有一条数据时自动选中
@@ -30,7 +30,7 @@ export interface CommonSelectProps {
   //绑定选项
   bindOptions?: Record<any, any>[];
   //忽略的标签
-  ignoreByLabel: string[];
+  ignoreByLabel?: string[];
   //组件类型
   componentType?: 'ElSelectV2' | 'ElSelect' | 'ElTreeSelect';
   //多选时将结果合并的拼接符
@@ -44,4 +44,14 @@ export interface CommonSelectProps {
   getDictOptions?: Function;
 
   onChange?: Function | Array<Function>;
+
+  modelValue?: any;
+  label?: any;
 }
+
+export type CommonSelectRealProps = Omit<CommonSelectProps, 'component'> & {
+  valueField: string;
+  labelField: string;
+  ignoreByLabel: string[];
+  query: Function;
+};

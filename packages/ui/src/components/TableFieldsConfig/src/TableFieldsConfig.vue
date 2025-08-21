@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 import { CommonButton } from '../../Button';
 import type { CommonTableFieldsConfigProps } from './TableFieldsConfig.types';
-import { ElCheckbox, ElPopover } from 'element-plus';
+import { ElCheckbox, ElPopover, ElTooltip } from 'element-plus';
 import { Menu } from '@element-plus/icons-vue';
 import { vDraggable } from 'vue-draggable-plus';
 

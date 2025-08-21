@@ -1,11 +1,11 @@
 import { computed, ComputedRef, Ref, SlotsType, ref, toValue, watch } from 'vue';
-import { CommonSelectProps } from './Select.types.ts';
+import { CommonSelectRealProps } from './Select.types.ts';
 import { componentDefaultPropsMap, commonKeysMap } from '../../CreateComponent/src/comMap.ts';
 import { asyncCacheWithHistory, CACHE_TYPE, isArray, isEmpty, isFunction } from 'dlib-utils';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
 
 export class RenderSelectClass {
-  props: ComputedRef<CommonSelectProps>;
+  props: ComputedRef<CommonSelectRealProps>;
   slots: any;
   ref: any;
   useComponent = ref('ElSelect');
@@ -354,7 +354,7 @@ export class RenderSelectClass {
     }
   }
   constructor(
-    props: CommonSelectProps,
+    props: CommonSelectRealProps,
     slots: SlotsType,
     emits: any,
     attrs: any,
@@ -379,7 +379,7 @@ export class RenderSelectClass {
       return {
         ...componentDefaultPropsMap.CommonSelect,
         ...cleaned,
-      } as CommonSelectProps;
+      } as CommonSelectRealProps;
     });
     this.slots = slots;
 
