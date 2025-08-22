@@ -1,56 +1,29 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
+import { ref } from 'vue';
 
-const formData = reactive({});
-function mockApi(queryParams: any) {
+function mockApi() {
   return new Promise((resolve) => {
-    const res = [
-      { label: '选项1', value: '1' },
-      { label: '选项2', value: '2' },
-    ];
-    if (queryParams.field) {
-      res.push({ label: `${JSON.stringify(queryParams)}`, value: '3' });
-    }
     setTimeout(() => {
-      resolve(res);
+      resolve([{ label: '选项1', value: '1' }]);
     }, 2000);
   });
 }
-const { form } = useMixConfig([
-  {
-    label: '字段',
-    field: 'field',
-    component: 'commonSelect',
-    span: 12,
-    props: {
-      api: mockApi,
-    },
-    form: true,
-  },
-  {
-    label: '字段',
-    field: 'field2',
-    component: 'commonSelect',
-    span: 12,
-    props: {
-      api: mockApi,
-      query: ({ formData }: any) => {
-        return {
-          field: formData.field,
-        };
-      },
-    },
-    form: true,
-  },
-]);
+const model = ref('');
+const label = ref('');
 </script>
 
 <template>
-  <el-divider>第一个字段是第二个字段的搜索条件</el-divider>
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
+  {{ model }}
+  {{ label }}
+  <!--  <CommonSelectOrDialog-->
+  <!--    v-model:label="label"-->
+  <!--    v-model="model"-->
+  <!--    :api="mockApi"/>-->
+  <CommonSelect
+    v-model="model"
+    :api="mockApi"
+    auto-select-first
+    @options-ready="(res) => console.log(res)"
   />
 </template>
 
