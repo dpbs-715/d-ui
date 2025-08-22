@@ -1,4 +1,4 @@
-import { componentDefaultPropsMap } from '~/components';
+import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 import { onActivated, onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
 
 /**

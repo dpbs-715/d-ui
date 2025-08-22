@@ -11,10 +11,3 @@ export interface CommonSelectProps extends DataHandlerType {
   modelValue?: any;
   label?: any;
 }
-
-export type CommonSelectRealProps = Omit<CommonSelectProps, 'component'> & {
-  valueField: string;
-  labelField: string;
-  ignoreByLabel: string[];
-  query: Function;
-};

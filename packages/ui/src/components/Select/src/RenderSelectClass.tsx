@@ -1,9 +1,13 @@
 import { Ref, SlotsType, ref, toValue } from 'vue';
-import { CommonSelectRealProps } from './Select.types.ts';
+import { CommonSelectProps } from './Select.types.ts';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
-import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
+import {
+  DataHandlerClass,
+  DEFAULT_LABEL_FIELD,
+  DEFAULT_VALUE_FIELD,
+} from '~/_utils/dataHandlerClass.ts';
 
-export class RenderSelectClass extends DataHandlerClass<CommonSelectRealProps> {
+export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   slots: any;
   ref: any;
   useComponent = ref('ElSelect');
@@ -13,7 +17,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectRealProps> {
   attrs: any;
   loading: Ref<Boolean> = ref(false);
   constructor(
-    props: CommonSelectRealProps,
+    props: CommonSelectProps,
     slots: SlotsType,
     emits: any,
     attrs: any,
@@ -60,7 +64,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectRealProps> {
 
     if (options.value?.length === 1 && props.autoSelectFirst) {
       const firstOption = options.value[0];
-      const firstValue = firstOption[props.valueField];
+      const firstValue = firstOption[props.valueField || DEFAULT_VALUE_FIELD];
 
       this.model.value = firstValue;
 
@@ -83,15 +87,15 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectRealProps> {
   changeSelect(value: any) {
     if (this.props.value.multiple) {
       this.label.value = value.map((v: any) => {
-        return this.options.value.find((item: any) => item[this.props.value.valueField] === v)?.[
-          this.props.value.labelField
-        ];
+        return this.options.value.find(
+          (item: any) => item[this.props.value.valueField || DEFAULT_VALUE_FIELD] === v,
+        )?.[this.props.value.labelField || DEFAULT_LABEL_FIELD];
       });
     } else {
       const obj = this.options.value.find(
-        (item: any) => item[this.props.value.valueField] === value,
+        (item: any) => item[this.props.value.valueField || DEFAULT_VALUE_FIELD] === value,
       );
-      this.label.value = obj && obj[this.props.value.labelField];
+      this.label.value = obj && obj[this.props.value.labelField || DEFAULT_LABEL_FIELD];
       this.emits('changeObj', obj);
     }
   }
@@ -133,7 +137,12 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectRealProps> {
         {{
           default: () => {
             return this.options.value.map((item: any) => {
-              return <ElOption label={item[props.labelField]} value={item[props.valueField]} />;
+              return (
+                <ElOption
+                  label={item[props.labelField || DEFAULT_LABEL_FIELD]}
+                  value={item[props.valueField || DEFAULT_VALUE_FIELD]}
+                />
+              );
             });
           },
         }}

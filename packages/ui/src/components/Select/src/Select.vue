@@ -1,12 +1,13 @@
 <script lang="tsx">
 import { computed, defineComponent } from 'vue';
-import type { CommonSelectProps, CommonSelectRealProps } from './Select.types';
+import type { CommonSelectProps } from './Select.types';
 import { CommonSelectProviderProps } from './SelectProps.ts';
 import { isString } from 'dlib-utils';
 import { RenderSelectClass } from './RenderSelectClass.tsx';
 
 export default defineComponent<CommonSelectProps>({
   name: 'CommonSelect',
+  inheritAttrs: false,
   props: CommonSelectProviderProps,
   emits: ['update:modelValue', 'update:label', 'changeObj', 'optionsReady'],
   setup(props, { slots, expose, emit, attrs }) {
@@ -55,7 +56,7 @@ export default defineComponent<CommonSelectProps>({
     });
 
     const renderSelect: RenderSelectClass = new RenderSelectClass(
-      props as CommonSelectRealProps,
+      props as CommonSelectProps,
       slots,
       emit,
       attrs,

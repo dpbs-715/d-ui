@@ -1,6 +1,6 @@
 import { watchDebounced } from '@vueuse/core';
 import { computed, ref } from 'vue';
-import { componentDefaultPropsMap } from '~/components';
+import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 
 export const SORT_ORDERS = computed(() => componentDefaultPropsMap.CommonTable.sortOrders);
 export const SORTABLE = computed(() => componentDefaultPropsMap.CommonTable.sortable);

@@ -2,7 +2,7 @@
 import { ElDialog } from 'element-plus';
 import { computed, h, useSlots, getCurrentInstance } from 'vue';
 import type { DialogProps, DialogEmits } from './Dialog.types';
-import { componentDefaultPropsMap } from '~/components';
+import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 import { CommonButton } from '../../Button';
 defineOptions({
   name: 'CommonDialog',

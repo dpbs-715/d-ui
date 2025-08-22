@@ -1,5 +1,8 @@
 import { computed, ComputedRef, Ref, ref, toValue, watch } from 'vue';
-import { commonKeysMap, componentDefaultPropsMap } from '~/components';
+import {
+  commonKeysMap,
+  componentDefaultPropsMap,
+} from '../components/CreateComponent/src/comMap.ts';
 import { asyncCacheWithHistory, CACHE_TYPE, isEmpty, isFunction } from 'dlib-utils';
 
 interface WrappedFunction extends Function {
@@ -31,14 +34,17 @@ export interface DataHandlerType {
   //字典获取options
   getDictOptions?: Function;
   //值字段对照
-  valueField: string;
+  valueField?: string;
   //文本字段对照
-  labelField: string;
+  labelField?: string;
   //忽略的标签
-  ignoreByLabel: string[];
+  ignoreByLabel?: string[];
   //请求参数
   query?: Function;
 }
+
+export const DEFAULT_LABEL_FIELD = 'label';
+export const DEFAULT_VALUE_FIELD = 'value';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
@@ -176,12 +182,18 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       }
 
       localOptions = localOptions?.filter(
-        (o: any) => props.ignoreByLabel.indexOf(o[props.labelField]) === -1,
+        (o: any) =>
+          (props.ignoreByLabel ?? []).indexOf(o[props.labelField || DEFAULT_LABEL_FIELD]) === -1,
       );
       this.parseOptions(localOptions);
     } catch (err) {
       console.error(err);
-      options.value = [{ [props.labelField]: '未知数据', [props.valueField]: 0 }];
+      options.value = [
+        {
+          [props.labelField || DEFAULT_LABEL_FIELD]: '未知数据',
+          [props.valueField || DEFAULT_VALUE_FIELD]: 0,
+        },
+      ];
     } finally {
       loading.value = false;
     }
@@ -256,8 +268,12 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       appendOptions
         .filter((o: any) => {
           return (
-            o[props.valueField] &&
-            filteredOptions.findIndex((z: any) => z[props.labelField] == o[props.labelField]) === -1
+            o[props.valueField || DEFAULT_VALUE_FIELD] &&
+            filteredOptions.findIndex(
+              (z: any) =>
+                z[props.labelField || DEFAULT_LABEL_FIELD] ==
+                o[props.labelField || DEFAULT_LABEL_FIELD],
+            ) === -1
           );
         })
         .map((o: any) => ({
@@ -291,12 +307,16 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       if (props.valueType === 'string' || props.valueType === 'String' || props.joinSplit) {
         options.value = localOptions.map((o: any) => ({
           ...o,
-          [props.valueField]: String(o[props.valueField]),
+          [props.valueField || DEFAULT_VALUE_FIELD]: String(
+            o[props.valueField || DEFAULT_VALUE_FIELD],
+          ),
         }));
       } else if (props.valueType === 'int' || props.valueType === 'Int') {
         options.value = localOptions.map((o: any) => ({
           ...o,
-          [props.valueField]: Number(o[props.valueField]),
+          [props.valueField || DEFAULT_VALUE_FIELD]: Number(
+            o[props.valueField || DEFAULT_VALUE_FIELD],
+          ),
         }));
       }
     } else {
