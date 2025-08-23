@@ -1,8 +1,6 @@
 // // For this project development
 // import 'vue';
 
-import { CommonSelectOrDialog } from '../components';
-
 /**
  * 用作给全局引入的UI组件类型提示：
  * tsconfig.json 需要添加配置："types": ["dlib-ui/global.d.ts"]

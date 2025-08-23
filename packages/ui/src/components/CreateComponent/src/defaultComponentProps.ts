@@ -39,6 +39,7 @@ export default {
   },
   //表格配置
   CommonTable: {
+    emptyText: '暂无数据',
     ignoreHeight: 332,
     sortOrders: ['ascending', 'descending'],
     sortable: false,

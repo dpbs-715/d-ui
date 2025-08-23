@@ -144,7 +144,7 @@ export class RenderColumnsClass {
               width: '100%',
             }}
           >
-            {configItem.formatter?.(row) || node || this.props.value.emptyText}
+            {configItem.formatter?.(row) || node || this.props.value.empty}
           </div>
         </div>
       );

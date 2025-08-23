@@ -51,8 +51,8 @@ function confirm() {
 
 const comSlots: any = {
   footer: () => [
-    h(CommonButton, { type: 'normal', onClick: close }, '取消'),
-    h(CommonButton, { type: 'primary', onClick: confirm }, '确定'),
+    h(CommonButton, { type: 'normal', onClick: close }, { default: () => '取消' }),
+    h(CommonButton, { type: 'primary', onClick: confirm }, { default: () => '确定' }),
   ],
   ...slots,
 };

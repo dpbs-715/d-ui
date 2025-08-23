@@ -1,4 +1,4 @@
-import type { PropType } from 'vue';
+import type { PropType, Ref } from 'vue';
 import { CommonTableConfig, DataType } from './Table.types';
 
 export const CommonTableProviderProps = {
@@ -24,14 +24,14 @@ export const CommonTableProviderProps = {
   },
   emptyText: {
     type: String,
-    default: '',
+    default: undefined,
   },
   data: {
     type: Array as PropType<DataType>,
     default: () => [],
   },
   loading: {
-    type: Boolean,
+    type: [Boolean, Object] as PropType<Boolean | Ref<Boolean>>,
     default: () => false,
   },
 

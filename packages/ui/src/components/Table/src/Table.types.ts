@@ -59,8 +59,9 @@ export interface CommonTableProps {
   config?: CommonTableConfig[];
   v2?: Boolean | undefined;
   data?: DataType;
-  loading?: Boolean;
+  loading?: Boolean | Ref<Boolean>;
   emptyText?: string;
+  empty?: string;
   useIndex?: Boolean;
   useSelection?: Boolean;
   singleSelection?: Boolean;

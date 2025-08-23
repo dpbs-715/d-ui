@@ -1,7 +1,7 @@
 import { ElTable, ElTableV2, ElAutoResizer } from 'element-plus';
 import type { CommonTableConfig, CommonTableProps, DataType, RowDataType } from './Table.types';
 import { SORT_ORDERS, SORTABLE, sortChange, useTableV2Sort } from './useTableSort.ts';
-import { computed, ComputedRef, SlotsType } from 'vue';
+import { computed, ComputedRef, SlotsType, toValue } from 'vue';
 import { setDefaultSlotColumnProps } from '~/_utils/componentUtils.ts';
 import { RenderColumnsClass } from './renderColumns.tsx';
 import { VueDraggable } from 'vue-draggable-plus';
@@ -14,7 +14,7 @@ export class RenderTableClass {
   emits: any;
   tableRef: any;
   data: DataType;
-  constructor(props: CommonTableProps, slots: SlotsType, emits: any) {
+  constructor(props: CommonTableProps, attrs: any, slots: SlotsType, emits: any) {
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
         Object.entries(props).filter(([_, v]) => {
@@ -23,6 +23,7 @@ export class RenderTableClass {
       );
       return {
         ...componentDefaultPropsMap.CommonTable,
+        ...attrs,
         ...cleaned,
       } as CommonTableProps;
     });
@@ -79,7 +80,7 @@ export class RenderTableClass {
               <Com
                 class="commonTable"
                 ref={(instance: any) => (this.tableRef = instance)}
-                v-loading={this.props.value.loading}
+                v-loading={toValue(this.props.value.loading)}
                 sortBy={sortState.value}
                 onColumnSort={setSortState}
                 height={height}
@@ -130,7 +131,7 @@ export class RenderTableClass {
       <Com
         ref={(instance: any) => (this.tableRef = instance)}
         class={['commonTable', this.props.value.singleSelection && 'commonTableSingleSelection']}
-        v-loading={this.props.value.loading}
+        v-loading={toValue(this.props.value.loading)}
         onSortChange={(arg: any) => sortChange(arg, this.data)}
         onRowDblclick={(row: RowDataType) => this.onRowDblclick(row)}
         onSelectionChange={(selection: Record<any, any>[]) =>

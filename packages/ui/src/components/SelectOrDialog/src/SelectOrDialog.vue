@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CommonSelect } from '~/components';
+import { CommonSelect } from '../../Select';
 import { defineModel, useAttrs } from 'vue';
 defineOptions({
   name: 'CommonSelectOrDialog',
@@ -7,7 +7,6 @@ defineOptions({
 });
 const model = defineModel();
 const label = defineModel('label');
-
 const attrs = useAttrs();
 </script>
 

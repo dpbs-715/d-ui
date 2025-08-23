@@ -13,7 +13,7 @@ export default defineComponent<CommonTableProps>({
   setup(props, { slots, expose, attrs, emit }) {
     const formRef: any = ref(null);
     // const tableRef: any = ref(null);
-    const renderTable: RenderTableClass = new RenderTableClass({ ...props, ...attrs }, slots, emit);
+    const renderTable: RenderTableClass = new RenderTableClass(props, attrs, slots, emit);
     //使用校验方法 并定位到错误位置
     function validateForm(fieldArr: string[]) {
       return new Promise((resolve: any, reject: any) => {

@@ -1,7 +1,7 @@
 import { computed, ComputedRef, onUnmounted, Reactive, reactive } from 'vue';
 
 export interface useConfigsResultType<T> {
-  config: T[];
+  config: Reactive<T[]>;
   getConfigByField: (field: string) => T;
   setHidden: (fields: string[], state: boolean) => void;
   setDisabled: (fields: string[], state: boolean) => void;

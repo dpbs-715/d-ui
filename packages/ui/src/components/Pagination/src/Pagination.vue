@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ElPagination } from 'element-plus';
+import { type PropType, type Ref, toValue } from 'vue';
 
 defineOptions({
   name: 'CommonPagination',
@@ -10,7 +11,7 @@ const props = defineProps({
   // 总条目数
   total: {
     required: true,
-    type: Number,
+    type: [Number, Object] as PropType<number | Ref<number>>,
     default: 0,
   },
   // 当前页数：pageNo
@@ -42,7 +43,7 @@ const pageSize = defineModel('limit', {
 });
 const handleSizeChange = (val: number) => {
   // 如果修改后超过最大页面，强制跳转到第 1 页
-  if (currentPage.value * val > props.total) {
+  if (currentPage.value * val > toValue(props.total)) {
     currentPage.value = 1;
   }
   // 触发 pagination 事件，重新加载列表
@@ -61,7 +62,7 @@ const handleCurrentChange = (val: number) => {
     :background="true"
     :page-sizes="props.pageSizes"
     :pager-count="props.pagerCount"
-    :total="props.total"
+    :total="toValue(props.total)"
     layout="total, sizes, prev, pager, next"
     @size-change="handleSizeChange"
     @current-change="handleCurrentChange"
