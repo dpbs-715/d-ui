@@ -4,5 +4,5 @@ export interface DialogProps {
 
 export interface DialogEmits {
   (e: 'close'): void;
-  (e: 'confirm'): void;
+  (e: 'confirm', close: () => void): void;
 }

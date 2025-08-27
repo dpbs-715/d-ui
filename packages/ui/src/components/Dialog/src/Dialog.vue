@@ -43,7 +43,7 @@ const vm = getCurrentInstance();
 function confirm() {
   const vnode: any = vm?.vnode || {};
   if (vnode['props']?.onConfirm) {
-    emits('confirm');
+    emits('confirm', close);
   } else {
     close();
   }

@@ -1,20 +1,26 @@
 import { useConfigs, useConfigsResultType } from '../useConfigs';
 import { CommonFormConfig, CommonTableConfig, CommonTableLayoutConfig } from 'dlib-ui';
 import { deepClone } from 'dlib-utils';
+import { Reactive, reactive, Ref, ref } from 'vue';
 
 export interface mixResultType {
   table: useConfigsResultType<CommonTableConfig>;
   form: useConfigsResultType<CommonFormConfig>;
   search: useConfigsResultType<CommonFormConfig>;
+  data: {
+    tableData: Reactive<Record<any, any>[]>;
+    queryParams: Reactive<Record<any, any>>;
+    total: Ref<number>;
+  };
 }
-export function useMixConfig(configData: CommonTableLayoutConfig[]): mixResultType {
+export function useMixConfig(configData?: CommonTableLayoutConfig[]): mixResultType {
   const o: any = {
     table: [],
     form: [],
     search: [],
   };
 
-  configData.forEach((item: any) => {
+  configData?.forEach((item: any) => {
     for (let k in o) {
       if (item[k]) {
         const obj = {
@@ -33,5 +39,10 @@ export function useMixConfig(configData: CommonTableLayoutConfig[]): mixResultTy
     table: useConfigs(o.table),
     search: useConfigs(o.search),
     form: useConfigs(o.form),
+    data: {
+      tableData: reactive([]),
+      queryParams: reactive({}),
+      total: ref(0),
+    },
   } as mixResultType;
 }

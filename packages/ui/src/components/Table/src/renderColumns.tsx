@@ -273,7 +273,7 @@ export class RenderColumnsClass {
    * */
   renderSelection() {
     if (this.props.value.useSelection) {
-      return <ElTableColumn align={'center'} type="selection" width={28} />;
+      return <ElTableColumn align={'center'} type="selection" width={45} />;
     }
   }
 }

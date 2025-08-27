@@ -17,12 +17,10 @@ export const CommonSelectProviderProps = {
   //值字段对照
   valueField: {
     type: String,
-    default: 'value',
   },
   //文本字段对照
   labelField: {
     type: String,
-    default: 'label',
   },
   //转化请求结果
   parseData: {

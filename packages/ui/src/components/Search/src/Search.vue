@@ -85,7 +85,7 @@ function collectFormRef(instance: any) {
   >
     <template #moreCol>
       <el-col
-        style="display: flex; align-items: center"
+        style="display: flex; align-items: center; min-width: 140px"
         :span="componentDefaultPropsMap.CommonSearch.actionCol"
       >
         <el-form-item>

@@ -134,6 +134,8 @@ setTimeout(() => {
   <div style="display: flex; width: 1300px; height: 500px">
     <CommonTable
       fixed
+      use-selection
+      index
       :data="tableData"
       :config="config"
       @row-dblclick="() => console.log(1111)"
