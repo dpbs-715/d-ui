@@ -39,8 +39,8 @@ export default tseslint.config(
 
       // 可选：完全关闭某些 TS 特定规则
       '@typescript-eslint/no-explicit-any': 'warn', // 放宽对 any 的使用限制
-      '@typescript-eslint/no-unsafe-member-access': 'warn',
-      '@typescript-eslint/no-unsafe-call': 'warn',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
     },
   },
 );

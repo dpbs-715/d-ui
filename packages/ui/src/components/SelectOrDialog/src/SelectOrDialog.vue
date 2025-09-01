@@ -104,6 +104,9 @@ dataHandler.afterInit = (options: any[]) => {
  * 处理数据选中状态
  * */
 function handlerDataSelections() {
+  nextTick(() => {
+    tableRef.value.clearSelection();
+  });
   // 处理选中
   tableData.forEach((item) => {
     if (selections.value.includes(item[props.valueField || DEFAULT_VALUE_FIELD])) {
