@@ -25,6 +25,7 @@ export class RenderTableClass {
         ...componentDefaultPropsMap.CommonTable,
         ...attrs,
         ...cleaned,
+        onSelectionChange: null,
       } as CommonTableProps;
     });
     this.data = props.data || [];
@@ -174,6 +175,7 @@ export class RenderTableClass {
         this.tableRef.toggleRowSelection(selection[0], false);
       }
     }
+    this.emits('selectionChange', this.tableRef.getSelectionRows());
   };
   onRowDblclick(row: RowDataType) {
     const selection = this.tableRef.columns.find((o: any) => o.type === 'selection');

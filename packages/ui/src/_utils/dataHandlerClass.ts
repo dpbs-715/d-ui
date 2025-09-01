@@ -227,6 +227,9 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     return (
       localOptions?.filter((o: any) => {
         for (const key of keys) {
+          if (query[key] === '') {
+            return true;
+          }
           let queryValueArr: Record<any, any> = [];
           if (Array.isArray(query[key])) {
             queryValueArr = query[key];

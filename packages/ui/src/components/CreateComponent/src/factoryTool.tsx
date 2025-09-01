@@ -45,8 +45,8 @@ export function ExpandHandler({
   }
 
   function handlerPlaceholder() {
-    if (normalProps.placeholder && normalProps.placeholder.includes('{label}')) {
-      normalProps.placeholder = normalProps.placeholder.replace('{label}', config.label || '');
+    if (normalProps.placeholder && normalProps.placeholder.includes?.('{label}')) {
+      normalProps.placeholder = normalProps.placeholder?.replace('{label}', config.label || '');
     }
   }
 

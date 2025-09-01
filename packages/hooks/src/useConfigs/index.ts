@@ -3,6 +3,7 @@ import { computed, ComputedRef, onUnmounted, Reactive, reactive } from 'vue';
 export interface useConfigsResultType<T> {
   config: Reactive<T[]>;
   getConfigByField: (field: string) => T;
+  setPropsByField: (key: string, setProps: any) => void;
   setHidden: (fields: string[], state: boolean) => void;
   setDisabled: (fields: string[], state: boolean) => void;
   setDisabledAll: (state: boolean) => void;
@@ -72,6 +73,21 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
   }
 
   /**
+   * 使用key设置字段props
+   * @param key  关键字
+   * @param setProps  设置字段的props
+   * */
+  function setPropsByField(key: string, setProps: Record<any, any>) {
+    const config: any = configMap.value.get(key);
+    if (!config['props']) {
+      config.props = {};
+    }
+    for (const propsKey in setProps) {
+      config.props[propsKey] = setProps[propsKey];
+    }
+  }
+
+  /**
    * 使用key获取字段config对象
    * */
   function getConfigByField(key: string) {
@@ -84,6 +100,7 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
   });
 
   return {
+    setPropsByField,
     getConfigByField,
     setHidden,
     setDisabled,
