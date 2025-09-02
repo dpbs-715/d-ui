@@ -63,6 +63,9 @@ function initSelection() {
 function searchFun() {
   if (!props.api) {
     dataHandler.init();
+  } else {
+    dataHandler.setMoreQueryParams(queryParams);
+    dataHandler.init();
   }
 }
 
@@ -95,9 +98,12 @@ watch(
  * */
 dataHandler.afterInit = (options: any[]) => {
   if (!props.api) {
+    tableData.splice(0, tableData.length, ...dataHandler.filterByQuery(options, queryParams));
+  } else {
     tableData.splice(0, tableData.length, ...options);
-    handlerDataSelections();
   }
+
+  handlerDataSelections();
 };
 
 /**

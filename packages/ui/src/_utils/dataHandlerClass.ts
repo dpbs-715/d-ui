@@ -48,8 +48,9 @@ export const DEFAULT_VALUE_FIELD = 'value';
 
 export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   props: ComputedRef<T>;
-  options: Ref<Record<any, any>> = ref([]);
+  options: Ref<Record<any, any>[]> = ref([]);
   loading: Ref<Boolean> = ref(false);
+  moreQueryParams: Record<any, any> = {};
   constructor(props: T) {
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
@@ -63,6 +64,10 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       } as T;
     });
   }
+
+  setMoreQueryParams(params: Record<any, any>) {
+    this.moreQueryParams = params;
+  }
   /**
    * 子类可以重写这个方法用于处理后续操作
    * */
@@ -74,10 +79,14 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     this.preInitOptions();
     this.watchState();
   }
+
+  isWatching: boolean = false;
   /**
    * 状态监听
    * */
   watchState() {
+    if (this.isWatching) return;
+    this.isWatching = true;
     watch(
       () => this.props.value.dict,
       () => {
@@ -138,7 +147,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
     let options = this.options;
     try {
       loading.value = true;
-      let localOptions: Record<any, any> = [];
+      let localOptions: Record<any, any>[] = [];
       if (props.api) {
         let queryApi;
         let queryData = {
@@ -162,10 +171,10 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
           if (Array.isArray(o)) {
             queryApi = api(...o);
           } else {
-            queryApi = api({ ...queryData, ...o });
+            queryApi = api({ ...queryData, ...o, ...this.moreQueryParams });
           }
         } else {
-          queryApi = api(queryData);
+          queryApi = api({ ...queryData, ...this.moreQueryParams });
         }
         const res: any = await queryApi;
         if (props.parseData) {
@@ -201,7 +210,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   /**
    * 处理options
    * */
-  parseOptions(options: Record<any, any>) {
+  parseOptions(options: Record<any, any>[]) {
     if (!this.props.value.api) {
       options = this.filterByQuery(options);
     }
@@ -212,42 +221,60 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   }
 
   /**
-   * 根据query参数过滤options
-   * */
-  filterByQuery(localOptions: Record<any, any>) {
-    let props = toValue(this.props);
-    let query: any = {};
+   * 根据 query 参数过滤 options
+   * @param localOptions 待过滤的选项数组，每个选项是一个对象
+   * @param queryParams 额外的查询参数，会与组件内的 query 合并
+   * @returns 过滤后的选项数组，如果没有匹配项或无 query，则返回空数组
+   */
+  filterByQuery(localOptions: any, queryParams: Record<any, any> = {}) {
+    const props = toValue(this.props);
+    // 获取 query：优先使用 props.query()，再合并传入的 queryParams
+    let query: Record<string, any> = {};
     if (props.query) {
       query = props.query();
     }
+    query = { ...query, ...queryParams };
     const keys = Object.keys(query);
     if (keys.length === 0) {
+      // 如果没有有效的查询条件，返回全部或空数组
       return localOptions || [];
     }
     return (
-      localOptions?.filter((o: any) => {
-        for (const key of keys) {
-          if (query[key] === '') {
+      localOptions?.filter((option: any) => {
+        // 对每一个查询 key，检查 option 是否匹配
+        return keys.every((key: string) => {
+          const queryValue: any = query[key];
+          const optionValue: any = option[key];
+          // 统一处理：将 query 中的值转为数组
+          let queryValueArr: string[] = [];
+          if (Array.isArray(queryValue)) {
+            queryValueArr = queryValue;
+          } else if (typeof queryValue === 'string') {
+            queryValueArr = queryValue
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean);
+          }
+          // 如果 query 中的值为空数组，不过滤该项（或者可以根据需求调整）
+          if (queryValueArr.length === 0) {
             return true;
           }
-          let queryValueArr: Record<any, any> = [];
-          if (Array.isArray(query[key])) {
-            queryValueArr = query[key];
-          } else if (typeof query[key] === 'string') {
-            queryValueArr = query[key]?.split(',') || [];
+          // 统一处理：将 option 中的值转为数组
+          let optionValueArr: string[] = [];
+          if (Array.isArray(optionValue)) {
+            optionValueArr = optionValue.map((s) => String(s).trim());
+          } else if (typeof optionValue === 'string') {
+            optionValueArr = optionValue
+              .split(',')
+              .map((s) => s.trim())
+              .filter(Boolean);
+          } else {
+            // 如果不是数组也不是字符串，尝试转为字符串再处理（可选，根据业务需求）
+            optionValueArr = [String(optionValue).trim()];
           }
-          let optionsValueArr: Record<any, any> = [];
-          if (Array.isArray(o[key])) {
-            optionsValueArr = o[key];
-          } else if (typeof o[key] === 'string') {
-            optionsValueArr = o[key]?.split(',') || [];
-          }
-          const has = optionsValueArr.some((item: any) => queryValueArr.includes(item));
-          if (!has) {
-            return false;
-          }
-        }
-        return true;
+          // 检查 option 的值数组中是否存在任意一个匹配 query 的值
+          return optionValueArr.some((item) => queryValueArr.includes(item)); // 只有存在匹配时，才保留该项
+        });
       }) || []
     );
   }
@@ -255,7 +282,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   /**
    * 追加options
    * */
-  handleAppendOptions(localOptions: Record<any, any>) {
+  handleAppendOptions(localOptions: Record<any, any>[]) {
     let props = toValue(this.props);
     if (!props.appendOptions) {
       return localOptions;
@@ -303,7 +330,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   /**
    * 选项数据格式转化
    * */
-  processValueType(localOptions: Record<any, any>) {
+  processValueType(localOptions: Record<any, any>[]) {
     let props = toValue(this.props);
     let options = this.options;
     if (props.valueType || props.joinSplit) {

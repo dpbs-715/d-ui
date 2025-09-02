@@ -160,8 +160,8 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         onChange={(value: any) => this.changeSelect(value)}
         options={this.options.value}
         props={{
-          value: props.valueField,
-          label: props.labelField,
+          value: props.valueField || DEFAULT_VALUE_FIELD,
+          label: props.labelField || DEFAULT_LABEL_FIELD,
         }}
         {...props}
         vModel={this.model.value}
@@ -177,10 +177,10 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
       <Com
         ref={(instance: any) => (this.ref = instance)}
         props={{
-          label: props.labelField,
+          label: props.labelField || DEFAULT_LABEL_FIELD,
         }}
         highlightCurrent={true}
-        nodeKey={props.valueField}
+        nodeKey={props.valueField || DEFAULT_VALUE_FIELD}
         data={this.options.value}
         {...props}
         vModel={this.model.value}

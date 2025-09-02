@@ -11,10 +11,10 @@ const fieldConfig = [
         bindOptions: [
           {
             label: 'label1',
-            value: 'value1',
+            value: 'label1',
           },
           {
-            label: 'label2',
+            label: 'value2',
             value: 'value2',
           },
         ],
@@ -28,11 +28,6 @@ const fieldConfig = [
     search: {
       component: 'commonSelect',
       props: {
-        query: ({ formData }: any) => {
-          return {
-            label: formData.value1,
-          };
-        },
         bindOptions: [
           {
             label: 'label1',
@@ -48,16 +43,49 @@ const fieldConfig = [
   },
 ];
 
-const options = [
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-];
+// const options = [
+//   {
+//     label: 'label1',
+//     value: 'value1',
+//   },
+//   {
+//     label: 'label2',
+//     value: 'value2',
+//   },
+// ];
+
+function getOptions(data: any) {
+  console.log(data);
+  return new Promise((resolve) => {
+    if (data.label == 'label1') {
+      return resolve([
+        {
+          label: 'label1',
+          value: 'value1',
+        },
+      ]);
+    } else if (data.label == 'label2') {
+      return resolve([
+        {
+          label: 'label2',
+          value: 'value2',
+        },
+      ]);
+    } else {
+      resolve([
+        {
+          label: 'label1',
+          value: 'value1',
+        },
+        {
+          label: 'label2',
+          value: 'value2',
+        },
+      ]);
+    }
+  });
+}
+
 const model = ref('');
 const modelLabel = ref('');
 const queryValue = ref('');
@@ -74,7 +102,7 @@ const queryValue = ref('');
     multiple
     join-split=","
     :dialog-fields-config="fieldConfig"
-    :bind-options="options"
+    :api="getOptions"
     :dialog-props="{
       title: '选择数据',
       width: '80%',
