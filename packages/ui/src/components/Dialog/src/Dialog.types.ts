@@ -1,14 +1,14 @@
 export interface DialogProps {
   title?: string;
   width?: string | number;
-  fullscreen?: boolean;
+  fullscreen?: Boolean;
   top?: string;
   modalClass?: string;
-  appendToBody?: boolean;
-  draggable?: boolean;
-  destroyOnClose?: boolean;
-  center?: boolean;
-  alignCenter?: boolean;
+  appendToBody?: Boolean;
+  draggable?: Boolean;
+  destroyOnClose?: Boolean;
+  center?: Boolean;
+  alignCenter?: Boolean;
 }
 
 export interface DialogEmits {

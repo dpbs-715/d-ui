@@ -90,12 +90,14 @@ function collectFormRef(instance: any) {
       >
         <el-form-item>
           <CommonButton
+            :loading="searchProps.loading"
             type="primary"
             @click="queryHandler"
           >
             搜索
           </CommonButton>
           <CommonButton
+            :loading="searchProps.loading"
             type="normal"
             style="margin-left: 12px"
             plain

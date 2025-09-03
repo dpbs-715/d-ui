@@ -22,6 +22,8 @@ export let componentDefaultSlotsMap: registerSlotsMap = reactive({});
 export let commonKeysMap: registerKeysMap = {
   page: 'pageNo',
   size: 'pageSize',
+  total: 'total',
+  list: 'list',
 };
 
 /**

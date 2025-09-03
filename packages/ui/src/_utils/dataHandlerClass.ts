@@ -51,6 +51,8 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   options: Ref<Record<any, any>[]> = ref([]);
   loading: Ref<Boolean> = ref(false);
   moreQueryParams: Record<any, any> = {};
+  total: number = 0;
+
   constructor(props: T) {
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
@@ -180,7 +182,10 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
         if (props.parseData) {
           localOptions = props.parseData(res);
         } else {
-          localOptions = res;
+          localOptions = res[commonKeysMap.list] || res;
+          if (res[commonKeysMap.total]) {
+            this.total = res[commonKeysMap.total];
+          }
         }
       } else if (props.dict && props.getDictOptions) {
         // 通过字典获取选项数据

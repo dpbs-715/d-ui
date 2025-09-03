@@ -6,7 +6,7 @@ import { CommonTableLayout } from '../../TableLayout';
 import { CommonSearch } from '../../Search';
 import { CommonTable } from '../../Table';
 import { CommonPagination } from '../../Pagination';
-import { defineModel, ref, nextTick, watch } from 'vue';
+import { defineModel, ref, nextTick, watch, type Ref } from 'vue';
 import type { SelectOrDialogProps } from './SelectOrDialog.types';
 import { useMixConfig } from 'dlib-hooks';
 import {
@@ -30,6 +30,7 @@ const labelSelections = ref<any>([]);
 const tableRef = ref();
 
 const dataHandler = new DataHandlerClass(props);
+const loading: Ref<Boolean> = dataHandler.loading;
 
 function open() {
   visible.value = true;
@@ -101,6 +102,7 @@ dataHandler.afterInit = (options: any[]) => {
     tableData.splice(0, tableData.length, ...dataHandler.filterByQuery(options, queryParams));
   } else {
     tableData.splice(0, tableData.length, ...options);
+    total.value = dataHandler.total;
   }
 
   handlerDataSelections();
@@ -192,7 +194,6 @@ function confirmHandler(close: Function) {
     <CommonDialog
       v-model="visible"
       title="数据选择"
-      :destroy-on-close="true"
       v-bind="props.dialogProps"
       @confirm="confirmHandler"
     >
@@ -200,6 +201,7 @@ function confirmHandler(close: Function) {
         <template #search>
           <CommonSearch
             v-model="queryParams"
+            :loading="loading"
             :col="{
               sm: 24,
               md: 24,
@@ -214,6 +216,7 @@ function confirmHandler(close: Function) {
           <CommonTable
             ref="tableRef"
             v-model="tableData"
+            :loading="dataHandler.loading"
             reserve-selection
             use-index
             use-selection

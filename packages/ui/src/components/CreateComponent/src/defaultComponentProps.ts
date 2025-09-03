@@ -52,4 +52,8 @@ export default {
       headerAlign: 'center',
     },
   },
+  CommonDialog: {
+    draggable: true,
+    top: '10vh',
+  },
 };

@@ -1,4 +1,5 @@
 import { CommonFormBaseProps, CommonFormConfig } from '~/components';
+import { Ref } from 'vue';
 
 export interface CommonSearchProps extends CommonFormBaseProps {
   config?: CommonFormConfig[];
@@ -12,6 +13,8 @@ export interface CommonSearchProps extends CommonFormBaseProps {
   resetAll?: boolean;
   //重置时不查询
   resetWithoutSearch?: boolean;
+  //加载
+  loading?: Boolean | Ref<Boolean>;
 }
 
 export interface CommonSearchEmits {
