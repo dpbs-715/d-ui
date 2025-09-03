@@ -53,6 +53,7 @@ export const zh = defineConfig({
           { text: 'Pagination 公共分页器', link: '/packages/ui/Pagination/index' },
           { text: 'TableLayout 表格页布局', link: '/packages/ui/TableLayout/index' },
           { text: 'Select 公共选择器', link: '/packages/ui/Select/index' },
+          { text: 'SelectOrDialog 弹窗选择器', link: '/packages/ui/SelectOrDialog/index' },
         ],
       },
       {
