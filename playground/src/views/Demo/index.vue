@@ -53,42 +53,45 @@ const fieldConfig = [
 //     value: 'value2',
 //   },
 // ];
-
+function createData(number) {
+  let arr = [];
+  for (let i = 0; i < number; i++) {
+    arr.push({
+      label: 'label' + (i + 1),
+      value: 'value' + (i + 1),
+    });
+  }
+  return arr;
+}
 function getOptions(data: any) {
   console.log(data);
   return new Promise((resolve) => {
-    if (data.label == 'label1') {
-      return resolve([
-        {
-          label: 'label1',
-          value: 'value1',
-        },
-      ]);
-    } else if (data.label == 'label2') {
-      return resolve([
-        {
-          label: 'label2',
-          value: 'value2',
-        },
-      ]);
-    } else {
-      resolve([
-        {
-          label: 'label1',
-          value: 'value1',
-        },
-        {
-          label: 'label2',
-          value: 'value2',
-        },
-      ]);
-    }
+    resolve({
+      list: createData(10),
+      total: 15,
+    });
   });
 }
 
 const model = ref('');
 const modelLabel = ref('');
 const queryValue = ref('');
+
+function changeFun(...args: any) {
+  console.log('change', args);
+}
+
+function changeObjFun(...args: any) {
+  console.log('changeObj', args);
+}
+function beforeConfirmFun(selections, _labelSelections) {
+  if (selections.length === 0) {
+    alert('请选择');
+    return Promise.reject();
+  } else {
+    return Promise.resolve();
+  }
+}
 </script>
 
 <template>
@@ -107,6 +110,9 @@ const queryValue = ref('');
       title: '选择数据',
       width: '80%',
     }"
+    :before-confirm="beforeConfirmFun"
+    @change="changeFun"
+    @change-obj="changeObjFun"
   />
 </template>
 

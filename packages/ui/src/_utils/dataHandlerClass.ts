@@ -53,7 +53,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   moreQueryParams: Record<any, any> = {};
   total: number = 0;
 
-  constructor(props: T) {
+  constructor(props: T, attrs = {}) {
     this.props = computed(() => {
       const cleaned = Object.fromEntries(
         Object.entries(props).filter(([_, v]) => {
@@ -62,6 +62,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       );
       return {
         ...componentDefaultPropsMap.CommonSelect,
+        ...attrs,
         ...cleaned,
       } as T;
     });

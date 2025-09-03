@@ -29,7 +29,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
       label: any;
     },
   ) {
-    super(props);
+    super(props, attrs);
     this.emits = emits;
     this.model = model;
     this.label = label;
@@ -91,6 +91,10 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
           (item: any) => item[this.props.value.valueField || DEFAULT_VALUE_FIELD] === v,
         )?.[this.props.value.labelField || DEFAULT_LABEL_FIELD];
       });
+      const arr = this.options.value.filter((item: any) =>
+        value.includes(item[this.props.value.valueField || DEFAULT_VALUE_FIELD]),
+      );
+      this.emits('changeObj', arr);
     } else {
       const obj = this.options.value.find(
         (item: any) => item[this.props.value.valueField || DEFAULT_VALUE_FIELD] === value,

@@ -9,9 +9,12 @@ export interface SelectOrDialogProps extends DataHandlerType {
   multiple?: boolean;
   //组件类型
   componentType?: 'ElSelectV2' | 'ElSelect' | 'ElTreeSelect';
-  onChange?: Function | Array<Function>;
+  onChange?: Function;
+  onChangeObj?: Function;
 
   dialogProps?: DialogProps;
 
   dialogFieldsConfig?: CommonTableLayoutConfig[];
+
+  beforeConfirm?: (selections: any[], labelSelections: any[]) => Promise<any>;
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ElPagination } from 'element-plus';
 import { type PropType, type Ref, toValue } from 'vue';
+import { commonKeysMap } from '../../CreateComponent';
 
 defineOptions({
   name: 'CommonPagination',
@@ -22,7 +23,7 @@ const props = defineProps({
   // 每页显示条目个数：pageSize
   limit: {
     type: Number,
-    default: 10,
+    default: commonKeysMap.defaultSize,
   },
   pagerCount: {
     type: Number,
@@ -39,7 +40,7 @@ const currentPage = defineModel('page', {
   default: 1,
 });
 const pageSize = defineModel('limit', {
-  default: 10,
+  default: commonKeysMap.defaultSize,
 });
 const handleSizeChange = (val: number) => {
   // 如果修改后超过最大页面，强制跳转到第 1 页
@@ -58,7 +59,7 @@ const handleCurrentChange = (val: number) => {
 <template>
   <el-pagination
     v-model:current-page="currentPage"
-    v-model:page-size="pageSize"
+    v-model:page-size="pageSize as number"
     :background="true"
     :page-sizes="props.pageSizes"
     :pager-count="props.pagerCount"

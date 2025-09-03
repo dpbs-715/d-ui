@@ -6,7 +6,7 @@ import { CommonTableLayout } from '../../TableLayout';
 import { CommonSearch } from '../../Search';
 import { CommonTable } from '../../Table';
 import { CommonPagination } from '../../Pagination';
-import { defineModel, ref, nextTick, watch, type Ref } from 'vue';
+import { defineModel, ref, nextTick, watch, type Ref, useAttrs } from 'vue';
 import type { SelectOrDialogProps } from './SelectOrDialog.types';
 import { useMixConfig } from 'dlib-hooks';
 import {
@@ -21,6 +21,7 @@ defineOptions({
   inheritAttrs: false,
 });
 const props = withDefaults(defineProps<SelectOrDialogProps>(), {});
+const attrs = useAttrs();
 const model: any = defineModel();
 const label: any = defineModel('label');
 const visible = ref(false);
@@ -72,7 +73,7 @@ function searchFun() {
 
 const { search, table, data } = useMixConfig(props.dialogFieldsConfig);
 const { queryParams, tableData, total } = data;
-
+queryParams[commonKeysMap.size] = commonKeysMap.defaultSize;
 /**
  * 监听query
  * 如果query有值，则设置query参数，并禁用query参数的输入框
@@ -159,7 +160,10 @@ function selectChange(selection: any) {
 /**
  * 确认
  * */
-function confirmHandler(close: Function) {
+async function confirmHandler(close: Function) {
+  //1.beforeConfirm 数据确认前 可能会有校验等操作 中断选中
+  await props.beforeConfirm?.(selections.value, labelSelections.value);
+
   if (props.multiple) {
     if (props.joinSplit) {
       model.value = selections.value.join(props.joinSplit);
@@ -172,6 +176,11 @@ function confirmHandler(close: Function) {
     model.value = selections.value[0];
     label.value = labelSelections.value[0];
   }
+
+  //2.执行各种change事件
+  props.onChange?.(selections.value, labelSelections.value);
+  props.onChangeObj?.(tableRef.value.getSelectionRows());
+
   close();
 }
 </script>
@@ -181,7 +190,7 @@ function confirmHandler(close: Function) {
     <CommonSelect
       v-model="model"
       v-model:label="label"
-      v-bind="props"
+      v-bind="{ ...props, ...attrs }"
     />
     <CommonButton
       style="margin-left: 5px"

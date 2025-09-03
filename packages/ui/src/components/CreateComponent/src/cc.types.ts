@@ -19,7 +19,7 @@ export type registerMap = Record<string, ComponentType>;
 export type registerPropsMap = Record<string, Record<string, any>>;
 export type registerEventsMap = Record<string, Record<string, any>>;
 export type registerSlotsMap = Record<string, Record<string, any>>;
-export type registerKeysMap = Record<string, string>;
+export type registerKeysMap = Record<string, string | number>;
 export interface baseConfig extends Config {
   field: string;
   label?: string;

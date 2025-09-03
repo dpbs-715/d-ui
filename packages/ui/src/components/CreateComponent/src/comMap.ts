@@ -24,6 +24,8 @@ export let commonKeysMap: registerKeysMap = {
   size: 'pageSize',
   total: 'total',
   list: 'list',
+
+  defaultSize: 10,
 };
 
 /**
