@@ -64,10 +64,10 @@ function initSelection() {
  * */
 function searchFun() {
   if (!props.api) {
-    dataHandler.init();
+    dataHandler.preInitOptions();
   } else {
     dataHandler.setMoreQueryParams(queryParams);
-    dataHandler.init();
+    dataHandler.preInitOptions();
   }
 }
 
@@ -95,6 +95,14 @@ watch(
     immediate: true,
   },
 );
+
+// function clear() {
+//   labelSelections.value.length=0;
+//   selections.value.length=0;
+//   label.value = undefined
+//   model.value = undefined
+// }
+
 /**
  * 获取字典数据或者手动绑定的数据结果
  * */
@@ -147,6 +155,7 @@ function selectChange(selection: any) {
   selections.value = selections.value.filter((value: any) => {
     return !values.includes(value);
   });
+
   //再过滤到当前列表所有标签
   labelSelections.value = labelSelections.value.filter((value: any) => {
     return !labels.includes(value);

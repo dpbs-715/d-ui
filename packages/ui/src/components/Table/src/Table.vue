@@ -9,7 +9,7 @@ export default defineComponent<CommonTableProps>({
   name: 'CommonTable',
   inheritAttrs: false,
   props: CommonTableProviderProps,
-  emits: ['dragEnd'],
+  emits: ['dragEnd', 'selectionChange'],
   setup(props, { slots, expose, attrs, emit }) {
     const formRef: any = ref(null);
     // const tableRef: any = ref(null);

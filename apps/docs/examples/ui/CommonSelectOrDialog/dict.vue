@@ -5,27 +5,12 @@ import { ref } from 'vue';
 
 const model = ref('');
 const modelLabel = ref('');
-
+const dictType = ref('DICT1');
 const fieldConfig: CommonTableLayoutConfig[] = [
   {
     label: '文字',
     field: 'label',
     table: true,
-    search: {
-      component: 'commonSelect',
-      props: {
-        bindOptions: [
-          {
-            label: 'label1',
-            value: 'label1',
-          },
-          {
-            label: 'label2',
-            value: 'label2',
-          },
-        ],
-      },
-    },
   },
   {
     label: '值',
@@ -34,19 +19,23 @@ const fieldConfig: CommonTableLayoutConfig[] = [
   },
 ];
 
-const options: Record<string, string>[] = [
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-];
+function getDictOptions(dictType: string) {
+  return [
+    {
+      label: `${dictType}-1`,
+      value: 'value1',
+    },
+    {
+      label: `${dictType}-2`,
+      value: 'value2',
+    },
+  ];
+}
 </script>
 
 <template>
+  字典名称：<el-input v-model="dictType" />
+  <el-divider />
   值:{{ model || '-' }}
   <br>
   文字:{{ modelLabel || '-' }}
@@ -54,8 +43,9 @@ const options: Record<string, string>[] = [
   <CommonSelectOrDialog
     v-model:label="modelLabel"
     v-model="model"
+    :dict="dictType"
     :dialog-fields-config="fieldConfig"
-    :bind-options="options"
+    :get-dict-options="getDictOptions"
     :dialog-props="{
       title: '选择数据',
     }"

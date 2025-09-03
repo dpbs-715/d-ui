@@ -1,8 +1,14 @@
 # CommonSelectDialog弹窗选择器
 
-## basic绑定数据
+## basic绑定数据 以绑定options为例
 
 <demo vue="ui/CommonSelectOrDialog/basic.vue" />
+
+## dict类型
+
+> 一般getDictOptions通过全局注册的getDictOptions方法获取
+
+<demo vue="ui/CommonSelectOrDialog/dict.vue" />
 
 ## CommonSelectDialog 属性 (Props)
 
@@ -25,4 +31,4 @@
 | `orderBy`              | 排序字段名                                            | `string`                                 | -       |
 | `orderType`            | 排序方式，支持 `'asc'` 或 `'desc'`                    | `'asc' \| 'desc'`                        | -       |
 | `getDictOptions`       | 获取字典选项的方法                                    | `Function`                               | -       |
-| `dialog-fields-config` | 列表配置                                              | `Function`                               | -       |
+| `dialog-fields-config` | 列表配置                                              | `CommonTableLayoutConfig[]`              | -       |
