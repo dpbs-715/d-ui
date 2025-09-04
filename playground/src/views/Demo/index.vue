@@ -20,6 +20,7 @@ const { config } = useConfigs<CommonFormConfig>([
       },
     ],
     props: {
+      disabled: true,
       bindOptions: [
         {
           label: '选项1',

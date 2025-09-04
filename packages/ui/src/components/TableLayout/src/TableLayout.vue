@@ -58,5 +58,5 @@ const { tableHeight } = useTableHeight([searchRef, operationRef, paginationRef])
 </template>
 
 <style scoped lang="scss">
-@use './index.scss' as *;
+@use './TableLayout.scss' as *;
 </style>

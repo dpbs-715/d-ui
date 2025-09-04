@@ -95,5 +95,5 @@ export default defineComponent<CommonSelectProps>({
 });
 </script>
 <style lang="scss" scoped>
-@use './index.scss' as *;
+@use './Select.scss' as *;
 </style>

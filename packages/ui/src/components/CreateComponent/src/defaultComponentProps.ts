@@ -17,6 +17,7 @@ export default {
   treeSelect: {
     placeholder: '请选择{label}',
   },
+  CommonDescriptions: {},
   //表单配置
   CommonForm: {
     labelWidth: 'auto',

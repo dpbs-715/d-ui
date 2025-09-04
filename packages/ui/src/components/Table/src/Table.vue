@@ -97,5 +97,5 @@ export default defineComponent<CommonTableProps>({
 });
 </script>
 <style lang="scss" scoped>
-@use './index.scss' as *;
+@use './Table.scss' as *;
 </style>
