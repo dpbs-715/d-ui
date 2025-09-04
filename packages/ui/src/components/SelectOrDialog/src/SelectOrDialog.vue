@@ -195,6 +195,7 @@ async function confirmHandler(close: Function) {
       v-bind="{ ...props, ...attrs }"
     />
     <CommonButton
+      :disabled="props.disabled"
       style="margin-left: 5px"
       type="primary"
       plain

@@ -17,4 +17,6 @@ export interface SelectOrDialogProps extends DataHandlerType {
   dialogFieldsConfig?: CommonTableLayoutConfig[];
 
   beforeConfirm?: (selections: any[], labelSelections: any[]) => Promise<any>;
+
+  disabled?: Boolean;
 }
