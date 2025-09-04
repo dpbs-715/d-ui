@@ -6,3 +6,4 @@ export default CreateComponent;
 
 export * from './src/cc.types';
 export * from './src/comMap';
+export * from './src/defaultMap';

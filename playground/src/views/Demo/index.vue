@@ -1,61 +1,104 @@
 <script setup lang="ts">
-import { ElDivider } from 'element-plus';
-import type { CommonTableLayoutConfig } from 'dlib-ui';
-import { ref } from 'vue';
-
-const model = ref('');
-const modelLabel = ref('');
-const dictType = ref('');
-const fieldConfig: CommonTableLayoutConfig[] = [
+import { reactive } from 'vue';
+import { useRefCollect } from 'dlib-hooks/src/useRefCollect';
+import { useConfigs } from 'dlib-hooks/src/useConfigs';
+import type { CommonFormConfig } from '~/components';
+const { handleRef, getRefsValidateArr, clearRefsValidate } = useRefCollect();
+const { config } = useConfigs<CommonFormConfig>([
   {
-    label: '文字',
-    field: 'label',
-    table: true,
-    search: true,
+    field: 'test1',
+    label: '测试1',
+    component: 'commonSelectOrDialog',
+    model: {
+      label: 'test',
+    },
+    rules: [
+      {
+        required: true,
+        message: '请选择',
+        trigger: 'change',
+      },
+    ],
+    props: {
+      bindOptions: [
+        {
+          label: '选项1',
+          value: '1',
+        },
+        {
+          label: '选项2',
+          value: '2',
+        },
+      ],
+      dialogFieldsConfig: [
+        {
+          field: 'label',
+          label: '测试',
+          table: true,
+          search: true,
+        },
+      ],
+      onChange: (val: string) => {
+        config[1].label = val;
+      },
+    },
   },
   {
-    label: '值',
-    field: 'value',
-    table: true,
+    field: 'test2',
+    label: '测试2',
+    component: 'input',
+    hidden: ({ formData }) => {
+      return formData.test1 === '1';
+    },
+    rules: [
+      {
+        required: true,
+        message: '请输入',
+        trigger: 'blur',
+      },
+    ],
   },
-];
+]);
 setTimeout(() => {
-  model.value = 'value1';
-  modelLabel.value = 'label1';
-  dictType.value = 'DICT1';
+  config.push({
+    component: 'input',
+    field: 'test3',
+    label: '测试3',
+    props: {},
+  });
 }, 2000);
+const formData = reactive({});
+const formData2 = reactive({});
+function submit() {
+  getRefsValidateArr().then(() => {
+    console.log(1111);
+  });
+}
 
-function getDictOptions(dictType: string) {
-  return [
-    {
-      label: `${dictType}-1`,
-      value: 'value1',
-    },
-    {
-      label: `${dictType}-2`,
-      value: 'value2',
-    },
-  ];
+function clear() {
+  clearRefsValidate();
 }
 </script>
 
 <template>
-  字典名称：<el-input v-model="dictType" />
-  <el-divider />
-  值:{{ model || '-' }}
-  <br>
-  文字:{{ modelLabel || '-' }}
-  <el-divider />
-  <CommonSelectOrDialog
-    v-model:label="modelLabel"
-    v-model="model"
-    :dict="dictType"
-    :dialog-fields-config="fieldConfig"
-    :get-dict-options="getDictOptions"
-    :dialog-props="{
-      title: '选择数据',
-    }"
+  {{ formData }}
+  <CommonForm
+    :ref="(el) => handleRef(el, 'form1')"
+    v-model="formData"
+    :config="config"
   />
+
+  <CommonForm
+    :ref="(el) => handleRef(el, 'form2')"
+    v-model="formData2"
+    :config="config"
+  />
+  <el-button @click="submit">
+    校验
+  </el-button>
+  <el-button @click="clear">
+    清除校验
+  </el-button>
 </template>
 
 <style scoped></style>

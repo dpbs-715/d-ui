@@ -1,9 +1,9 @@
 import { computed, ComputedRef, Ref, ref, toValue, watch } from 'vue';
+import { asyncCacheWithHistory, CACHE_TYPE, isEmpty, isFunction } from 'dlib-utils';
 import {
   commonKeysMap,
   componentDefaultPropsMap,
-} from '../components/CreateComponent/src/comMap.ts';
-import { asyncCacheWithHistory, CACHE_TYPE, isEmpty, isFunction } from 'dlib-utils';
+} from '~/components/CreateComponent/src/defaultMap.ts';
 
 interface WrappedFunction extends Function {
   __D__?: boolean; //标记

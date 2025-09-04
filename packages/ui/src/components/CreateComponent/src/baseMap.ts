@@ -12,6 +12,7 @@ import {
 } from 'element-plus';
 import CommonButton from '../../Button';
 import CommonSelect from '../../Select';
+import CommonSelectOrDialog from '../../SelectOrDialog';
 const BaseMap: registerMap = {
   radio: ElRadio,
   radioGroup: ElRadioGroup,
@@ -24,6 +25,7 @@ const BaseMap: registerMap = {
   treeSelect: ElTreeSelect,
   button: CommonButton,
   commonSelect: CommonSelect,
+  commonSelectOrDialog: CommonSelectOrDialog,
 };
 
 const HtmlTags = [

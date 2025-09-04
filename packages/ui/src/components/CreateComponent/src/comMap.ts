@@ -1,32 +1,6 @@
-import {
-  ComponentMap,
-  ComponentType,
-  registerEventsMap,
-  registerSlotsMap,
-  registerPropsMap,
-  registerKeysMap,
-  ComponentFunctionType,
-} from './cc.types';
+import { ComponentFunctionType, ComponentMap, ComponentType } from './cc.types';
 import { BaseMap, HtmlTags } from './baseMap';
 import { isFunction, isString } from 'dlib-utils';
-import { reactive } from 'vue';
-import defaultComponentProps from './defaultComponentProps.ts';
-
-// 组件默认事件配置
-export let componentDefaultEventsMap: registerEventsMap = reactive({});
-// 组件默认属性配置
-export let componentDefaultPropsMap: registerPropsMap = reactive(defaultComponentProps);
-// 组件默认插槽配置
-export let componentDefaultSlotsMap: registerSlotsMap = reactive({});
-// 默认组件键值对
-export let commonKeysMap: registerKeysMap = {
-  page: 'pageNo',
-  size: 'pageSize',
-  total: 'total',
-  list: 'list',
-
-  defaultSize: 10,
-};
 
 /**
  * 组件注册中心

@@ -188,7 +188,7 @@ async function confirmHandler(close: Function) {
 </script>
 
 <template>
-  <div style="display: flex; flex-direction: row; align-items: center">
+  <div style="display: flex; flex-direction: row; align-items: center; width: 100%">
     <CommonSelect
       v-model="model"
       v-model:label="label"

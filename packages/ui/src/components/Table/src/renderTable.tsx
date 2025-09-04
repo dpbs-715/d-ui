@@ -5,7 +5,8 @@ import { computed, ComputedRef, SlotsType, toValue } from 'vue';
 import { setDefaultSlotColumnProps } from '~/_utils/componentUtils.ts';
 import { RenderColumnsClass } from './renderColumns.tsx';
 import { VueDraggable } from 'vue-draggable-plus';
-import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
+
+import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap.ts';
 const defaultColMinWidth = componentDefaultPropsMap.CommonTable.defaultColMinWidth;
 
 export class RenderTableClass {

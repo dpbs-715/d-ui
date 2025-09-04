@@ -1,14 +1,14 @@
 import { defineComponent, h, PropType, VNode, getCurrentInstance, reactive } from 'vue';
 import type { Config, Props } from './cc.types';
-import {
-  ComMap,
-  componentDefaultPropsMap,
-  componentDefaultEventsMap,
-  componentDefaultSlotsMap,
-} from './comMap';
+import { ComMap } from './comMap';
 import { ComponentInternalInstance } from '@vue/runtime-core';
 import { ExpandHandler } from '~/components/CreateComponent/src/factoryTool.tsx';
 import { isString } from 'dlib-utils';
+import {
+  componentDefaultEventsMap,
+  componentDefaultPropsMap,
+  componentDefaultSlotsMap,
+} from '~/components/CreateComponent/src/defaultMap.ts';
 /**
  * 渲染配置函数
  * 根据提供的配置对象渲染一个组件或返回相应的字符串

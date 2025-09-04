@@ -1,9 +1,12 @@
 <script setup lang="ts">
 import { CommonForm, CommonButton } from '~/components';
 import type { CommonSearchEmits, CommonSearchProps } from './Search.types';
-import { commonKeysMap, componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 import { computed, getCurrentInstance, ref, inject } from 'vue';
 import { ElCol, ElFormItem } from 'element-plus';
+import {
+  commonKeysMap,
+  componentDefaultPropsMap,
+} from '~/components/CreateComponent/src/defaultMap.ts';
 
 defineOptions({
   name: 'CommonSearch',

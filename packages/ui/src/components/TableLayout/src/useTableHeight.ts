@@ -1,5 +1,5 @@
-import { componentDefaultPropsMap } from '../../CreateComponent/src/comMap.ts';
 import { onActivated, onBeforeUnmount, onUnmounted, ref, watch } from 'vue';
+import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap.ts';
 
 /**
  * 计算表格高度的钩子函数
