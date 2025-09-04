@@ -29,6 +29,10 @@ registerCommonKeysMap({
 
 <demo vue="ui/CommonSelectOrDialog/beforeConfirm.vue" />
 
+## 多选
+
+<demo vue="ui/CommonSelectOrDialog/multiple.vue" />
+
 ## CommonSelectDialog 属性 (Props)
 
 | 属性                   | 说明                                                  | 类型                                     | 默认值  |
