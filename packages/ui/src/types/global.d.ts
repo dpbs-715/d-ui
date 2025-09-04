@@ -23,6 +23,7 @@ declare module 'vue' {
     CommonTableFieldsConfig: (typeof import('dlib-ui'))['CommonTableFieldsConfig'];
     CommonSelect: (typeof import('dlib-ui'))['CommonSelect'];
     CommonSelectOrDialog: (typeof import('dlib-ui'))['CommonSelectOrDialog'];
+    CommonDescriptions: (typeof import('dlib-ui'))['CommonDescriptions'];
   }
 }
 

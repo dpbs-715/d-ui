@@ -1,105 +1,47 @@
 <script setup lang="ts">
+import type { DescriptionsConfig } from 'dlib-ui';
 import { reactive } from 'vue';
-import { useRefCollect } from 'dlib-hooks/src/useRefCollect';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import type { CommonFormConfig } from '~/components';
-const { handleRef, getRefsValidateArr, clearRefsValidate } = useRefCollect();
-const { config } = useConfigs<CommonFormConfig>([
+import CommonDescriptions from '~/components/Descriptions/src/Descriptions.vue';
+
+const formData = reactive({
+  name: '张三',
+  age: 18,
+  sex: 1,
+});
+const config: DescriptionsConfig[] = reactive([
   {
-    field: 'test1',
-    label: '测试1',
-    component: 'commonSelectOrDialog',
-    model: {
-      label: 'test',
-    },
-    rules: [
-      {
-        required: true,
-        message: '请选择',
-        trigger: 'change',
-      },
-    ],
+    label: '姓名',
+    field: 'name',
+    component: 'input',
     props: {
-      disabled: true,
-      bindOptions: [
-        {
-          label: '选项1',
-          value: '1',
-        },
-        {
-          label: '选项2',
-          value: '2',
-        },
-      ],
-      dialogFieldsConfig: [
-        {
-          field: 'label',
-          label: '测试',
-          table: true,
-          search: true,
-        },
-      ],
-      onChange: (val: string) => {
-        config[1].label = val;
-      },
+      disabled: false,
+      placeholder: '请输入姓名',
     },
   },
   {
-    field: 'test2',
-    label: '测试2',
-    component: 'input',
-    hidden: ({ formData }) => {
-      return formData.test1 === '1';
+    label: '年龄',
+    field: 'age',
+    slots: {
+      label: () => 131231,
     },
-    rules: [
-      {
-        required: true,
-        message: '请输入',
-        trigger: 'blur',
-      },
-    ],
+  },
+  {
+    label: '性别',
+    field: 'sex',
+    formatter: (...args: any) => {
+      console.log(args);
+      return 12312;
+    },
   },
 ]);
-setTimeout(() => {
-  config.push({
-    component: 'input',
-    field: 'test3',
-    label: '测试3',
-    props: {},
-  });
-}, 2000);
-const formData = reactive({});
-const formData2 = reactive({});
-function submit() {
-  getRefsValidateArr().then(() => {
-    console.log(1111);
-  });
-}
-
-function clear() {
-  clearRefsValidate();
-}
 </script>
 
 <template>
   {{ formData }}
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form1')"
+  <CommonDescriptions
     v-model="formData"
     :config="config"
   />
-
-  <CommonForm
-    :ref="(el) => handleRef(el, 'form2')"
-    v-model="formData2"
-    :config="config"
-  />
-  <el-button @click="submit">
-    校验
-  </el-button>
-  <el-button @click="clear">
-    清除校验
-  </el-button>
 </template>
 
 <style scoped></style>

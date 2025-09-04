@@ -4,6 +4,7 @@ import { DescriptionsConfig } from './Descriptions.types.ts';
 export const CommonDescriptionsProviderProps = {
   border: {
     type: Boolean,
+    default: undefined,
   },
   column: {
     type: Number,

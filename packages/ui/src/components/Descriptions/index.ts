@@ -3,3 +3,5 @@ import Descriptions from './src/Descriptions.vue';
 
 export const CommonDescriptions = withInstall(Descriptions);
 export default CommonDescriptions;
+
+export * from './src/Descriptions.types';

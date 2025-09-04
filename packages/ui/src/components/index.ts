@@ -9,3 +9,4 @@ export * from './TableLayout';
 export * from './TableFieldsConfig';
 export * from './Select';
 export * from './SelectOrDialog';
+export * from './Descriptions';

@@ -1,5 +1,5 @@
 <script lang="tsx">
-import { defineComponent } from 'vue';
+import { computed, defineComponent } from 'vue';
 import type { CommonDescriptionsProps } from './Descriptions.types';
 import { CommonDescriptionsProviderProps } from './DescriptionsProps.ts';
 import { RenderDescriptions } from '~/components/Descriptions/src/RenderDescriptions.tsx';
@@ -8,8 +8,18 @@ export default defineComponent<CommonDescriptionsProps>({
   name: 'CommonDescriptions',
   inheritAttrs: false,
   props: CommonDescriptionsProviderProps,
-  setup(props, { slots, attrs }) {
-    const renderDescriptions = new RenderDescriptions(props, slots, attrs);
+  emits: ['update:modelValue'],
+  setup(props, { slots, attrs, emit }) {
+    const model = computed({
+      get() {
+        return attrs.modelValue;
+      },
+      set(value) {
+        emit('update:modelValue', value);
+      },
+    });
+    const renderDescriptions = new RenderDescriptions(props, slots, attrs, model);
+
     return () => renderDescriptions.render();
   },
 });
