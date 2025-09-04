@@ -96,13 +96,6 @@ watch(
   },
 );
 
-// function clear() {
-//   labelSelections.value.length=0;
-//   selections.value.length=0;
-//   label.value = undefined
-//   model.value = undefined
-// }
-
 /**
  * 获取字典数据或者手动绑定的数据结果
  * */
@@ -182,8 +175,8 @@ async function confirmHandler(close: Function) {
       label.value = labelSelections.value;
     }
   } else {
-    model.value = selections.value[0];
-    label.value = labelSelections.value[0];
+    model.value = selections.value[selections.value.length - 1];
+    label.value = labelSelections.value[labelSelections.value.length - 1];
   }
 
   //2.执行各种change事件

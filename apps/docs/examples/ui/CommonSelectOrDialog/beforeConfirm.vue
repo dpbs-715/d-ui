@@ -43,13 +43,70 @@ const options: Record<string, string>[] = [
     label: 'label2',
     value: 'value2',
   },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
+  {
+    label: 'label1',
+    value: 'value1',
+  },
+  {
+    label: 'label2',
+    value: 'value2',
+  },
 ];
-
-function changeHandler(...args: any) {
-  console.log('changeHandler', args);
-}
-function changeObjHandler(...args: any) {
-  console.log('changeObjHandler', args);
+function beforeConfirm(selections: any[], _labelSelections: any[]) {
+  if (selections.length === 0) {
+    alert('请选择数据');
+    return Promise.reject();
+  } else {
+    return Promise.resolve();
+  }
 }
 </script>
 
@@ -66,8 +123,7 @@ function changeObjHandler(...args: any) {
     :dialog-props="{
       title: '选择数据',
     }"
-    @change="changeHandler"
-    @change-obj="changeObjHandler"
+    :before-confirm="beforeConfirm"
   />
 </template>
 

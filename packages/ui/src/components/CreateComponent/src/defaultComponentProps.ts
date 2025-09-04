@@ -55,5 +55,6 @@ export default {
   CommonDialog: {
     draggable: true,
     top: '10vh',
+    appendToBody: true,
   },
 };

@@ -78,6 +78,7 @@ function collectFormRef(instance: any) {
 
 <template>
   <CommonForm
+    v-if="searchProps.config.length > 0"
     v-bind="searchProps"
     :ref="collectFormRef"
     v-model="queryParams"

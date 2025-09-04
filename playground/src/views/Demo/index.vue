@@ -11,6 +11,7 @@ const fieldConfig: CommonTableLayoutConfig[] = [
     label: '文字',
     field: 'label',
     table: true,
+    search: true,
   },
   {
     label: '值',

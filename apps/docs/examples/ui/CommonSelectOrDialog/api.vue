@@ -5,7 +5,6 @@ import { ref } from 'vue';
 
 const model = ref('');
 const modelLabel = ref('');
-const dictType = ref('DICT1');
 const fieldConfig: CommonTableLayoutConfig[] = [
   {
     label: '文字',
@@ -19,30 +18,26 @@ const fieldConfig: CommonTableLayoutConfig[] = [
   },
 ];
 
-function getDictOptions(dictType: string) {
-  return [
-    {
-      label: `${dictType}-1`,
-      value: 'value1',
-    },
-    {
-      label: `${dictType}-2`,
-      value: 'value2',
-    },
-  ];
-}
-function changeHandler() {
-  modelLabel.value = '';
-  model.value = '';
+function CommonSelectOrDialogApi() {
+  return new Promise((resolve) => {
+    resolve({
+      list: [
+        {
+          label: `label1`,
+          value: 'value1',
+        },
+        {
+          label: `label2`,
+          value: 'value2',
+        },
+      ],
+      total: 2,
+    });
+  });
 }
 </script>
 
 <template>
-  字典名称：<el-input
-    v-model="dictType"
-    @change="changeHandler"
-  />
-  <el-divider />
   值:{{ model || '-' }}
   <br>
   文字:{{ modelLabel || '-' }}
@@ -50,9 +45,8 @@ function changeHandler() {
   <CommonSelectOrDialog
     v-model:label="modelLabel"
     v-model="model"
-    :dict="dictType"
+    :api="CommonSelectOrDialogApi"
     :dialog-fields-config="fieldConfig"
-    :get-dict-options="getDictOptions"
     :dialog-props="{
       title: '选择数据',
     }"

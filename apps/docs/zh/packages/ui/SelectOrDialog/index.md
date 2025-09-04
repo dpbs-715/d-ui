@@ -10,6 +10,25 @@
 
 <demo vue="ui/CommonSelectOrDialog/dict.vue" />
 
+## api类型
+
+```js
+//可以使用全局注册,根据项目规范调整
+registerCommonKeysMap({
+  page: 'pageNo',
+  size: 'pageSize',
+  total: 'total',
+  list: 'list',
+  defaultSize: 10,
+});
+```
+
+<demo vue="ui/CommonSelectOrDialog/api.vue" />
+
+## 选择数据确认前操作
+
+<demo vue="ui/CommonSelectOrDialog/beforeConfirm.vue" />
+
 ## CommonSelectDialog 属性 (Props)
 
 | 属性                   | 说明                                                  | 类型                                     | 默认值  |
