@@ -15,12 +15,12 @@ export type ButtonSize = 'small' | 'medium' | 'large';
 export interface ButtonProps {
   type?: ButtonType;
   size?: ButtonSize;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
   round?: boolean;
   plain?: boolean;
   icon?: any;
   circle?: boolean;
-  loading?: boolean;
+  loading?: boolean | undefined;
 }
 
 export interface ButtonEmits {

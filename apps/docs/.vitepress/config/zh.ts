@@ -54,6 +54,7 @@ export const zh = defineConfig({
           { text: 'TableLayout 表格页布局', link: '/packages/ui/TableLayout/index' },
           { text: 'Select 公共选择器', link: '/packages/ui/Select/index' },
           { text: 'SelectOrDialog 弹窗选择器', link: '/packages/ui/SelectOrDialog/index' },
+          { text: 'Descriptions 描述列表', link: '/packages/ui/Descriptions/index' },
         ],
       },
       {

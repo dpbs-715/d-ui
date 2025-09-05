@@ -37,8 +37,9 @@ export class RenderDescriptions {
         configItem,
       },
     });
-
-    if (item.component) {
+    if (this.slots[item.field]) {
+      return this.slots[item.field]({ formData: model, configItem });
+    } else if (item.component) {
       return <CreateComponent config={item} vModel={model[item.field]}></CreateComponent>;
     } else {
       return {
@@ -48,21 +49,21 @@ export class RenderDescriptions {
     }
   }
   renderSlots(config: DescriptionsConfig[]) {
-    if (config && config.length > 0) {
-      return config.map((item) => {
-        return <ElDescriptionsItem {...item}>{this.renderItem(item)}</ElDescriptionsItem>;
-      });
-    } else {
-      return {
-        ...this.slots,
-      };
-    }
+    return config?.map((item) => {
+      return <ElDescriptionsItem {...item}>{this.renderItem(item)}</ElDescriptionsItem>;
+    });
   }
 
   render() {
     const { config, ...props } = toValue(this.props);
     return (
-      <ElDescriptions {...props}>{this.renderSlots(config as DescriptionsConfig[])}</ElDescriptions>
+      <ElDescriptions {...props}>
+        {{
+          default: () => this.renderSlots(config as DescriptionsConfig[]),
+          title: this.slots.title?.(),
+          extra: this.slots.extra?.(),
+        }}
+      </ElDescriptions>
     );
   }
 }

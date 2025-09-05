@@ -18,5 +18,5 @@ export interface SelectOrDialogProps extends DataHandlerType {
 
   beforeConfirm?: (selections: any[], labelSelections: any[]) => Promise<any>;
 
-  disabled?: Boolean;
+  disabled?: boolean | undefined;
 }
