@@ -1,5 +1,11 @@
 # dlib-ui
 
+## 1.0.5
+
+### Patch Changes
+
+- 添加弹窗选择器、描述列表、以及适配新版本elementPlus的Select组件options选项
+
 ## 1.0.4
 
 ### Patch Changes

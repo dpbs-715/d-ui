@@ -1,5 +1,11 @@
 # dlib-hooks
 
+## 1.0.4
+
+### Patch Changes
+
+- 添加一些常用hooks
+
 ## 1.0.3
 
 ### Patch Changes

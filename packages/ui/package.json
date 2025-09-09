@@ -1,7 +1,7 @@
 {
   "name": "dlib-ui",
   "description": "@DLib ui library",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "type": "module",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.mjs",
