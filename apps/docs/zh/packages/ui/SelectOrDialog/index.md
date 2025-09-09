@@ -48,7 +48,7 @@ registerCommonKeysMap({
 | `needAllQueryParams`   | 是否需要传递所有查询参数                              | `boolean`                                | `false` |
 | `appendOptions`        | 追加的选项列表或方法                                  | `Record<any, any>[] \| Function`         | -       |
 | `valueType`            | 值类型，支持 `'string'`, `'String'`, `'int'`, `'Int'` | `'string' \| 'String' \| 'int' \| 'Int'` | -       |
-| `bindOptions`          | 绑定的选项列表                                        | `Record<any, any>[]`                     | -       |
+| `options`              | 绑定的选项列表                                        | `Record<any, any>[]`                     | -       |
 | `ignoreByLabel`        | 忽略的标签列表                                        | `string[]`                               | -       |
 | `joinSplit`            | 多选时结果合并的拼接符                                | `string`                                 | 无      |
 | `orderBy`              | 排序字段名                                            | `string`                                 | -       |

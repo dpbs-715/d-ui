@@ -4,7 +4,7 @@ import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
-const bindOptions = reactive([
+const options = reactive([
   { label: '选项1', value: '1' },
   { label: '选项2', value: '2' },
 ]);
@@ -21,7 +21,7 @@ const { form } = useMixConfig([
     component: 'commonSelect',
     span: 12,
     props: {
-      bindOptions,
+      options,
       appendOptions,
     },
     form: true,

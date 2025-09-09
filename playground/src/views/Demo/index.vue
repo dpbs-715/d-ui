@@ -1,46 +1,36 @@
 <script setup lang="ts">
-import type { DescriptionsConfig } from 'dlib-ui';
 import { reactive } from 'vue';
-import CommonDescriptions from '~/components/Descriptions/src/Descriptions.vue';
+import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
 
-const formData = reactive({
-  name: '张三',
-  age: 18,
-  sex: 1,
-});
-const config: DescriptionsConfig[] = reactive([
+const formData = reactive({});
+
+const options = reactive([
+  { label: '选项1', value: '1' },
+  { label: '选项2', value: '2' },
+]);
+
+const { form } = useMixConfig([
   {
-    label: '姓名',
-    field: 'name',
-    component: 'input',
+    label: '字段',
+    field: 'field',
+    component: 'commonSelect',
+    span: 12,
+    model: {
+      label: 'name',
+    },
     props: {
-      disabled: false,
-      placeholder: '请输入姓名',
+      options,
     },
-  },
-  {
-    label: '年龄',
-    field: 'age',
-    slots: {
-      label: () => 131231,
-    },
-  },
-  {
-    label: '性别',
-    field: 'sex',
-    formatter: (...args: any) => {
-      console.log(args);
-      return 12312;
-    },
+    form: true,
   },
 ]);
 </script>
 
 <template>
   {{ formData }}
-  <CommonDescriptions
+  <CommonForm
     v-model="formData"
-    :config="config"
+    :config="form.config"
   />
 </template>
 

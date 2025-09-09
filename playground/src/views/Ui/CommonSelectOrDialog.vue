@@ -1,31 +1,17 @@
 <script setup lang="ts">
 import { ElDivider } from 'element-plus';
-import { CommonSelectOrDialog, type CommonTableLayoutConfig } from 'dlib-ui';
+import type { CommonTableLayoutConfig } from 'dlib-ui';
 import { ref } from 'vue';
 
 const model = ref('');
 const modelLabel = ref('');
-
+const dictType = ref('');
 const fieldConfig: CommonTableLayoutConfig[] = [
   {
     label: '文字',
     field: 'label',
     table: true,
-    search: {
-      component: 'commonSelect',
-      props: {
-        options: [
-          {
-            label: 'label1',
-            value: 'label1',
-          },
-          {
-            label: 'label2',
-            value: 'label2',
-          },
-        ],
-      },
-    },
+    search: true,
   },
   {
     label: '值',
@@ -33,20 +19,29 @@ const fieldConfig: CommonTableLayoutConfig[] = [
     table: true,
   },
 ];
+setTimeout(() => {
+  model.value = 'value1';
+  modelLabel.value = 'label1';
+  dictType.value = 'DICT1';
+}, 2000);
 
-const options: Record<string, string>[] = [
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-];
+function getDictOptions(dictType: string) {
+  return [
+    {
+      label: `${dictType}-1`,
+      value: 'value1',
+    },
+    {
+      label: `${dictType}-2`,
+      value: 'value2',
+    },
+  ];
+}
 </script>
 
 <template>
+  字典名称：<el-input v-model="dictType" />
+  <el-divider />
   值:{{ model || '-' }}
   <br>
   文字:{{ modelLabel || '-' }}
@@ -54,10 +49,9 @@ const options: Record<string, string>[] = [
   <CommonSelectOrDialog
     v-model:label="modelLabel"
     v-model="model"
-    multiple
-    join-split=","
+    :dict="dictType"
     :dialog-fields-config="fieldConfig"
-    :options="options"
+    :get-dict-options="getDictOptions"
     :dialog-props="{
       title: '选择数据',
     }"

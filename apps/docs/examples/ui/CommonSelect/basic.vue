@@ -7,7 +7,7 @@ const tableData = reactive([{}]);
 const formData = reactive({});
 const value = ref('1');
 const label = ref('选项1');
-const bindOptions = reactive([
+const options = reactive([
   { label: '选项1', value: '1' },
   { label: '选项2', value: '2' },
 ]);
@@ -18,7 +18,7 @@ const { table, form } = useMixConfig([
     field: 'field',
     component: 'commonSelect',
     props: {
-      bindOptions,
+      options,
     },
     table: true,
     form: true,
@@ -34,7 +34,7 @@ const { table, form } = useMixConfig([
   <CommonSelect
     v-model="value"
     v-model:label="label"
-    :bind-options="bindOptions"
+    :options="options"
   />
   <el-divider>form中使用</el-divider>
   <CommonForm

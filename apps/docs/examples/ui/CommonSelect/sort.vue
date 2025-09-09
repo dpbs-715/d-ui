@@ -4,7 +4,7 @@ import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
-const bindOptions: any = reactive([
+const options: any = reactive([
   { label: '选项1', value: 1 },
   { label: '选项3', value: 3 },
   { label: '选项2', value: 2 },
@@ -34,7 +34,7 @@ const { form } = useMixConfig([
     props: {
       api: mockApi,
       orderBy: 'value',
-      bindOptions,
+      options,
     },
     form: true,
   },
@@ -47,7 +47,7 @@ const { form } = useMixConfig([
       api: mockApi,
       orderBy: 'value',
       orderType: 'desc',
-      bindOptions,
+      options,
     },
     form: true,
   },
@@ -55,7 +55,7 @@ const { form } = useMixConfig([
 </script>
 
 <template>
-  原始数据: {{ bindOptions }}
+  原始数据: {{ options }}
   <el-divider />
   <CommonForm
     v-model="formData"

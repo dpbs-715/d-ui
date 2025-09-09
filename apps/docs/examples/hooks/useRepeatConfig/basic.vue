@@ -10,7 +10,7 @@ const { getConfig, collect } = useRepeatConfig([
     field: 'field1',
     component: 'commonSelect',
     props: {
-      bindOptions: [
+      options: [
         {
           label: '选项1',
           value: '1',

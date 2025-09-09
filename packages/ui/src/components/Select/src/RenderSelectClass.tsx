@@ -1,11 +1,7 @@
 import { Ref, SlotsType, ref, toValue } from 'vue';
 import { CommonSelectProps } from './Select.types.ts';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
-import {
-  DataHandlerClass,
-  DEFAULT_LABEL_FIELD,
-  DEFAULT_VALUE_FIELD,
-} from '~/_utils/dataHandlerClass.ts';
+import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 
 export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   slots: any;
@@ -64,7 +60,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
 
     if (options.value?.length === 1 && props.autoSelectFirst) {
       const firstOption = options.value[0];
-      const firstValue = firstOption[props.valueField || DEFAULT_VALUE_FIELD];
+      const firstValue = firstOption[this.VALUE_FIELD.value];
 
       this.model.value = firstValue;
 
@@ -87,19 +83,17 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   changeSelect(value: any) {
     if (this.props.value.multiple) {
       this.label.value = value.map((v: any) => {
-        return this.options.value.find(
-          (item: any) => item[this.props.value.valueField || DEFAULT_VALUE_FIELD] === v,
-        )?.[this.props.value.labelField || DEFAULT_LABEL_FIELD];
+        return this.options.value.find((item: any) => item[this.VALUE_FIELD.value] === v)?.[
+          this.LABEL_FIELD.value
+        ];
       });
       const arr = this.options.value.filter((item: any) =>
-        value.includes(item[this.props.value.valueField || DEFAULT_VALUE_FIELD]),
+        value.includes(item[this.VALUE_FIELD.value]),
       );
       this.emits('changeObj', arr);
     } else {
-      const obj = this.options.value.find(
-        (item: any) => item[this.props.value.valueField || DEFAULT_VALUE_FIELD] === value,
-      );
-      this.label.value = obj && obj[this.props.value.labelField || DEFAULT_LABEL_FIELD];
+      const obj = this.options.value.find((item: any) => item[this.VALUE_FIELD.value] === value);
+      this.label.value = obj && obj[this.LABEL_FIELD.value];
       this.emits('changeObj', obj);
     }
   }
@@ -135,20 +129,26 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         ref={(instance: any) => (this.ref = instance)}
         onChange={(value: any) => this.changeSelect(value)}
         loading={loading}
+        props={{
+          value: this.VALUE_FIELD.value,
+          label: this.LABEL_FIELD.value,
+        }}
         {...props}
         vModel={this.model.value}
       >
         {{
-          default: () => {
-            return this.options.value.map((item: any) => {
-              return (
-                <ElOption
-                  label={item[props.labelField || DEFAULT_LABEL_FIELD]}
-                  value={item[props.valueField || DEFAULT_VALUE_FIELD]}
-                />
-              );
-            });
-          },
+          default: !Com.props.options
+            ? () => {
+                return this.options.value.map((item: any) => {
+                  return (
+                    <ElOption
+                      label={item[this.LABEL_FIELD.value]}
+                      value={item[this.VALUE_FIELD.value]}
+                    />
+                  );
+                });
+              }
+            : null,
         }}
       </Com>
     );
@@ -164,8 +164,8 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
         onChange={(value: any) => this.changeSelect(value)}
         options={this.options.value}
         props={{
-          value: props.valueField || DEFAULT_VALUE_FIELD,
-          label: props.labelField || DEFAULT_LABEL_FIELD,
+          value: this.VALUE_FIELD.value,
+          label: this.LABEL_FIELD.value,
         }}
         {...props}
         vModel={this.model.value}
@@ -181,10 +181,10 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
       <Com
         ref={(instance: any) => (this.ref = instance)}
         props={{
-          label: props.labelField || DEFAULT_LABEL_FIELD,
+          label: this.LABEL_FIELD.value,
         }}
         highlightCurrent={true}
-        nodeKey={props.valueField || DEFAULT_VALUE_FIELD}
+        nodeKey={this.VALUE_FIELD.value}
         data={this.options.value}
         {...props}
         vModel={this.model.value}

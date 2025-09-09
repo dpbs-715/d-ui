@@ -63,7 +63,7 @@ const { config, getConfigByField } = useConfigs<CommonTableConfig>([
       label: 'testLabel',
     },
     props: {
-      bindOptions: [
+      options: [
         {
           label: '测试1',
           value: '1',

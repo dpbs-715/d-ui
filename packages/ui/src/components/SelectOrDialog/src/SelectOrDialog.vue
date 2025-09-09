@@ -9,11 +9,7 @@ import { CommonPagination } from '../../Pagination';
 import { defineModel, ref, nextTick, watch, type Ref, useAttrs } from 'vue';
 import type { SelectOrDialogProps } from './SelectOrDialog.types';
 import { useMixConfig } from 'dlib-hooks';
-import {
-  DataHandlerClass,
-  DEFAULT_LABEL_FIELD,
-  DEFAULT_VALUE_FIELD,
-} from '~/_utils/dataHandlerClass.ts';
+import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { commonKeysMap } from '../../CreateComponent';
 import { isEmpty } from 'dlib-utils';
 defineOptions({
@@ -119,7 +115,7 @@ function handlerDataSelections() {
   });
   // 处理选中
   tableData.forEach((item) => {
-    if (selections.value.includes(item[props.valueField || DEFAULT_VALUE_FIELD])) {
+    if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
       nextTick(() => {
         tableRef.value.toggleRowSelection(item);
       });
@@ -133,8 +129,8 @@ function getValuesAndLabels(arr: Record<any, any>) {
   let values: any[] = [],
     labels: any[] = [];
   arr.forEach((item: any) => {
-    values.push(item[props.valueField || DEFAULT_VALUE_FIELD]);
-    labels.push(item[props.labelField || DEFAULT_LABEL_FIELD]);
+    values.push(item[dataHandler.VALUE_FIELD.value]);
+    labels.push(item[dataHandler.LABEL_FIELD.value]);
   });
   return [values, labels];
 }
@@ -155,8 +151,8 @@ function selectChange(selection: any) {
   });
   //添加选中数据、标签
   selection.forEach((o: any) => {
-    selections.value.push(o[props.valueField || DEFAULT_VALUE_FIELD]);
-    labelSelections.value.push(o[props.labelField || DEFAULT_LABEL_FIELD]);
+    selections.value.push(o[dataHandler.VALUE_FIELD.value]);
+    labelSelections.value.push(o[dataHandler.LABEL_FIELD.value]);
   });
 }
 /**
@@ -232,7 +228,7 @@ async function confirmHandler(close: Function) {
             reserve-selection
             use-index
             use-selection
-            :row-key="props.valueField || DEFAULT_VALUE_FIELD"
+            :row-key="dataHandler.VALUE_FIELD.value"
             :single-selection="!props.multiple"
             :config="table.config"
             :data="tableData"

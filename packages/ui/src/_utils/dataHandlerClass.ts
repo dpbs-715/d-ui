@@ -24,7 +24,7 @@ export interface DataHandlerType {
   //值类型
   valueType?: 'string' | 'String' | 'int' | 'Int';
   //绑定选项
-  bindOptions?: Record<any, any>[];
+  options?: Record<any, any>[];
   //多选时将结果合并的拼接符
   joinSplit?: string;
   //排序字段
@@ -41,6 +41,8 @@ export interface DataHandlerType {
   ignoreByLabel?: string[];
   //请求参数
   query?: Function;
+  //options配置字段
+  props?: Record<string, any>;
 }
 
 export const DEFAULT_LABEL_FIELD = 'label';
@@ -52,6 +54,13 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   loading: Ref<Boolean> = ref(false);
   moreQueryParams: Record<any, any> = {};
   total: number = 0;
+
+  LABEL_FIELD = computed(
+    () => this.props.value.props?.label || this.props.value.labelField || DEFAULT_LABEL_FIELD,
+  );
+  VALUE_FIELD = computed(
+    () => this.props.value.props?.value || this.props.value.valueField || DEFAULT_VALUE_FIELD,
+  );
 
   constructor(props: T, attrs = {}) {
     this.props = computed(() => {
@@ -108,7 +117,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       },
     );
     watch(
-      () => this.props.value.bindOptions,
+      () => this.props.value.options,
       (newBindOptions) => {
         const localOptions = newBindOptions && newBindOptions.length > 0 ? [...newBindOptions] : [];
         this.parseOptions(localOptions);
@@ -191,22 +200,21 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       } else if (props.dict && props.getDictOptions) {
         // 通过字典获取选项数据
         localOptions = await props.getDictOptions(props.dict);
-      } else if (props.bindOptions?.length) {
+      } else if (props.options?.length) {
         // 使用绑定的选项数据
-        localOptions = [...props.bindOptions];
+        localOptions = [...props.options];
       }
 
       localOptions = localOptions?.filter(
-        (o: any) =>
-          (props.ignoreByLabel ?? []).indexOf(o[props.labelField || DEFAULT_LABEL_FIELD]) === -1,
+        (o: any) => (props.ignoreByLabel ?? []).indexOf(o[this.LABEL_FIELD.value]) === -1,
       );
       this.parseOptions(localOptions);
     } catch (err) {
       console.error(err);
       options.value = [
         {
-          [props.labelField || DEFAULT_LABEL_FIELD]: '未知数据',
-          [props.valueField || DEFAULT_VALUE_FIELD]: 0,
+          [this.LABEL_FIELD.value]: '未知数据',
+          [this.VALUE_FIELD.value]: 0,
         },
       ];
     } finally {
@@ -304,11 +312,9 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       appendOptions
         .filter((o: any) => {
           return (
-            o[props.valueField || DEFAULT_VALUE_FIELD] &&
+            o[this.VALUE_FIELD.value] &&
             filteredOptions.findIndex(
-              (z: any) =>
-                z[props.labelField || DEFAULT_LABEL_FIELD] ==
-                o[props.labelField || DEFAULT_LABEL_FIELD],
+              (z: any) => z[this.LABEL_FIELD.value] == o[this.LABEL_FIELD.value],
             ) === -1
           );
         })
@@ -343,16 +349,12 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       if (props.valueType === 'string' || props.valueType === 'String' || props.joinSplit) {
         options.value = localOptions.map((o: any) => ({
           ...o,
-          [props.valueField || DEFAULT_VALUE_FIELD]: String(
-            o[props.valueField || DEFAULT_VALUE_FIELD],
-          ),
+          [this.VALUE_FIELD.value]: String(o[this.VALUE_FIELD.value]),
         }));
       } else if (props.valueType === 'int' || props.valueType === 'Int') {
         options.value = localOptions.map((o: any) => ({
           ...o,
-          [props.valueField || DEFAULT_VALUE_FIELD]: Number(
-            o[props.valueField || DEFAULT_VALUE_FIELD],
-          ),
+          [this.VALUE_FIELD.value]: Number(o[this.VALUE_FIELD.value]),
         }));
       }
     } else {

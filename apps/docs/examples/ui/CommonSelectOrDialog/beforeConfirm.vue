@@ -14,7 +14,7 @@ const fieldConfig: CommonTableLayoutConfig[] = [
     search: {
       component: 'commonSelect',
       props: {
-        bindOptions: [
+        options: [
           {
             label: 'label1',
             value: 'label1',
@@ -34,72 +34,13 @@ const fieldConfig: CommonTableLayoutConfig[] = [
   },
 ];
 
-const options: Record<string, string>[] = [
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-  {
-    label: 'label1',
-    value: 'value1',
-  },
-  {
-    label: 'label2',
-    value: 'value2',
-  },
-];
+const options: Record<string, string>[] = [];
+for (let i = 0; i < 10; i++) {
+  options.push({
+    label: `label${i}`,
+    value: `value${i}`,
+  });
+}
 function beforeConfirm(selections: any[], _labelSelections: any[]) {
   if (selections.length === 0) {
     alert('请选择数据');
@@ -119,7 +60,7 @@ function beforeConfirm(selections: any[], _labelSelections: any[]) {
     v-model:label="modelLabel"
     v-model="model"
     :dialog-fields-config="fieldConfig"
-    :bind-options="options"
+    :options="options"
     :dialog-props="{
       title: '选择数据',
     }"

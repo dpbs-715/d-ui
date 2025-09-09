@@ -50,7 +50,7 @@ export const CommonSelectProviderProps = {
     type: String as PropType<'string' | 'String' | 'int' | 'Int'>,
   },
   //绑定选项
-  bindOptions: {
+  options: {
     type: Array<Record<any, any>>,
     default: () => [],
   },

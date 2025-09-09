@@ -4,9 +4,9 @@ import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
 const formData = reactive({});
-const bindOptions: any = reactive([]);
+const options: any = reactive([]);
 for (let i = 0; i < 5; i++) {
-  bindOptions.push({
+  options.push({
     label: `选项${i}`,
     value: i,
   });
@@ -20,7 +20,7 @@ const { form } = useMixConfig([
     span: 12,
     props: {
       multiple: true,
-      bindOptions,
+      options,
     },
     form: true,
   },

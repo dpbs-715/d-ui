@@ -14,7 +14,7 @@ const fieldConfig: CommonTableLayoutConfig[] = [
     search: {
       component: 'commonSelect',
       props: {
-        bindOptions: [
+        options: [
           {
             label: 'label1',
             value: 'label1',
@@ -62,7 +62,7 @@ function changeObjHandler(...args: any) {
     v-model:label="modelLabel"
     v-model="model"
     :dialog-fields-config="fieldConfig"
-    :bind-options="options"
+    :options="options"
     :dialog-props="{
       title: '选择数据',
     }"
