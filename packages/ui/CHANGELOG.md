@@ -1,5 +1,11 @@
 # dlib-ui
 
+## 1.0.6
+
+### Patch Changes
+
+- 修改打包的类型声明 尽量让用户不再配置
+
 ## 1.0.5
 
 ### Patch Changes
