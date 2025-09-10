@@ -46,7 +46,7 @@ import UI from 'dlib-ui';
 import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(UI);
-//  tsconfig.json 还需要添加以下配置以获得类型提示：
+//  ui 1.0.6 后不需要再次声明了 tsconfig.json 还需要添加以下配置以获得类型提示：
 //  "types": ["dlib-ui/dist/global.d.ts"]
 
 // 按需引入
