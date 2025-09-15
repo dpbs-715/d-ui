@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { CommonTable, type CommonTableConfig } from 'dlib-ui';
 import { useConfigs } from 'dlib-hooks';
 
@@ -27,7 +27,7 @@ const { config } = useConfigs<CommonTableConfig>([
     field: 'field5',
   },
 ]);
-const tableData = reactive([
+const tableData = ref([
   {
     field1: '111',
     field2: '名称2',
