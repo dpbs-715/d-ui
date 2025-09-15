@@ -20,7 +20,7 @@ registerComponentDefaultPropsMap({
     actionCol: 12,
   },
 });
-const queryParams = reactive({
+const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
   field1: 'value',

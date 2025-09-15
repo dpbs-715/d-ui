@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
-const formData = reactive({});
+const formData = ref({});
 const options = reactive([
   { label: '选项1', value: '1' },
   { label: '选项2', value: '2' },

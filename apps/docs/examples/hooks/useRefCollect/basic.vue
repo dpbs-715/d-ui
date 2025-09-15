@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import { CommonForm } from 'dlib-ui';
 import type { CommonFormConfig } from 'dlib-ui';
 import { ElButton, ElDivider } from 'element-plus';
 import { useRefCollect } from 'dlib-hooks';
-const formData = reactive({});
-const formData2 = reactive({});
+const formData = ref({});
+const formData2 = ref({});
 
 const { clearRefsValidate, handleRef, refObj, getRefsValidateArr } = useRefCollect();
 const { config } = useConfigs<CommonFormConfig>([

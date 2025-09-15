@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { CommonDescriptions, type DescriptionsConfig } from 'dlib-ui';
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 
-const descriptionsData = reactive({
+const descriptionsData = ref({
   name: '张三',
   age: 18,
   sex: '男',

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
-const formData = reactive({});
+const formData = ref({});
 
 const { form } = useMixConfig([
   {

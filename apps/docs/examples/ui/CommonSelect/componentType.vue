@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { reactive, ref } from 'vue';
 import { CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
-const formData = reactive({});
+const formData = ref({});
 const options: any = reactive([]);
 for (let i = 0; i < 20; i++) {
   options.push({

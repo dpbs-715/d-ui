@@ -3,8 +3,8 @@ import { reactive, ref } from 'vue';
 import { CommonSelect, CommonTable, CommonForm } from 'dlib-ui';
 import { useMixConfig } from 'dlib-hooks';
 
-const tableData = reactive([{}]);
-const formData = reactive({});
+const tableData = ref([{}]);
+const formData = ref({});
 const value = ref('1');
 const label = ref('选项1');
 const options = reactive([

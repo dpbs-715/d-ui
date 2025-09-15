@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import { CommonForm } from 'dlib-ui';
 import type { CommonFormConfig } from 'dlib-ui';
 
-const formData = reactive({});
+const formData = ref({});
 const { config, setHidden } = useConfigs<CommonFormConfig>([
   {
     field: 'field1',

@@ -10,4 +10,13 @@ export default defineConfig({
     root: { label: '简体中文', ...zh },
     en: { label: 'English', ...en },
   },
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          api: 'modern-compiler',
+        },
+      },
+    },
+  },
 });

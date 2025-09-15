@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
+import { ref } from 'vue';
 import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import { CommonForm, CommonButton } from 'dlib-ui';
 import type { CommonFormConfig } from 'dlib-ui';
 
-const formData = reactive({});
+const formData = ref({});
 const { config, setDisabled, setDisabledAll } = useConfigs<CommonFormConfig>([
   {
     field: 'field1',

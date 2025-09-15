@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CommonSearch, type CommonFormConfig, registerComponentDefaultPropsMap } from 'dlib-ui';
 import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import { reactive } from 'vue';
+import { ref } from 'vue';
 registerComponentDefaultPropsMap({
   CommonSearch: {
     col: {
@@ -14,7 +14,7 @@ registerComponentDefaultPropsMap({
   },
 });
 
-const queryParams = reactive({
+const queryParams = ref({
   pageNo: 1,
   pageSize: 10,
 });
