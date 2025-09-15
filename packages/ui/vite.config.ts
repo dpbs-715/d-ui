@@ -28,19 +28,43 @@ export default defineConfig({
         filePath: filePath.replace('/src/', '/'),
         content,
       }),
-    }),
-    // 自定义复制插件（可以使用 vite-plugin-static-copy 插件代替）
-    {
-      name: 'copy-global-dts',
-      closeBundle() {
+      // 新增：在写入最后一个文件后，将全局类型声明合并到 index.d.ts 中
+      afterBuild: () => {
         try {
-          // 复制文件global.d.ts到dist里
-          const srcPath = path.resolve(import.meta.dirname, 'src/types/global.d.ts');
-          const destPath = path.resolve(import.meta.dirname, 'dist/global.d.ts');
-          fs.copyFileSync(srcPath, destPath);
-        } catch (e) {}
+          const indexPath = path.resolve(import.meta.dirname, 'dist/types/index.d.ts');
+          const globalPath = path.resolve(import.meta.dirname, 'src/types/global.d.ts');
+
+          // 读取全局类型声明
+          let globalContent = fs.readFileSync(globalPath, 'utf-8');
+          // 移除注释行
+          globalContent = globalContent.replace(/\/\/.*\n/g, '').trim();
+
+          // 读取 index.d.ts 内容
+          let indexContent = fs.readFileSync(indexPath, 'utf-8');
+
+          // 将全局类型声明添加到 index.d.ts 末尾
+          indexContent += '\n' + globalContent;
+
+          // 写回文件
+          fs.writeFileSync(indexPath, indexContent);
+        } catch (e) {
+          console.error('Failed to merge global types:', e);
+        }
       },
-    },
+    }),
+
+    // 自定义复制插件（可以使用 vite-plugin-static-copy 插件代替）
+    // {
+    //   name: 'copy-global-dts',
+    //   closeBundle() {
+    //     try {
+    //       // 复制文件global.d.ts到dist里
+    //       const srcPath = path.resolve(import.meta.dirname, 'src/types/global.d.ts');
+    //       const destPath = path.resolve(import.meta.dirname, 'dist/global.d.ts');
+    //       fs.copyFileSync(srcPath, destPath);
+    //     } catch (e) {}
+    //   },
+    // },
   ],
   build: {
     target: 'esnext', // 目标版本
