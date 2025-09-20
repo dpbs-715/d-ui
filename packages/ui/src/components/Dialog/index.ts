@@ -5,3 +5,4 @@ export const CommonDialog = withInstall(Dialog);
 export default CommonDialog;
 
 export * from './src/Dialog.types';
+export * from './src/renderDialog';

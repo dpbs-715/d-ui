@@ -10,6 +10,7 @@ import {
   h,
   type PropType,
   defineComponent,
+  reactive,
 } from 'vue';
 import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
 import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';
@@ -31,9 +32,11 @@ const formProps = computed(() => {
     ...cleaned,
   };
 });
-const formData: any = defineModel();
+const formData: Record<string, any> = defineModel('modelValue', {
+  type: Object,
+  default: () => reactive({}),
+});
 const formRef = ref();
-
 /**
  * 表单验证函数
  * 在表单提交前调用此函数，以验证表单是否符合规则
@@ -98,6 +101,7 @@ function collectFormRef(instance: any) {
         {
           ...(instance || {}),
           validateForm,
+          getFormData: () => toValue(formData),
         };
   }
 }
@@ -139,6 +143,7 @@ const transformModel = defineComponent({
 </script>
 
 <template>
+  {{ formData }}
   <el-form
     v-bind="formProps"
     :ref="collectFormRef"

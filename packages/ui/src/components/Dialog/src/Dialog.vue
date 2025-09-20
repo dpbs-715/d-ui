@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { ElDialog } from 'element-plus';
 import { computed, h, useSlots, getCurrentInstance } from 'vue';
-import type { DialogProps, DialogEmits } from './Dialog.types';
+import type { DialogEmits, DialogPropsWithEvents } from './Dialog.types';
 import { CommonButton } from '../../Button';
 import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap.ts';
 defineOptions({
   name: 'CommonDialog',
 });
 
-const props = withDefaults(defineProps<DialogProps>(), {
+const props = withDefaults(defineProps<DialogPropsWithEvents>(), {
   title: '标题',
 });
 
@@ -56,6 +56,7 @@ const comSlots: any = {
   ],
   ...slots,
 };
+console.log(dialogProps);
 </script>
 <template>
   <component

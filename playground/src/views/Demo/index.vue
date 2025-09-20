@@ -1,37 +1,54 @@
 <script setup lang="ts">
-import { reactive } from 'vue';
-import { useMixConfig } from 'dlib-hooks/src/useMixConfig';
+import { CommonForm, type CommonFormConfig, renderDialog } from '~/dlib-ui';
+import { h, reactive, ref } from 'vue';
+import { useConfigs } from '~/dlib-hooks';
 
-const formData = reactive({});
-
-const options = reactive([
-  { label: '选项1', value: '1' },
-  { label: '选项2', value: '2' },
-]);
-
-const { form } = useMixConfig([
+const formData = reactive({
+  test: '',
+});
+const { config } = useConfigs<CommonFormConfig>([
   {
-    label: '字段',
-    field: 'field',
+    label: '测试',
+    field: 'test',
     component: 'commonSelect',
-    span: 12,
-    model: {
-      label: 'name',
-    },
     props: {
-      options,
+      options: [
+        {
+          label: '1',
+          value: 1,
+        },
+        {
+          label: '2',
+          value: 2,
+        },
+      ],
     },
-    form: true,
   },
 ]);
+const formRef = ref();
+function openDialog() {
+  renderDialog(
+    h(CommonForm),
+    {
+      config: config,
+      ref: (el: any) => (formRef.value = el),
+    },
+    {
+      title: '测试',
+      onConfirm: (close: Function) => {
+        console.log(formRef.value.getFormData());
+        close();
+      },
+    },
+  );
+}
 </script>
 
 <template>
   {{ formData }}
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <button @click="openDialog">
+    打开弹窗
+  </button>
 </template>
 
 <style scoped></style>
