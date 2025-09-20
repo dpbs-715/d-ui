@@ -56,7 +56,6 @@ const comSlots: any = {
   ],
   ...slots,
 };
-console.log(dialogProps);
 </script>
 <template>
   <component
