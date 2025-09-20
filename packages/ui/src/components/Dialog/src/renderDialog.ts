@@ -13,7 +13,6 @@ export function renderDialog(
       ...dialogProps,
       modelValue: true,
       onClosed: () => {
-        console.log('closed');
         dialogProps?.onClosed?.();
         app.unmount();
         document.body.removeChild(div);
