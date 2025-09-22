@@ -61,6 +61,7 @@ registerComponentDefaultPropsMap({
 | 方法         | 说明                 |
 | ------------ | -------------------- |
 | validateForm | 表单校验             |
+| getFormData  | 获取表单数据         |
 | ...          | 其它elForm暴露的方法 |
 
 ## Props
