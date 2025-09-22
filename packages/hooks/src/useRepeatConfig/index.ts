@@ -6,6 +6,10 @@ export function useRepeatConfig<T>(configData: T[]) {
   const collectConfigs = new Map<any, useConfigsResultType<T>>();
 
   function collect(key: any) {
+    const has = getConfig(key);
+    if (has) {
+      return has.config;
+    }
     const o = useConfigs<T>(deepClone(configData));
     o.config.forEach((item: any) => {
       item.$key = key;
