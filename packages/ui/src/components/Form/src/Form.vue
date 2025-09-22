@@ -143,7 +143,6 @@ const transformModel = defineComponent({
 </script>
 
 <template>
-  {{ formData }}
   <el-form
     v-bind="formProps"
     :ref="collectFormRef"
