@@ -44,14 +44,16 @@ import UI from 'dlib-ui';
 import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(UI);
-// Additionally, add the following configuration to tsconfig.json for type hints:
-// "types": ["dlib-ui/global.d.ts"]
 
 // Import on demand
 import { Button } from 'dlib-ui';
 import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(Button);
+// Components({
+//   resolvers: [dUIResolver()],
+// })
+/// <reference types="dlib-ui/dist/types/index.d.ts" />
 ```
 
 ### Utility Functions
