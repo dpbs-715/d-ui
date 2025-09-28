@@ -46,8 +46,6 @@ import UI from 'dlib-ui';
 import 'dlib-ui/style.css';
 const app = createApp(App);
 app.use(UI);
-//  ui 1.0.6 后不需要再次声明了 tsconfig.json 还需要添加以下配置以获得类型提示：
-//  "types": ["dlib-ui/dist/global.d.ts"]
 
 // 按需引入
 import { Button } from 'dlib-ui';
@@ -58,6 +56,11 @@ app.use(Button);
 //unplugin-vue-components方式
 import { dUIResolver } from 'dlib-ui';
 //vite中配置使用ComponentResolver()
+// Components({
+//   resolvers: [dUIResolver()],
+// })
+//可能还需要在d.ts中添加下面引用
+/// <reference types="dlib-ui/dist/types/index.d.ts" />
 ```
 
 ### 工具函数
