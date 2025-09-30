@@ -1,14 +1,15 @@
 import { computed, ComputedRef, onUnmounted, Reactive, reactive } from 'vue';
+import { baseConfig } from 'dlib-ui';
 
 export interface useConfigsResultType<T> {
   config: Reactive<T[]>;
-  getConfigByField: (field: string) => T;
+  getConfigByField: (field: string) => T | undefined;
   setPropsByField: (key: string, setProps: any) => void;
   setHidden: (fields: string[], state: boolean) => void;
   setDisabled: (fields: string[], state: boolean) => void;
   setDisabledAll: (state: boolean) => void;
 }
-export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
+export function useConfigs<T extends baseConfig>(configData: T[]): useConfigsResultType<T> {
   const config: Reactive<T[]> = reactive(configData);
   const configMap: ComputedRef<Map<string, any>> = computed(() => {
     return new Map(config.map((item: any) => [item.field, item]));
@@ -30,7 +31,7 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
   /**
    * 根据key设置字段禁用
    * @param fields 字段key数组
-   * @param state  隐藏隐藏状态
+   * @param state  禁用状态
    * */
   function setDisabled(fields: string[], state: boolean) {
     fields.forEach((field) => {
@@ -78,12 +79,12 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
    * @param setProps  设置字段的props
    * */
   function setPropsByField(key: string, setProps: Record<any, any>) {
-    const config: any = configMap.value.get(key);
-    if (!config['props']) {
-      config.props = {};
+    const item: any = configMap.value.get(key);
+    if (!item['props']) {
+      item.props = {};
     }
     for (const propsKey in setProps) {
-      config.props[propsKey] = setProps[propsKey];
+      item.props[propsKey] = setProps[propsKey];
     }
   }
 
@@ -91,7 +92,7 @@ export function useConfigs<T>(configData: T[]): useConfigsResultType<T> {
    * 使用key获取字段config对象
    * */
   function getConfigByField(key: string) {
-    return configMap.value.get(key) || {};
+    return configMap.value.get(key);
   }
 
   onUnmounted(() => {
