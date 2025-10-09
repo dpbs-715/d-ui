@@ -21,8 +21,5 @@ export interface ButtonProps {
   icon?: any;
   circle?: boolean;
   loading?: boolean | undefined;
-}
-
-export interface ButtonEmits {
-  (e: 'click', event: MouseEvent): void;
+  onClick?: (event: MouseEvent) => PromiseLike<void> | void;
 }
