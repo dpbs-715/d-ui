@@ -15,7 +15,7 @@
     :disabled="disabled || loading"
     @click="handleClick"
   >
-    <template v-if="loading">
+    <template v-if="loading || promiseLoading">
       <el-icon
         class="is-loading"
         :style="{ marginRight: $slots.default ? '5px' : '0' }"
@@ -34,8 +34,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ButtonEmits, ButtonProps } from './Button.types';
-import { computed, h } from 'vue';
+import type { ButtonProps } from './Button.types';
+import { computed, h, ref } from 'vue';
 import { CirclePlus, Delete, Loading } from '@element-plus/icons-vue';
 import exportIcon from './svgs/exportIcon.svg?raw';
 import importIcon from './svgs/importIcon.svg?raw';
@@ -52,6 +52,7 @@ const {
   icon = undefined,
   circle = false,
   loading = false,
+  onClick = undefined,
 } = defineProps<ButtonProps>();
 
 const defaultIcon = computed(() => {
@@ -68,14 +69,20 @@ const defaultIcon = computed(() => {
       return null;
   }
 });
+const promiseLoading = ref(false);
 
-const emit = defineEmits<ButtonEmits>();
-
-const handleClick = (event: MouseEvent) => {
+async function handleClick(event: MouseEvent) {
   if (!disabled) {
-    emit('click', event);
+    promiseLoading.value = true;
+    try {
+      await onClick?.(event);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      promiseLoading.value = false;
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
