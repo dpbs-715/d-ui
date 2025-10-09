@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { EditorView, minimalSetup } from 'codemirror';
+import { EditorView, basicSetup } from 'codemirror';
 import { javascript } from '@codemirror/lang-javascript';
 import jsep from 'jsep';
 
@@ -74,9 +74,9 @@ function checkAST(node: any) {
 
 onMounted(() => {
   view = new EditorView({
-    doc: '',
+    doc: 'func(1,2)',
     extensions: [
-      minimalSetup,
+      basicSetup,
       javascript(),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
@@ -93,6 +93,7 @@ onMounted(() => {
     ],
     parent: editor.value!,
   });
+  console.log(view);
 });
 
 onBeforeUnmount(() => {
