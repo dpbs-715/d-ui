@@ -24,6 +24,7 @@ declare module 'vue' {
     CommonSelect: (typeof import('dlib-ui'))['CommonSelect'];
     CommonSelectOrDialog: (typeof import('dlib-ui'))['CommonSelectOrDialog'];
     CommonDescriptions: (typeof import('dlib-ui'))['CommonDescriptions'];
+    CommonFoma: (typeof import('dlib-ui'))['CommonFoma'];
   }
 }
 

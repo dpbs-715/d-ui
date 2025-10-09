@@ -57,3 +57,8 @@ catalog:
   'element-plus': ^2.6.1
   'unplugin-vue-components': ^0.27.1
   'vue-draggable-plus': ^0.6.0
+  '@codemirror/lang-javascript': ^6.2.4
+  '@codemirror/state': ^6.5.2
+  '@codemirror/view': ^6.38.5
+  'codemirror': ^6.0.2
+  'jsep': ^1.4.0

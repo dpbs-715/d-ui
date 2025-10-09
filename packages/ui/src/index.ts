@@ -12,6 +12,7 @@ import {
   CommonSelect,
   CommonSelectOrDialog,
   CommonDescriptions,
+  CommonFoma,
 } from './components';
 
 export { version } from './version';
@@ -32,6 +33,7 @@ const components = [
   CommonSelect,
   CommonSelectOrDialog,
   CommonDescriptions,
+  CommonFoma,
 ];
 
 /**
