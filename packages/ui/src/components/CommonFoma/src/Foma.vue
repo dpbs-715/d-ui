@@ -9,7 +9,37 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { EditorView, basicSetup } from 'codemirror';
+import { EditorView } from 'codemirror';
+import {
+  // lineNumbers,
+  highlightActiveLineGutter,
+  highlightSpecialChars,
+  drawSelection,
+  dropCursor,
+  rectangularSelection,
+  crosshairCursor,
+  highlightActiveLine,
+  keymap,
+} from '@codemirror/view';
+import { EditorState } from '@codemirror/state';
+import {
+  foldGutter,
+  indentOnInput,
+  syntaxHighlighting,
+  defaultHighlightStyle,
+  bracketMatching,
+  foldKeymap,
+} from '@codemirror/language';
+import { history, defaultKeymap, historyKeymap } from '@codemirror/commands';
+import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
+import {
+  closeBrackets,
+  // autocompletion,
+  closeBracketsKeymap,
+  completionKeymap,
+} from '@codemirror/autocomplete';
+import { lintKeymap } from '@codemirror/lint';
+
 import { javascript } from '@codemirror/lang-javascript';
 import jsep from 'jsep';
 
@@ -34,7 +64,6 @@ function checkAST(node: any) {
       break;
     case 'BinaryExpression':
     case 'LogicalExpression':
-      console.log(node);
       checkAST(node.left);
       checkAST(node.right);
       break;
@@ -72,28 +101,54 @@ function checkAST(node: any) {
   }
 }
 
+const basicSetup = (() => [
+  // lineNumbers(),
+  highlightActiveLineGutter(),
+  highlightSpecialChars(),
+  history(),
+  foldGutter(),
+  drawSelection(),
+  dropCursor(),
+  EditorState.allowMultipleSelections.of(true),
+  indentOnInput(),
+  syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
+  bracketMatching(),
+  closeBrackets(),
+  // autocompletion(),
+  rectangularSelection(),
+  crosshairCursor(),
+  highlightActiveLine(),
+  highlightSelectionMatches(),
+  keymap.of([
+    ...closeBracketsKeymap,
+    ...defaultKeymap,
+    ...searchKeymap,
+    ...historyKeymap,
+    ...foldKeymap,
+    ...completionKeymap,
+    ...lintKeymap,
+  ]),
+  javascript(),
+  EditorView.updateListener.of((update) => {
+    if (update.docChanged) {
+      const text = update.state.doc.toString();
+      try {
+        const ast = jsep(text);
+        checkAST(ast);
+        error.value = '';
+      } catch (e: any) {
+        error.value = e?.message || '表达式错误';
+      }
+    }
+  }),
+])();
+
 onMounted(() => {
   view = new EditorView({
     doc: 'func(1,2)',
-    extensions: [
-      basicSetup,
-      javascript(),
-      EditorView.updateListener.of((update) => {
-        if (update.docChanged) {
-          const text = update.state.doc.toString();
-          try {
-            const ast = jsep(text);
-            checkAST(ast);
-            error.value = '';
-          } catch (e: any) {
-            error.value = e?.message || '表达式错误';
-          }
-        }
-      }),
-    ],
+    extensions: [basicSetup],
     parent: editor.value!,
   });
-  console.log(view);
 });
 
 onBeforeUnmount(() => {
