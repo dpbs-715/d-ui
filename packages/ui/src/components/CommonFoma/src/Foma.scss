@@ -3,9 +3,16 @@
   padding: 5px;
   border: var(--el-border);
   border-radius: 6px;
-}
 
-.error {
-  margin-top: 5px;
-  color: var(--el-color-error);
+  :deep(.cm-variable-block) {
+    display: inline-block;
+    padding: 0 4px;
+    margin: 0 1px;
+    font-weight: 500;
+    color: #07c;
+    cursor: pointer;
+    user-select: none;
+    background-color: #e0f3ff;
+    border-radius: 4px;
+  }
 }
