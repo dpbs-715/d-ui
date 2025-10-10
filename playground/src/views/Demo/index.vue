@@ -6,7 +6,7 @@ const error = ref('');
 const CommonFomaRef = ref();
 
 const funs = ['SUM', 'MIX'];
-const vars = ['变量1', '变量2'];
+const vars = ['变量1', '变量2', 'var2'];
 function insertFun(item: string) {
   CommonFomaRef.value.insertFunction(item, []);
 }

@@ -29,12 +29,13 @@ import { history, defaultKeymap, historyKeymap } from '@codemirror/commands';
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
 import {
   closeBrackets,
-  autocompletion,
   closeBracketsKeymap,
   completionKeymap,
+  autocompletion,
+  type CompletionContext,
 } from '@codemirror/autocomplete';
 import { lintKeymap } from '@codemirror/lint';
-import { javascript } from '@codemirror/lang-javascript';
+// import { javascript } from '@codemirror/lang-javascript';
 import jsep from 'jsep';
 import type { FomaProps } from './Foma.types';
 
@@ -201,6 +202,45 @@ function insertFunction(name: string, args: string[] = []) {
   });
 }
 
+function myCompletionSource(context: CompletionContext) {
+  const word = context.matchBefore(/[\p{L}\p{N}_]+/u);
+  if (!word) return null;
+  const options = [
+    ...props.allowedVars.map((v) => ({
+      label: v,
+      type: 'variable',
+      apply: (view: EditorView, _completion: any, from: number, to: number) => {
+        // 插入块效果
+        view.dispatch({
+          changes: { from, to, insert: v },
+          effects: addVarEffect.of({ from, to: from + v.length, name: v }),
+          selection: { anchor: from + v.length },
+        });
+      },
+    })),
+    ...props.allowedFuns.map((f) => ({
+      label: f + '()',
+      type: 'function',
+      apply: (view: EditorView, _fun: any, from: number, to: number) => {
+        const insertText = `${f}()`;
+        const cursorPos = from + f.length + 1; // 光标位置在括号中间
+        view.dispatch({
+          changes: { from, to, insert: insertText },
+          selection: { anchor: cursorPos },
+        });
+      },
+    })),
+  ];
+  return {
+    from: word.from,
+    options,
+  };
+}
+
+const customAutocomplete = autocompletion({
+  override: [myCompletionSource],
+});
+
 /* ---------------------- 基础设置 ---------------------- */
 const basicSetup = (() => [
   lineNumbers(),
@@ -215,7 +255,8 @@ const basicSetup = (() => [
   syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
   bracketMatching(),
   closeBrackets(),
-  autocompletion(),
+  // autocompletion(),
+  customAutocomplete,
   rectangularSelection(),
   crosshairCursor(),
   highlightActiveLine(),
@@ -229,7 +270,7 @@ const basicSetup = (() => [
     ...completionKeymap,
     ...lintKeymap,
   ]),
-  javascript(),
+  // javascript(),
   updateListener,
   variableField,
   atomicRanges,
