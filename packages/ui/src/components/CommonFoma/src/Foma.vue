@@ -1,17 +1,14 @@
 <template>
-  <div>
-    <div ref="editor" class="editor" />
-    <div v-if="error" class="error">
-      {{ error }}
-    </div>
-  </div>
+  <div ref="editor" class="editor" />
 </template>
 
 <script setup lang="ts">
+import { translateJsError } from 'dlib-utils';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { EditorView } from 'codemirror';
+import { EditorView, Decoration, WidgetType, keymap } from '@codemirror/view';
+import { EditorState, StateField, StateEffect, RangeSet } from '@codemirror/state';
 import {
-  // lineNumbers,
+  lineNumbers,
   highlightActiveLineGutter,
   highlightSpecialChars,
   drawSelection,
@@ -19,9 +16,7 @@ import {
   rectangularSelection,
   crosshairCursor,
   highlightActiveLine,
-  keymap,
 } from '@codemirror/view';
-import { EditorState } from '@codemirror/state';
 import {
   foldGutter,
   indentOnInput,
@@ -34,28 +29,31 @@ import { history, defaultKeymap, historyKeymap } from '@codemirror/commands';
 import { highlightSelectionMatches, searchKeymap } from '@codemirror/search';
 import {
   closeBrackets,
-  // autocompletion,
+  autocompletion,
   closeBracketsKeymap,
   completionKeymap,
 } from '@codemirror/autocomplete';
 import { lintKeymap } from '@codemirror/lint';
-
 import { javascript } from '@codemirror/lang-javascript';
 import jsep from 'jsep';
+import type { FomaProps } from './Foma.types';
+
+const model = defineModel<string>();
+const error = defineModel<string>('error');
+const props = withDefaults(defineProps<FomaProps>(), {
+  allowedVars: () => [],
+  allowedFuns: () => [],
+});
 
 const editor = ref<HTMLDivElement | null>(null);
 let view: EditorView | null = null;
 
-const allowedVars: string[] = []; // 允许的变量
-const allowedFunctions: string[] = []; // 允许的函数
-const error = ref('');
-
-// 递归检查 AST 变量合法性
+/* ---------------------- AST 校验 ---------------------- */
 function checkAST(node: any) {
   if (!node) return;
   switch (node.type) {
     case 'Identifier':
-      if (!allowedVars.includes(node.name)) {
+      if (!props.allowedVars.includes(node.name)) {
         throw new Error(`未定义变量: ${node.name}`);
       }
       break;
@@ -64,6 +62,7 @@ function checkAST(node: any) {
       break;
     case 'BinaryExpression':
     case 'LogicalExpression':
+      console.log(node);
       checkAST(node.left);
       checkAST(node.right);
       break;
@@ -71,7 +70,7 @@ function checkAST(node: any) {
       checkAST(node.argument);
       break;
     case 'CallExpression':
-      if (!allowedFunctions.includes(node.callee.name)) {
+      if (!props.allowedFuns.includes(node.callee.name)) {
         throw new Error(`未定义函数: ${node.callee.name}`);
       }
       node.arguments.forEach((arg: any) => checkAST(arg));
@@ -83,7 +82,7 @@ function checkAST(node: any) {
       break;
     case 'MemberExpression':
       // 可以允许 obj.prop 或 obj['prop'] 形式
-      if (node.object.type === 'Identifier' && !allowedVars.includes(node.object.name)) {
+      if (node.object.type === 'Identifier' && !props.allowedFuns.includes(node.object.name)) {
         throw new Error(`未定义对象: ${node.object.name}`);
       }
       // 可选择性检查属性
@@ -101,8 +100,110 @@ function checkAST(node: any) {
   }
 }
 
+/* ---------------------- 自定义变量块 ---------------------- */
+
+class VariableWidget extends WidgetType {
+  constructor(readonly _name: string) {
+    super();
+  }
+
+  eq(other: VariableWidget) {
+    return this._name === other._name;
+  }
+
+  toDOM() {
+    const span = document.createElement('span');
+    span.textContent = this._name;
+    span.className = 'cm-var-block';
+    return span;
+  }
+
+  ignoreEvent() {
+    return false;
+  }
+}
+
+// 插入变量的 Effect
+const addVarEffect = StateEffect.define<{ from: number; to: number; name: string }>();
+
+// 变量装饰字段
+const variableField = StateField.define<RangeSet<Decoration>>({
+  create() {
+    return RangeSet.empty;
+  },
+  update(decos, tr) {
+    decos = decos.map(tr.changes);
+    for (const e of tr.effects) {
+      if (e.is(addVarEffect)) {
+        const deco = Decoration.replace({
+          widget: new VariableWidget(e.value.name),
+          inclusive: false,
+        }).range(e.value.from, e.value.to);
+        decos = decos.update({ add: [deco] });
+      }
+    }
+    return decos;
+  },
+  provide: (f) => EditorView.decorations.from(f),
+});
+
+// 原子化范围：光标不可进入块内部
+const atomicRanges = EditorView.atomicRanges.of((view) => {
+  const field = view.state.field(variableField, false);
+  return field ?? RangeSet.empty;
+});
+
+/* ---------------------- 更新监听 ---------------------- */
+const updateListener = EditorView.updateListener.of((update) => {
+  if (update.docChanged) {
+    const text = update.state.doc.toString();
+    model.value = text;
+    try {
+      const ast = jsep(text);
+      checkAST(ast);
+      error.value = '';
+    } catch (e: any) {
+      error.value = translateJsError(e);
+    }
+  }
+});
+
+/* ---------------------- 插入逻辑 ---------------------- */
+function insertVariableBlock(name: string) {
+  if (!view) return;
+  const { from } = view.state.selection.main;
+  const label = name; // 实际插入文档的内容
+  const tr = view.state.update({
+    changes: { from, insert: label },
+    effects: addVarEffect.of({ from, to: from + label.length, name }),
+    selection: { anchor: from + label.length },
+  });
+  view.dispatch(tr);
+}
+
+function insertVariable(name: string) {
+  if (!view) return;
+  const { from, to } = view.state.selection.main;
+  view.dispatch({
+    changes: { from, to, insert: name },
+    selection: { anchor: from + name.length },
+  });
+}
+
+function insertFunction(name: string, args: string[] = []) {
+  if (!view) return;
+  const { from, to } = view.state.selection.main;
+  const argText = args.join(',');
+  const insertText = `${name}(${argText})`;
+  view.dispatch({
+    changes: { from, to, insert: insertText },
+    selection: { anchor: from + insertText.length },
+  });
+}
+
+/* ---------------------- 基础设置 ---------------------- */
 const basicSetup = (() => [
-  // lineNumbers(),
+  lineNumbers(),
   highlightActiveLineGutter(),
   highlightSpecialChars(),
   history(),
@@ -114,7 +215,7 @@ const basicSetup = (() => [
   syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
   bracketMatching(),
   closeBrackets(),
-  // autocompletion(),
+  autocompletion(),
   rectangularSelection(),
   crosshairCursor(),
   highlightActiveLine(),
@@ -129,23 +230,21 @@ const basicSetup = (() => [
     ...lintKeymap,
   ]),
   javascript(),
-  EditorView.updateListener.of((update) => {
-    if (update.docChanged) {
-      const text = update.state.doc.toString();
-      try {
-        const ast = jsep(text);
-        checkAST(ast);
-        error.value = '';
-      } catch (e: any) {
-        error.value = e?.message || '表达式错误';
-      }
-    }
-  }),
+  updateListener,
+  variableField,
+  atomicRanges,
 ])();
+
+/* ---------------------- 生命周期 ---------------------- */
+defineExpose({
+  insertVariableBlock,
+  insertVariable,
+  insertFunction,
+});
 
 onMounted(() => {
   view = new EditorView({
-    doc: 'func(1,2)',
+    doc: model.value,
     extensions: [basicSetup],
     parent: editor.value!,
   });
