@@ -33,6 +33,20 @@ export function translateJsError(err: Error) {
     return `语法错误：在第 ${pos} 个字符处遇到意外的 '${symbol}' 符号`;
   }
 
+  let unclosedMatch = msg.match(/Unclosed quote after "([^"]*?)" at character (\d+)/);
+  if (unclosedMatch) {
+    const symbol = unclosedMatch[1];
+    const pos = unclosedMatch[2];
+    return `语法错误：在第 ${pos} 个字符处遇到 '${symbol}' 字符串的引号没有闭合`;
+  }
+
+  let bracketMatch = msg.match(/Unclosed ([^"]*?) at character (\d+)/);
+  if (bracketMatch) {
+    const symbol = bracketMatch[1];
+    const pos = bracketMatch[2];
+    return `语法错误：在第 ${pos} 个字符处 '${symbol}' 没有闭合`;
+  }
+
   // 意外字符 / token
   if (msg.includes('Unexpected token')) {
     return '语法错误：遇到意外的字符或符号';

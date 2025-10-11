@@ -12,6 +12,14 @@ export interface VarType {
 }
 
 export const FomaProps = {
+  readonly: {
+    type: Boolean,
+    default: false,
+  },
+  checkRules: {
+    type: Boolean,
+    default: true,
+  },
   maxHeight: {
     type: Number,
     default: 400,

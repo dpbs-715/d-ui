@@ -50,7 +50,6 @@ let view: EditorView | null = null;
 /* ---------------------- AST 校验 ---------------------- */
 function checkAST(node: any) {
   if (!node) return;
-  console.log(node);
   switch (node.type) {
     case 'Identifier':
       if (!props.allowedVars.map((o: VarType) => o.value).includes(node.name)) {
@@ -183,6 +182,7 @@ const updateListener = EditorView.updateListener.of((update) => {
   if (update.docChanged) {
     const text = update.state.doc.toString();
     model.value = text;
+    if (!props.checkRules) return;
     try {
       const ast = jsep(text);
       checkAST(ast);
@@ -196,6 +196,7 @@ const updateListener = EditorView.updateListener.of((update) => {
 /* ---------------------- 插入逻辑 ---------------------- */
 function insertVariableBlock(variable: VarType) {
   if (!view) return;
+  if (props.readonly) return;
   const { from } = view.state.selection.main;
   const { label, value } = variable;
 
@@ -210,6 +211,7 @@ function insertVariableBlock(variable: VarType) {
 
 function insertText(text: string) {
   if (!view) return;
+  if (props.readonly) return;
   const { from, to } = view.state.selection.main;
   view.dispatch({
     changes: { from, to, insert: text },
@@ -219,6 +221,7 @@ function insertText(text: string) {
 
 function insertFunction(name: string, args: string[] = []) {
   if (!view) return;
+  if (props.readonly) return;
   const { from, to } = view.state.selection.main;
   const argText = args.join(',');
   const insertText = `${name}(${argText})`;
@@ -294,6 +297,7 @@ const basicSetup = (() => [
   drawSelection(),
   dropCursor(),
   EditorState.allowMultipleSelections.of(true),
+  EditorState.readOnly.of(props.readonly),
   indentOnInput(),
   syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
   bracketMatching(),
