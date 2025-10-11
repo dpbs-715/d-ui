@@ -98,9 +98,7 @@ function checkAST(node: any) {
       console.warn('未处理的 AST 类型:', node.type);
   }
 }
-
 /* ---------------------- 自定义变量块 ---------------------- */
-
 class VariableWidget extends WidgetType {
   constructor(
     readonly _label: string,
@@ -108,7 +106,6 @@ class VariableWidget extends WidgetType {
   ) {
     super();
   }
-
   eq(other: VariableWidget) {
     return this._label === other._label && this._value === other._value;
   }
@@ -133,24 +130,45 @@ const addVarEffect = StateEffect.define<{
   value: string;
 }>();
 
-// 变量装饰字段
-const variableField = StateField.define<RangeSet<Decoration>>({
-  create() {
-    return RangeSet.empty;
-  },
-  update(decos, tr) {
-    decos = decos.map(tr.changes);
-    for (const e of tr.effects) {
-      if (e.is(addVarEffect)) {
-        const deco = Decoration.replace({
-          widget: new VariableWidget(e.value.label, e.value.value),
-          inclusive: false,
-        }).range(e.value.from, e.value.to);
-        decos = decos.update({ add: [deco] });
-      }
+function getDecosWidthBlock(text: string) {
+  let decos = RangeSet.empty;
+  for (const v of props.allowedVars as VarType[]) {
+    const re = new RegExp(`${v.value}`, 'g');
+    for (const m of text.matchAll(re)) {
+      const from = m.index!;
+      const to = from + v.value.length;
+      const deco = Decoration.replace({
+        widget: new VariableWidget(v.label, v.value),
+        inclusive: false,
+      }).range(from, to);
+      decos = decos.update({ add: [deco] });
     }
+  }
+  return decos;
+}
+
+const variableField = StateField.define<RangeSet<Decoration>>({
+  // state 参数可拿到初始文档，首次创建时就把已有 value 转为装饰
+  create(state) {
+    const text = state.doc.toString();
+    return getDecosWidthBlock(text);
+  },
+
+  update(decos, tr) {
+    // 先把现有装饰根据文本变更映射（避免位置错乱）
+    decos = decos.map(tr.changes);
+
+    // 当文档有改动或我们显式发出了 addVarEffect 时，重建整个装饰集合
+    const hasAddVarEffect = tr.effects.some((e) => e.is(addVarEffect));
+    if (tr.docChanged || hasAddVarEffect) {
+      const text = tr.newDoc.toString();
+      return getDecosWidthBlock(text);
+    }
+
+    // 否则直接返回映射后的装饰（没有必要重建）
     return decos;
   },
+
   provide: (f) => EditorView.decorations.from(f),
 });
 
@@ -209,11 +227,10 @@ function insertFunction(name: string, args: string[] = []) {
     selection: { anchor: from + insertText.length },
   });
 }
-
-function myCompletionSource(context: CompletionContext) {
+/* ---------------------- 函数、变量补全 ---------------------- */
+function completionSource(context: CompletionContext) {
   const word = context.matchBefore(/[\p{L}\p{N}_]+/u);
   if (!word) return null;
-
   const options: Completion[] = [
     ...props.allowedVars.map((v: any) => ({
       label: v.label,
@@ -250,11 +267,10 @@ function myCompletionSource(context: CompletionContext) {
     options,
   };
 }
-
 const customAutocomplete = autocompletion({
-  override: [myCompletionSource],
+  override: [completionSource],
 });
-
+/* ---------------------- 主题 ---------------------- */
 const maxHeightTheme = EditorView.theme({
   '&': {
     // 针对整个编辑器容器 (.cm-editor)

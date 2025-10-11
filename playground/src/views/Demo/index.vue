@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CommonFoma } from '~/dlib-ui';
 import { ref } from 'vue';
-const model = ref('');
+const model = ref('code1+code2');
 const error = ref('');
 const CommonFomaRef = ref();
 
