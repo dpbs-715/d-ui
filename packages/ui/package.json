@@ -48,7 +48,6 @@
     "vue": "catalog:"
   },
   "dependencies": {
-    "@codemirror/lang-javascript": "catalog:",
     "@codemirror/state": "catalog:",
     "@codemirror/view": "catalog:",
     "codemirror": "catalog:",

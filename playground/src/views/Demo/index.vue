@@ -6,18 +6,21 @@ const error = ref('');
 const CommonFomaRef = ref();
 
 const funs = ['SUM', 'MIX'];
-const vars = ['变量1', '变量2', 'var2'];
+const vars = [
+  { label: '变量1', value: 'code1' },
+  { label: '变量2', value: 'code2' },
+];
 function insertFun(item: string) {
   CommonFomaRef.value.insertFunction(item, []);
 }
-function insertVar(item: string) {
+function insertVar(item) {
   CommonFomaRef.value.insertVariableBlock(item);
 }
 </script>
 
 <template>
-  <button v-for="item in vars" :key="item" @click="insertVar(item)">
-    {{ item }}
+  <button v-for="item in vars" :key="item.value" @click="insertVar(item)">
+    {{ item.label }}
   </button>
   <button v-for="item in funs" :key="item" @click="insertFun(item)">
     {{ item }}
@@ -30,6 +33,7 @@ function insertVar(item: string) {
     :allowed-funs="funs"
     :allowed-vars="vars"
   />
+
   <div v-if="error" class="error">
     {{ error }}
   </div>

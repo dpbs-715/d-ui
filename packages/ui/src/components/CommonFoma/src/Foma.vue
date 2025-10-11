@@ -33,18 +33,16 @@ import {
   completionKeymap,
   autocompletion,
   type CompletionContext,
+  type Completion,
 } from '@codemirror/autocomplete';
 import { lintKeymap } from '@codemirror/lint';
-// import { javascript } from '@codemirror/lang-javascript';
 import jsep from 'jsep';
-import type { FomaProps } from './Foma.types';
+import { FomaProps, type VarType } from './Foma.types';
 
 const model = defineModel<string>();
 const error = defineModel<string>('error');
-const props = withDefaults(defineProps<FomaProps>(), {
-  allowedVars: () => [],
-  allowedFuns: () => [],
-});
+
+const props = defineProps(FomaProps);
 
 const editor = ref<HTMLDivElement | null>(null);
 let view: EditorView | null = null;
@@ -52,9 +50,10 @@ let view: EditorView | null = null;
 /* ---------------------- AST 校验 ---------------------- */
 function checkAST(node: any) {
   if (!node) return;
+  console.log(node);
   switch (node.type) {
     case 'Identifier':
-      if (!props.allowedVars.includes(node.name)) {
+      if (!props.allowedVars.map((o: VarType) => o.value).includes(node.name)) {
         throw new Error(`未定义变量: ${node.name}`);
       }
       break;
@@ -63,7 +62,6 @@ function checkAST(node: any) {
       break;
     case 'BinaryExpression':
     case 'LogicalExpression':
-      console.log(node);
       checkAST(node.left);
       checkAST(node.right);
       break;
@@ -104,17 +102,20 @@ function checkAST(node: any) {
 /* ---------------------- 自定义变量块 ---------------------- */
 
 class VariableWidget extends WidgetType {
-  constructor(readonly _name: string) {
+  constructor(
+    readonly _label: string,
+    readonly _value: string,
+  ) {
     super();
   }
 
   eq(other: VariableWidget) {
-    return this._name === other._name;
+    return this._label === other._label && this._value === other._value;
   }
 
   toDOM() {
     const span = document.createElement('span');
-    span.textContent = this._name;
+    span.textContent = this._label; // 显示 label
     span.className = 'cm-var-block';
     return span;
   }
@@ -125,7 +126,12 @@ class VariableWidget extends WidgetType {
 }
 
 // 插入变量的 Effect
-const addVarEffect = StateEffect.define<{ from: number; to: number; name: string }>();
+const addVarEffect = StateEffect.define<{
+  from: number;
+  to: number;
+  label: string;
+  value: string;
+}>();
 
 // 变量装饰字段
 const variableField = StateField.define<RangeSet<Decoration>>({
@@ -137,7 +143,7 @@ const variableField = StateField.define<RangeSet<Decoration>>({
     for (const e of tr.effects) {
       if (e.is(addVarEffect)) {
         const deco = Decoration.replace({
-          widget: new VariableWidget(e.value.name),
+          widget: new VariableWidget(e.value.label, e.value.value),
           inclusive: false,
         }).range(e.value.from, e.value.to);
         decos = decos.update({ add: [deco] });
@@ -170,24 +176,26 @@ const updateListener = EditorView.updateListener.of((update) => {
 });
 
 /* ---------------------- 插入逻辑 ---------------------- */
-function insertVariableBlock(name: string) {
+function insertVariableBlock(variable: VarType) {
   if (!view) return;
   const { from } = view.state.selection.main;
-  const label = name; // 实际插入文档的内容
+  const { label, value } = variable;
+
+  // 实际插入 value（用于AST校验）
   const tr = view.state.update({
-    changes: { from, insert: label },
-    effects: addVarEffect.of({ from, to: from + label.length, name }),
-    selection: { anchor: from + label.length },
+    changes: { from, insert: value },
+    effects: addVarEffect.of({ from, to: from + value.length, label, value }),
+    selection: { anchor: from + value.length },
   });
   view.dispatch(tr);
 }
 
-function insertVariable(name: string) {
+function insertText(text: string) {
   if (!view) return;
   const { from, to } = view.state.selection.main;
   view.dispatch({
-    changes: { from, to, insert: name },
-    selection: { anchor: from + name.length },
+    changes: { from, to, insert: text },
+    selection: { anchor: from + text.length },
   });
 }
 
@@ -205,25 +213,30 @@ function insertFunction(name: string, args: string[] = []) {
 function myCompletionSource(context: CompletionContext) {
   const word = context.matchBefore(/[\p{L}\p{N}_]+/u);
   if (!word) return null;
-  const options = [
-    ...props.allowedVars.map((v) => ({
-      label: v,
+
+  const options: Completion[] = [
+    ...props.allowedVars.map((v: any) => ({
+      label: v.label,
       type: 'variable',
       apply: (view: EditorView, _completion: any, from: number, to: number) => {
-        // 插入块效果
         view.dispatch({
-          changes: { from, to, insert: v },
-          effects: addVarEffect.of({ from, to: from + v.length, name: v }),
-          selection: { anchor: from + v.length },
+          changes: { from, to, insert: v.value },
+          effects: addVarEffect.of({
+            from,
+            to: from + v.value.length,
+            label: v.label,
+            value: v.value,
+          }),
+          selection: { anchor: from + v.value.length },
         });
       },
     })),
-    ...props.allowedFuns.map((f) => ({
+    ...props.allowedFuns.map((f: any) => ({
       label: f + '()',
       type: 'function',
       apply: (view: EditorView, _fun: any, from: number, to: number) => {
         const insertText = `${f}()`;
-        const cursorPos = from + f.length + 1; // 光标位置在括号中间
+        const cursorPos = from + f.length + 1;
         view.dispatch({
           changes: { from, to, insert: insertText },
           selection: { anchor: cursorPos },
@@ -231,6 +244,7 @@ function myCompletionSource(context: CompletionContext) {
       },
     })),
   ];
+
   return {
     from: word.from,
     options,
@@ -241,8 +255,21 @@ const customAutocomplete = autocompletion({
   override: [myCompletionSource],
 });
 
+const maxHeightTheme = EditorView.theme({
+  '&': {
+    // 针对整个编辑器容器 (.cm-editor)
+    'max-height': `${props.maxHeight}px`,
+    'min-height': `${props.minHeight}px`,
+    height: '100%',
+  },
+  '.cm-scroller': {
+    overflow: 'auto', // 确保出现滚动条
+  },
+});
+
 /* ---------------------- 基础设置 ---------------------- */
 const basicSetup = (() => [
+  maxHeightTheme,
   lineNumbers(),
   highlightActiveLineGutter(),
   highlightSpecialChars(),
@@ -255,7 +282,6 @@ const basicSetup = (() => [
   syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
   bracketMatching(),
   closeBrackets(),
-  // autocompletion(),
   customAutocomplete,
   rectangularSelection(),
   crosshairCursor(),
@@ -270,7 +296,6 @@ const basicSetup = (() => [
     ...completionKeymap,
     ...lintKeymap,
   ]),
-  // javascript(),
   updateListener,
   variableField,
   atomicRanges,
@@ -279,7 +304,7 @@ const basicSetup = (() => [
 /* ---------------------- 生命周期 ---------------------- */
 defineExpose({
   insertVariableBlock,
-  insertVariable,
+  insertText,
   insertFunction,
 });
 
