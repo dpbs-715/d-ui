@@ -10,6 +10,10 @@ export interface VarType {
   label: string;
   value: string;
 }
+export interface FunctionType {
+  label: string;
+  value: string;
+}
 
 export const FomaProps = {
   readonly: {
@@ -33,7 +37,7 @@ export const FomaProps = {
     default: () => [],
   },
   allowedFuns: {
-    type: Array,
+    type: Array as PropType<Array<VarType>>,
     default: () => [],
   },
 };

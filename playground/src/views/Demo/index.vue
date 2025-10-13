@@ -5,15 +5,18 @@ const model = ref('code1+code2');
 const error = ref('');
 const CommonFomaRef = ref();
 
-const funs = ['SUM', 'MIX'];
+const funs = [
+  { label: '函数1', value: 'MIX' },
+  { label: '函数2', value: 'SUM' },
+];
 const vars = [
   { label: '变量1', value: 'code1' },
   { label: '变量2', value: 'code2' },
 ];
-function insertFun(item: string) {
-  CommonFomaRef.value.insertFunction(item, []);
+function insertFun(item: any) {
+  CommonFomaRef.value.insertFunctionBlock(item, []);
 }
-function insertVar(item) {
+function insertVar(item: any) {
   CommonFomaRef.value.insertVariableBlock(item);
 }
 </script>
@@ -22,8 +25,8 @@ function insertVar(item) {
   <button v-for="item in vars" :key="item.value" @click="insertVar(item)">
     {{ item.label }}
   </button>
-  <button v-for="item in funs" :key="item" @click="insertFun(item)">
-    {{ item }}
+  <button v-for="item in funs" :key="item.value" @click="insertFun(item)">
+    {{ item.label }}
   </button>
   {{ model }}
   <CommonFoma

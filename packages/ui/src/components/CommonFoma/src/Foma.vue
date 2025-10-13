@@ -37,7 +37,7 @@ import {
 } from '@codemirror/autocomplete';
 import { lintKeymap } from '@codemirror/lint';
 import jsep from 'jsep';
-import { FomaProps, type VarType } from './Foma.types';
+import { FomaProps, type FunctionType, type VarType } from './Foma.types';
 
 const model = defineModel<string>();
 const error = defineModel<string>('error');
@@ -68,7 +68,7 @@ function checkAST(node: any) {
       checkAST(node.argument);
       break;
     case 'CallExpression':
-      if (!props.allowedFuns.includes(node.callee.name)) {
+      if (!props.allowedFuns.map((o: FunctionType) => o.value).includes(node.callee.name)) {
         throw new Error(`未定义函数: ${node.callee.name}`);
       }
       node.arguments.forEach((arg: any) => checkAST(arg));
@@ -80,7 +80,10 @@ function checkAST(node: any) {
       break;
     case 'MemberExpression':
       // 可以允许 obj.prop 或 obj['prop'] 形式
-      if (node.object.type === 'Identifier' && !props.allowedFuns.includes(node.object.name)) {
+      if (
+        node.object.type === 'Identifier' &&
+        !props.allowedFuns.map((o: FunctionType) => o.value).includes(node.object.name)
+      ) {
         throw new Error(`未定义对象: ${node.object.name}`);
       }
       // 可选择性检查属性
@@ -98,14 +101,14 @@ function checkAST(node: any) {
   }
 }
 /* ---------------------- 自定义变量块 ---------------------- */
-class VariableWidget extends WidgetType {
+class BlockWidget extends WidgetType {
   constructor(
     readonly _label: string,
     readonly _value: string,
   ) {
     super();
   }
-  eq(other: VariableWidget) {
+  eq(other: BlockWidget) {
     return this._label === other._label && this._value === other._value;
   }
 
@@ -131,13 +134,13 @@ const addVarEffect = StateEffect.define<{
 
 function getDecosWidthBlock(text: string) {
   let decos = RangeSet.empty;
-  for (const v of props.allowedVars as VarType[]) {
+  for (const v of [...props.allowedVars, ...props.allowedFuns] as VarType[]) {
     const re = new RegExp(`${v.value}`, 'g');
     for (const m of text.matchAll(re)) {
       const from = m.index!;
       const to = from + v.value.length;
       const deco = Decoration.replace({
-        widget: new VariableWidget(v.label, v.value),
+        widget: new BlockWidget(v.label, v.value),
         inclusive: false,
       }).range(from, to);
       decos = decos.update({ add: [deco] });
@@ -219,6 +222,21 @@ function insertText(text: string) {
   });
 }
 
+function insertFunctionBlock(variable: FunctionType, args: string[] = []) {
+  if (!view) return;
+  if (props.readonly) return;
+  const { from } = view.state.selection.main;
+  const { label, value } = variable;
+  const argText = args.join(',');
+  // 实际插入 value（用于AST校验）
+  const tr = view.state.update({
+    changes: { from, insert: `${value}(${argText})` },
+    effects: addVarEffect.of({ from, to: from + value.length, label, value }),
+    selection: { anchor: from + value.length },
+  });
+  view.dispatch(tr);
+}
+
 function insertFunction(name: string, args: string[] = []) {
   if (!view) return;
   if (props.readonly) return;
@@ -252,14 +270,18 @@ function completionSource(context: CompletionContext) {
       },
     })),
     ...props.allowedFuns.map((f: any) => ({
-      label: f + '()',
+      label: f.label + '()',
       type: 'function',
       apply: (view: EditorView, _fun: any, from: number, to: number) => {
-        const insertText = `${f}()`;
-        const cursorPos = from + f.length + 1;
         view.dispatch({
-          changes: { from, to, insert: insertText },
-          selection: { anchor: cursorPos },
+          changes: { from, to, insert: `${f.value}()` },
+          effects: addVarEffect.of({
+            from,
+            to: from + f.value.length,
+            label: f.label,
+            value: f.value,
+          }),
+          selection: { anchor: from + f.value.length + 1 },
         });
       },
     })),
@@ -325,6 +347,7 @@ const basicSetup = (() => [
 defineExpose({
   insertVariableBlock,
   insertText,
+  insertFunctionBlock,
   insertFunction,
 });
 
