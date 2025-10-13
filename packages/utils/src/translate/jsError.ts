@@ -15,7 +15,13 @@ export function translateJsError(err: Error) {
     const pos = exprMatch[2];
     return `语法错误：在符号 '${symbol}' 后面缺少表达式（位置：第 ${pos} 个字符）`;
   }
-
+  // Expected ) at character 5
+  const ExpectedMatch = msg.match(/Expected (.+) at character (\d+)/);
+  if (ExpectedMatch) {
+    const symbol = ExpectedMatch[1];
+    const pos = ExpectedMatch[2];
+    return `语法错误：缺少 '${symbol}' （位置：第 ${pos} 个字符）`;
+  }
   //变量名不能以数字开头
   let varNameMatch = msg.match(
     /Variable names cannot start with a number \((.+?)\) at character (\d+)/,

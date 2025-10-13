@@ -132,10 +132,14 @@ const addVarEffect = StateEffect.define<{
   value: string;
 }>();
 
+function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function getDecosWidthBlock(text: string) {
   let decos = RangeSet.empty;
   for (const v of [...props.allowedVars, ...props.allowedFuns] as VarType[]) {
-    const re = new RegExp(`${v.value}`, 'g');
+    const re = new RegExp(escapeRegExp(`${v.value}`), 'g');
     for (const m of text.matchAll(re)) {
       const from = m.index!;
       const to = from + v.value.length;
