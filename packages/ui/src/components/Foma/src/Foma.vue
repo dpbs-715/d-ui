@@ -197,7 +197,7 @@ const updateListener = EditorView.updateListener.of((update) => {
 });
 
 /* ---------------------- 插入逻辑 ---------------------- */
-function insertVariableBlock(variable: VarType) {
+function insertVariable(variable: VarType) {
   if (!view) return;
   if (props.readonly) return;
   const { from } = view.state.selection.main;
@@ -222,7 +222,7 @@ function insertText(text: string) {
   });
 }
 
-function insertFunctionBlock(variable: FunctionType, args: string[] = []) {
+function insertFunction(variable: FunctionType, args: string[] = []) {
   if (!view) return;
   if (props.readonly) return;
   const { from } = view.state.selection.main;
@@ -237,17 +237,6 @@ function insertFunctionBlock(variable: FunctionType, args: string[] = []) {
   view.dispatch(tr);
 }
 
-function insertFunction(name: string, args: string[] = []) {
-  if (!view) return;
-  if (props.readonly) return;
-  const { from, to } = view.state.selection.main;
-  const argText = args.join(',');
-  const insertText = `${name}(${argText})`;
-  view.dispatch({
-    changes: { from, to, insert: insertText },
-    selection: { anchor: from + insertText.length },
-  });
-}
 /* ---------------------- 函数、变量补全 ---------------------- */
 function completionSource(context: CompletionContext) {
   const word = context.matchBefore(/[\p{L}\p{N}_]+/u);
@@ -345,9 +334,8 @@ const basicSetup = (() => [
 
 /* ---------------------- 生命周期 ---------------------- */
 defineExpose({
-  insertVariableBlock,
+  insertVariable,
   insertText,
-  insertFunctionBlock,
   insertFunction,
 });
 

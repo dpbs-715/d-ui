@@ -14,10 +14,10 @@ const vars = [
   { label: '变量2', value: 'code2' },
 ];
 function insertFun(item: any) {
-  CommonFomaRef.value.insertFunctionBlock(item, []);
+  CommonFomaRef.value.insertFunction(item, []);
 }
 function insertVar(item: any) {
-  CommonFomaRef.value.insertVariableBlock(item);
+  CommonFomaRef.value.insertVariable(item);
 }
 </script>
 

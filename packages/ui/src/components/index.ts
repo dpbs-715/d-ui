@@ -10,4 +10,4 @@ export * from './TableFieldsConfig';
 export * from './Select';
 export * from './SelectOrDialog';
 export * from './Descriptions';
-export * from './CommonFoma';
+export * from './Foma';
