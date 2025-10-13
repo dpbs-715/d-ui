@@ -232,7 +232,7 @@ function insertFunction(variable: FunctionType, args: string[] = []) {
   const tr = view.state.update({
     changes: { from, insert: `${value}(${argText})` },
     effects: addVarEffect.of({ from, to: from + value.length, label, value }),
-    selection: { anchor: from + value.length },
+    selection: { anchor: from + value.length + 2 },
   });
   view.dispatch(tr);
 }
