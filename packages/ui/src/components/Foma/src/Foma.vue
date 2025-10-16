@@ -201,10 +201,10 @@ const updateListener = EditorView.updateListener.of((update) => {
 });
 
 /* ---------------------- 插入逻辑 ---------------------- */
-function insertVariable(variable: VarType) {
+function insertVariable(variable: VarType, position?: number) {
   if (!view) return;
   if (props.readonly) return;
-  const { from } = view.state.selection.main;
+  const from = position ?? view.state.selection.main.from;
   const { label, value } = variable;
 
   // 实际插入 value（用于AST校验）
@@ -226,10 +226,10 @@ function insertText(text: string) {
   });
 }
 
-function insertFunction(variable: FunctionType, args: string[] = []) {
+function insertFunction(variable: FunctionType, args: string[] = [], position?: number) {
   if (!view) return;
   if (props.readonly) return;
-  const { from } = view.state.selection.main;
+  const from = position ?? view.state.selection.main.from;
   const { label, value } = variable;
   const argText = args.join(',');
   // 实际插入 value（用于AST校验）
@@ -241,9 +241,36 @@ function insertFunction(variable: FunctionType, args: string[] = []) {
   view.dispatch(tr);
 }
 
+function insertAtMousePosition(
+  content: string | VarType | FunctionType,
+  mouseEvent: MouseEvent,
+  type: 'var' | 'function',
+) {
+  if (!view || props.readonly) return;
+
+  // 获取编辑器容器的边界信息
+  const pos = view.posAtCoords({ x: mouseEvent.clientX, y: mouseEvent.clientY });
+  if (pos === null) return;
+
+  // 根据内容类型调用相应方法
+  if (typeof content === 'string') {
+    // 字符串内容直接插入
+    view.dispatch({
+      changes: { from: pos, insert: content },
+      selection: { anchor: pos + content.length },
+    });
+  } else if ('label' in content && 'value' in content) {
+    // 检查是否为函数类型（通过是否有参数处理区分）
+    if (type === 'function') {
+      insertFunction(content as FunctionType, [], pos);
+    } else if (type === 'var') {
+      insertVariable(content as VarType, pos);
+    }
+  }
+}
 /* ---------------------- 函数、变量补全 ---------------------- */
 function completionSource(context: CompletionContext) {
-  const word = context.matchBefore(/[\p{L}\p{N}_]+/u);
+  const word = context.matchBefore(/[\p{L}\p{N}_@]+/u);
   if (!word) return null;
   const options: Completion[] = [
     ...props.allowedVars.map((v: any) => ({
@@ -289,12 +316,16 @@ const customAutocomplete = autocompletion({
   override: [completionSource],
 });
 /* ---------------------- 主题 ---------------------- */
-const maxHeightTheme = EditorView.theme({
+const Theme = EditorView.theme({
   '&': {
     // 针对整个编辑器容器 (.cm-editor)
     'max-height': `${props.maxHeight}px`,
     'min-height': `${props.minHeight}px`,
     height: '100%',
+  },
+  '.cm-content': {
+    'white-space': 'pre-wrap', // 支持换行
+    'word-break': 'break-word', // 单词内换行
   },
   '.cm-scroller': {
     overflow: 'auto', // 确保出现滚动条
@@ -303,7 +334,8 @@ const maxHeightTheme = EditorView.theme({
 
 /* ---------------------- 基础设置 ---------------------- */
 const basicSetup = (() => [
-  maxHeightTheme,
+  Theme,
+  EditorView.lineWrapping,
   lineNumbers(),
   highlightActiveLineGutter(),
   highlightSpecialChars(),
@@ -338,6 +370,7 @@ const basicSetup = (() => [
 
 /* ---------------------- 生命周期 ---------------------- */
 defineExpose({
+  insertAtMousePosition,
   insertVariable,
   insertText,
   insertFunction,
