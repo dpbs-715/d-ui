@@ -1,21 +1,18 @@
 <template>
-  <ElInput v-model="data" />
-  {{ flg }}<br>
+  <ElInput v-model="obj.data" />
   {{ obj.flg }}
-  <div ref="divRef" v-trunced="flg" class="test">
-    {{ data }}
+  <div v-trunced:flg="obj" class="test">
+    {{ obj.data }}
   </div>
 </template>
 
 <script setup lang="ts">
 import { vTrunced } from 'dlib-directives';
 import { ref } from 'vue';
-const flg = ref(false);
 const obj = ref({
   flg: false,
+  data: '',
 });
-const data = ref('');
-const divRef = ref();
 </script>
 <style scoped>
 .test {
