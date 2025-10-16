@@ -39,6 +39,10 @@ import { lintKeymap } from '@codemirror/lint';
 import jsep from 'jsep';
 import { FomaProps, type FunctionType, type VarType } from './Foma.types';
 
+defineOptions({
+  name: 'CommonFoma',
+});
+
 const model = defineModel<string>();
 const error = defineModel<string>('error');
 
