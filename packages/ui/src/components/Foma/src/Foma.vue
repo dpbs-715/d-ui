@@ -54,6 +54,16 @@ let view: EditorView | null = null;
 /* ---------------------- AST 校验 ---------------------- */
 function checkAST(node: any) {
   if (!node) return;
+  const invalidPatterns = ['++', '(+'];
+  if (invalidPatterns.some((pattern) => (model.value + '').includes(pattern))) {
+    throw new Error(`格式错误: 运算符使用错误`);
+  }
+
+  // 检查开头是否为运算符
+  if (model.value && /^[+/]/.test(model.value.trim())) {
+    throw new Error(`格式错误: 表达式不能以+运算符开头`);
+  }
+
   switch (node.type) {
     case 'Identifier':
       if (!props.allowedVars.map((o: VarType) => o.value).includes(node.name)) {

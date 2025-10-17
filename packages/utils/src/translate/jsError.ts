@@ -2,20 +2,20 @@ export function translateJsError(err: Error) {
   const msg = err.message;
 
   // 一元运算符缺少操作数
-  let unaryMatch = msg.match(/missing unaryOp argument at character (\d+)/);
+  const unaryMatch = msg.match(/missing unaryOp argument at character (\d+)/);
   if (unaryMatch) {
     const pos = unaryMatch[1];
     return `语法错误：一元运算符缺少操作数（位置：第 ${pos} 个字符）`;
   }
 
   //缺少表达式
-  let exprMatch = msg.match(/Expected expression after (.+) at character (\d+)/);
+  const exprMatch = msg.match(/Expected expression after (.+) at character (\d+)/);
   if (exprMatch) {
     const symbol = exprMatch[1];
     const pos = exprMatch[2];
     return `语法错误：在符号 '${symbol}' 后面缺少表达式（位置：第 ${pos} 个字符）`;
   }
-  // Expected ) at character 5
+  // Expected ) at character 9
   const ExpectedMatch = msg.match(/Expected (.+) at character (\d+)/);
   if (ExpectedMatch) {
     const symbol = ExpectedMatch[1];
@@ -23,7 +23,7 @@ export function translateJsError(err: Error) {
     return `语法错误：缺少 '${symbol}' （位置：第 ${pos} 个字符）`;
   }
   //变量名不能以数字开头
-  let varNameMatch = msg.match(
+  const varNameMatch = msg.match(
     /Variable names cannot start with a number \((.+?)\) at character (\d+)/,
   );
   if (varNameMatch) {
@@ -32,21 +32,21 @@ export function translateJsError(err: Error) {
     return `语法错误：变量名不能以数字开头（非法变量名：${varName}，位置：第 ${pos} 个字符）`;
   }
 
-  let unexpectedMatch = msg.match(/Unexpected "([^+\-*/%()]+?)" at character (\d+)/);
+  const unexpectedMatch = msg.match(/Unexpected (.+) at character (\d+)/);
   if (unexpectedMatch) {
     const symbol = unexpectedMatch[1];
     const pos = unexpectedMatch[2];
     return `语法错误：在第 ${pos} 个字符处遇到意外的 '${symbol}' 符号`;
   }
 
-  let unclosedMatch = msg.match(/Unclosed quote after "([^"]*?)" at character (\d+)/);
+  const unclosedMatch = msg.match(/Unclosed quote after "([^"]*?)" at character (\d+)/);
   if (unclosedMatch) {
     const symbol = unclosedMatch[1];
     const pos = unclosedMatch[2];
     return `语法错误：在第 ${pos} 个字符处遇到 '${symbol}' 字符串的引号没有闭合`;
   }
 
-  let bracketMatch = msg.match(/Unclosed ([^"]*?) at character (\d+)/);
+  const bracketMatch = msg.match(/Unclosed ([^"]*?) at character (\d+)/);
   if (bracketMatch) {
     const symbol = bracketMatch[1];
     const pos = bracketMatch[2];
