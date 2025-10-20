@@ -7,7 +7,7 @@
  * @param arg2 可选的关系表达式字符串（仅在第一种情况下使用）
  * @returns 第一种情况返回结构化的对象数组；第二种情况返回包含 relation 字符串和 nodes 数组的对象
  */
-function parseRelation(arg1: Record<string, any>[], arg2?: string) {
+export function relation(arg1: Record<string, any>[], arg2?: string) {
   // 情况1： parse(nodes, relationStr) -> 结构化数组
   if (Array.isArray(arg1) && typeof arg2 === 'string') {
     const nodesMap = Object.fromEntries(arg1.map((n) => [n.id, { ...n }]));
