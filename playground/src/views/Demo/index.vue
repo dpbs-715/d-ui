@@ -34,6 +34,7 @@ setTimeout(() => {
     {{ item.label }}
   </button>
   {{ model }}
+
   <CommonFoma
     ref="CommonFomaRef"
     v-model="model"
