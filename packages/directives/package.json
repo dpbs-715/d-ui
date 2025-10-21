@@ -27,5 +27,8 @@
   },
   "peerDependencies": {
     "vue": "catalog:"
+  },
+  "dependencies": {
+    "resize-observer-polyfill": "catalog:"
   }
 }

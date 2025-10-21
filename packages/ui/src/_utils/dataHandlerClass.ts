@@ -342,21 +342,28 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   /**
    * 选项数据格式转化
    * */
+  valueTypeHandler(options: Record<any, any>[], type?: 'string' | 'String' | 'int' | 'Int') {
+    return options.map((o: any) => {
+      if (type === 'string' || type === 'String') {
+        o[this.VALUE_FIELD.value] = String(o[this.VALUE_FIELD.value]);
+      } else if (type === 'int' || type === 'Int') {
+        o[this.VALUE_FIELD.value] = Number(o[this.VALUE_FIELD.value]);
+      }
+      if (o.children) {
+        o.children = this.valueTypeHandler(o.children, type);
+      }
+      return o;
+    });
+  }
+
   processValueType(localOptions: Record<any, any>[]) {
     let props = toValue(this.props);
     let options = this.options;
     if (props.valueType || props.joinSplit) {
-      if (props.valueType === 'string' || props.valueType === 'String' || props.joinSplit) {
-        options.value = localOptions.map((o: any) => ({
-          ...o,
-          [this.VALUE_FIELD.value]: String(o[this.VALUE_FIELD.value]),
-        }));
-      } else if (props.valueType === 'int' || props.valueType === 'Int') {
-        options.value = localOptions.map((o: any) => ({
-          ...o,
-          [this.VALUE_FIELD.value]: Number(o[this.VALUE_FIELD.value]),
-        }));
-      }
+      options.value = this.valueTypeHandler(
+        localOptions,
+        props.joinSplit ? 'string' : props.valueType,
+      );
     } else {
       options.value = localOptions;
     }

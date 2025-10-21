@@ -1,0 +1,21 @@
+.editor {
+  padding: 5px;
+  border: var(--el-border);
+  border-radius: 6px;
+
+  :deep(.cm-var-block) {
+    display: inline-block;
+    padding: 0 4px;
+    margin: 0 1px;
+    font-weight: 500;
+    color: #07c;
+    cursor: pointer;
+    user-select: none;
+    background-color: #e0f3ff;
+    border-radius: 4px;
+  }
+
+  :deep(.ͼ1.cm-focused) {
+    outline: none;
+  }
+}

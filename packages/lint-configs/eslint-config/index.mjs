@@ -41,6 +41,7 @@ export default tseslint.config(
       '@typescript-eslint/no-explicit-any': 'warn', // 放宽对 any 的使用限制
       '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
+      'vue/max-attributes-per-line': 'off',
     },
   },
 );
