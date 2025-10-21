@@ -34,7 +34,6 @@ setTimeout(() => {
     {{ item.label }}
   </button>
   {{ model }}
-
   <CommonFoma
     ref="CommonFomaRef"
     v-model="model"
@@ -43,7 +42,6 @@ setTimeout(() => {
     :allowed-funs="funs"
     :allowed-vars="vars"
   />
-
   <div v-if="error" class="error">
     {{ error }}
   </div>
