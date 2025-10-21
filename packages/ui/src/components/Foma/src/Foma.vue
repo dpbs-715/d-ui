@@ -4,7 +4,7 @@
 
 <script setup lang="ts">
 import { translateJsError } from 'dlib-utils';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { EditorView, Decoration, WidgetType, keymap } from '@codemirror/view';
 import { EditorState, StateField, StateEffect, RangeSet } from '@codemirror/state';
 import {
@@ -46,6 +46,22 @@ defineOptions({
 const model = defineModel<string>();
 const error = defineModel<string>('error');
 
+let isInternalUpdate = false;
+
+// 修改 watch 逻辑
+watch(model, (newVal) => {
+  // 只有当不是内部更新时才执行
+  if (!isInternalUpdate && view && newVal !== undefined && newVal !== view.state.doc.toString()) {
+    view.dispatch({
+      changes: {
+        from: 0,
+        to: view.state.doc.length,
+        insert: newVal || '',
+      },
+    });
+  }
+});
+
 const props = defineProps(FomaProps);
 
 const editor = ref<HTMLDivElement | null>(null);
@@ -67,6 +83,12 @@ function checkAST(node: any) {
   switch (node.type) {
     case 'Identifier':
       if (!props.allowedVars.map((o: VarType) => o.value).includes(node.name)) {
+        //如果node.name命中了一个vars则报 格式错误
+        const allowedVarValues = props.allowedVars.map((o) => o.value);
+        if (allowedVarValues.some((name) => node.name.includes(name))) {
+          throw new Error(`格式错误: 变量拼接错误`);
+        }
+
         throw new Error(`未定义变量: ${node.name}`);
       }
       break;
@@ -202,6 +224,7 @@ const atomicRanges = EditorView.atomicRanges.of((view) => {
 const updateListener = EditorView.updateListener.of((update) => {
   if (update.docChanged) {
     const text = update.state.doc.toString();
+    isInternalUpdate = true;
     model.value = text;
     if (!props.checkRules) return;
     try {
@@ -210,6 +233,8 @@ const updateListener = EditorView.updateListener.of((update) => {
       error.value = '';
     } catch (e: any) {
       error.value = translateJsError(e);
+    } finally {
+      isInternalUpdate = false;
     }
   }
 });
