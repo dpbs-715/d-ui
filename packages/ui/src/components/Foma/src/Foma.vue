@@ -385,6 +385,38 @@ const Theme = EditorView.theme({
   },
 });
 
+/* ---------------------- readonly支持 ---------------------- */
+// 定义一个 effect 用于更新 readonly 状态
+const updateReadonlyEffect = StateEffect.define<boolean>();
+
+// 创建一个 StateField 来跟踪 readonly 状态
+const readonlyField = StateField.define<boolean>({
+  create() {
+    return props.readonly; // 初始值来自 props
+  },
+  update(value, tr) {
+    // 检查是否有更新 readonly 的 effect
+    for (let effect of tr.effects) {
+      if (effect.is(updateReadonlyEffect)) {
+        value = effect.value;
+      }
+    }
+    return value;
+  },
+  provide: (f) => EditorView.editable.from(f, (readonly) => !readonly), // 注意：editable 是 "是否可编辑"，所以取反
+});
+
+// 在 watch 中监听 props.readonly 的变化
+watch(
+  () => props.readonly,
+  (newReadonly) => {
+    if (view) {
+      view.dispatch({
+        effects: updateReadonlyEffect.of(newReadonly),
+      });
+    }
+  },
+);
 /* ---------------------- 基础设置 ---------------------- */
 const basicSetup = (() => [
   Theme,
@@ -397,7 +429,7 @@ const basicSetup = (() => [
   drawSelection(),
   dropCursor(),
   EditorState.allowMultipleSelections.of(true),
-  EditorState.readOnly.of(props.readonly),
+  readonlyField,
   indentOnInput(),
   syntaxHighlighting(defaultHighlightStyle, { fallback: true }),
   bracketMatching(),

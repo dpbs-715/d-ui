@@ -4,7 +4,7 @@ import { ref, reactive } from 'vue';
 const model = ref('code1+code2+code3');
 const error = ref('');
 const CommonFomaRef = ref();
-
+const readOnly = ref(false);
 const funs = reactive([
   { label: '函数1', value: 'MIX' },
   { label: '函数2', value: 'SUM' },
@@ -22,6 +22,7 @@ function insertVar(item: any) {
 setTimeout(() => {
   model.value = 'code1 + code2 + code3 + code1';
   vars.push({ label: '变量3', value: 'code3' });
+  readOnly.value = true;
 }, 2000);
 </script>
 
@@ -37,6 +38,7 @@ setTimeout(() => {
     ref="CommonFomaRef"
     v-model="model"
     v-model:error="error"
+    :readonly="readOnly"
     :allowed-funs="funs"
     :allowed-vars="vars"
   />
