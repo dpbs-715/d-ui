@@ -45,8 +45,8 @@ defineOptions({
 
 const model = defineModel<string>();
 const error = defineModel<string>('error');
-
 let isInternalUpdate = false;
+const props = defineProps(FomaProps);
 
 // 修改 watch 逻辑
 watch(model, (newVal) => {
@@ -61,8 +61,18 @@ watch(model, (newVal) => {
     });
   }
 });
-
-const props = defineProps(FomaProps);
+watch(
+  [() => props.allowedVars, () => props.allowedFuns],
+  () => {
+    if (view) {
+      // 使用专门的效果来更新装饰
+      view.dispatch({
+        effects: updateDecorationsEffect.of(undefined),
+      });
+    }
+  },
+  { deep: true },
+);
 
 const editor = ref<HTMLDivElement | null>(null);
 let view: EditorView | null = null;
@@ -189,6 +199,8 @@ function getDecosWidthBlock(text: string) {
   return decos;
 }
 
+const updateDecorationsEffect = StateEffect.define<void>();
+
 const variableField = StateField.define<RangeSet<Decoration>>({
   // state 参数可拿到初始文档，首次创建时就把已有 value 转为装饰
   create(state) {
@@ -202,7 +214,9 @@ const variableField = StateField.define<RangeSet<Decoration>>({
 
     // 当文档有改动或我们显式发出了 addVarEffect 时，重建整个装饰集合
     const hasAddVarEffect = tr.effects.some((e) => e.is(addVarEffect));
-    if (tr.docChanged || hasAddVarEffect) {
+    const shouldUpdateDecorations = tr.effects.some((e) => e.is(updateDecorationsEffect));
+
+    if (tr.docChanged || hasAddVarEffect || shouldUpdateDecorations) {
       const text = tr.newDoc.toString();
       return getDecosWidthBlock(text);
     }

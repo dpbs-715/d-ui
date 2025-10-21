@@ -20,7 +20,7 @@ function insertVar(item: any) {
   CommonFomaRef.value.insertVariable(item);
 }
 setTimeout(() => {
-  // model.value = '5198419849';
+  model.value = 'code1 + code2 + code3 + code1';
   vars.push({ label: '变量3', value: 'code3' });
 }, 2000);
 </script>
