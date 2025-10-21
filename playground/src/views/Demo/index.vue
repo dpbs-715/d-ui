@@ -33,7 +33,9 @@ setTimeout(() => {
   <button v-for="item in funs" :key="item.value" @click="insertFun(item)">
     {{ item.label }}
   </button>
+
   {{ model }}
+
   <CommonFoma
     ref="CommonFomaRef"
     v-model="model"
@@ -42,6 +44,7 @@ setTimeout(() => {
     :allowed-funs="funs"
     :allowed-vars="vars"
   />
+
   <div v-if="error" class="error">
     {{ error }}
   </div>
