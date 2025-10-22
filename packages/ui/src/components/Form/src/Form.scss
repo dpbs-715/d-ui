@@ -72,5 +72,16 @@
     --el-date-editor-width: 100%;
   }
 
+  :deep(.el-skeleton) {
+    position: absolute;
+    z-index: 1;
+  }
+
+  :deep(.el-skeleton),
+  :deep(.el-skeleton__item) {
+    width: 100%;
+    height: 100%;
+  }
+
   @include formStyle.col-style;
 }
