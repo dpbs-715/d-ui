@@ -143,17 +143,9 @@ const transformModel = defineComponent({
 </script>
 
 <template>
-  <el-form
-    v-bind="formProps"
-    :ref="collectFormRef"
-    class="commonForm"
-    :model="formData"
-  >
+  <el-form v-bind="formProps" :ref="collectFormRef" class="commonForm" :model="formData">
     <el-row :gutter="20">
-      <template
-        v-for="item in props.config"
-        :key="item.field"
-      >
+      <template v-for="item in props.config" :key="item.field">
         <el-col
           v-if="!isHidden(item, { formData: toValue(formData) })"
           :sm="checkSpan(item, formProps.col.sm)"
@@ -168,10 +160,8 @@ const transformModel = defineComponent({
             :label="item.label"
             v-bind="item.formItemProps"
           >
-            <slot
-              :name="item.field"
-              :config="item"
-            >
+            <el-skeleton v-if="formProps.loading" animated :rows="0" />
+            <slot :name="item.field" :config="item">
               <transformModel
                 :config="item"
                 :form-data="formData"

@@ -33,6 +33,7 @@ export interface CommonFormBaseProps {
   showMessage?: Boolean;
   validateOnRuleChange?: Boolean;
   hideRequiredAsterisk?: Boolean;
+  loading?: Boolean;
 }
 
 export interface CommonFormProps extends CommonFormBaseProps {
