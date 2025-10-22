@@ -55,6 +55,7 @@ export const zh = defineConfig({
           { text: 'Select 公共选择器', link: '/packages/ui/Select/index' },
           { text: 'SelectOrDialog 弹窗选择器', link: '/packages/ui/SelectOrDialog/index' },
           { text: 'Descriptions 描述列表', link: '/packages/ui/Descriptions/index' },
+          { text: 'foma 公式编辑器', link: '/packages/ui/Foma/index' },
         ],
       },
       {
@@ -69,7 +70,10 @@ export const zh = defineConfig({
       },
       {
         text: '指令（dlib-directives）',
-        items: [{ text: 'vFocus 聚焦', link: '/packages/directives/vFocus/index' }],
+        items: [
+          { text: 'vFocus 聚焦', link: '/packages/directives/vFocus/index' },
+          { text: 'vTrunced 是否截断', link: '/packages/directives/vTrunced/index' },
+        ],
       },
       {
         text: '工具函数（dlib-utils）',
@@ -80,6 +84,7 @@ export const zh = defineConfig({
           { text: '异步任务包装器', link: '/packages/utils/async/index' },
           { text: '缓存工具', link: '/packages/utils/cache/index' },
           { text: '克隆工具', link: '/packages/utils/clone/index' },
+          { text: '数据转化工具', link: '/packages/utils/parse/index' },
         ],
       },
     ],
