@@ -2,6 +2,12 @@
 import { ref, reactive } from 'vue';
 import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import type { CommonFormConfig } from '~/components';
+const options = ref([
+  {
+    label: 'label1',
+    value: 1,
+  },
+]);
 function mockFun() {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -30,6 +36,10 @@ const { config } = useConfigs<CommonFormConfig>([
   {
     field: 'test2',
     label: '测试2',
+    component: 'commonSelect',
+    props: {
+      options: options,
+    },
   },
   {
     field: 'test3',
@@ -56,9 +66,23 @@ const readonlyFlg = ref(false);
 function setReadonly() {
   readonlyFlg.value = !readonlyFlg.value;
 }
+setTimeout(() => {
+  options.value = [
+    {
+      label: 'label2',
+      value: 2,
+    },
+    {
+      label: 'label4',
+      value: 4,
+    },
+  ];
+}, 1000);
 </script>
 
 <template>
+  {{ formData }}
+  <el-select :options="options" />
   <el-button @click="loadingFun">
     loading
   </el-button>

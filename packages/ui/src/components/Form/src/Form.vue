@@ -114,6 +114,7 @@ function collectFormRef(instance: any) {
 const translateComponent: string[] = ['select', 'radioGroup', 'checkboxGroup', 'commonSelect'];
 
 const transformModel = defineComponent({
+  name: 'TransformModel',
   props: {
     config: {
       type: Object as PropType<CommonFormConfig>,
@@ -126,6 +127,9 @@ const transformModel = defineComponent({
   },
   emits: ['update:field'],
   setup: (props: any, { emit }: any) => {
+    let dataHandler: DataHandlerClass;
+    const readValue = ref('');
+
     return () => {
       const modelMap: Record<string, any> = {};
       const model = props.config.model;
@@ -135,7 +139,6 @@ const transformModel = defineComponent({
           emit('update:field', { field: model[key], value: val });
         };
       }
-
       //只读展示处理
       if (formProps.value.readonly) {
         const { valueField, labelField } = props.config.props ?? {};
@@ -146,15 +149,16 @@ const transformModel = defineComponent({
         }
         //需要处理的组件
         if (translateComponent.includes(component)) {
-          const dataHandler = new DataHandlerClass(props.config.props);
-          const show = ref();
-          dataHandler.afterInit = (options) => {
-            show.value = options.find(
-              (item: any) => item[valueField ?? DEFAULT_VALUE_FIELD] === props.formData[field],
-            )?.[labelField ?? DEFAULT_LABEL_FIELD];
-          };
+          if (!dataHandler) {
+            dataHandler = new DataHandlerClass(props.config.props);
+            dataHandler.afterInit = (options) => {
+              readValue.value = options.find(
+                (item: any) => item[valueField ?? DEFAULT_VALUE_FIELD] === props.formData[field],
+              )?.[labelField ?? DEFAULT_LABEL_FIELD];
+            };
+          }
           dataHandler.initOptions();
-          return () => toValue(show);
+          return readValue.value;
         } else {
           return props.formData[field];
         }
