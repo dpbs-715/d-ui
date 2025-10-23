@@ -1,4 +1,4 @@
-import { baseConfig } from '~/components';
+import { baseConfig, ComponentFunctionType, ComponentType } from '~/components';
 import { Arrayable } from 'element-plus/es/utils';
 import { FormItemRule, FormRules } from 'element-plus';
 import { Ref, ComputedRef } from 'vue';
@@ -7,7 +7,8 @@ type hiddenFunType = (params: Record<string, any>) => boolean;
 type rulesFunType = (params: Record<string, any>) => Arrayable<FormItemRule>;
 
 export type CommonFormConfig = Omit<baseConfig, 'component'> & {
-  component?: any;
+  readField?: string;
+  component?: string | ComponentFunctionType | ComponentType;
   span?: number;
   hidden?: boolean | hiddenFunType | Ref | ComputedRef;
   isDisabled?: Function;
@@ -38,6 +39,7 @@ export interface CommonFormBaseProps {
 
 export interface CommonFormProps extends CommonFormBaseProps {
   config?: CommonFormConfig[];
+  readonly?: Boolean;
   col?: {
     sm: number;
     md: number;

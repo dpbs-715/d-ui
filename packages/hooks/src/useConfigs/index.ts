@@ -7,9 +7,11 @@ export interface useConfigsResultType<T> {
   setPropsByField: (key: string, setProps: any) => void;
   setHidden: (fields: string[], state: boolean) => void;
   setDisabled: (fields: string[], state: boolean) => void;
-  setDisabledAll: (state: boolean) => void;
+  setDisabledAll: (state?: boolean) => void;
 }
-export function useConfigs<T extends baseConfig>(configData: T[]): useConfigsResultType<T> {
+export function useConfigs<T extends Omit<baseConfig, 'component'>>(
+  configData: T[],
+): useConfigsResultType<T> {
   const config: Reactive<T[]> = reactive(configData);
   const configMap: ComputedRef<Map<string, any>> = computed(() => {
     return new Map(config.map((item: any) => [item.field, item]));
@@ -60,7 +62,7 @@ export function useConfigs<T extends baseConfig>(configData: T[]): useConfigsRes
    * 设置全部字段禁用
    * @param state  隐藏隐藏状态
    * */
-  function setDisabledAll(state: boolean) {
+  function setDisabledAll(state: boolean = true) {
     Array.from(configMap.value.values()).forEach((item) => {
       if (item) {
         if (!item.props) {

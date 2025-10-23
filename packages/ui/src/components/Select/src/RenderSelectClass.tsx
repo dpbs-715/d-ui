@@ -124,6 +124,9 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   renderSelect(Com: any) {
     const loading = toValue(this.loading);
     let props = toValue(this.props);
+    if (Com.props.options) {
+      props.options = this.options.value;
+    }
     return (
       <Com
         ref={(instance: any) => (this.ref = instance)}

@@ -14,6 +14,11 @@ import {
 } from 'vue';
 import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
 import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';
+import {
+  DataHandlerClass,
+  DEFAULT_LABEL_FIELD,
+  DEFAULT_VALUE_FIELD,
+} from '~/_utils/dataHandlerClass.ts';
 defineOptions({
   name: 'CommonForm',
   inheritAttrs: false,
@@ -106,7 +111,10 @@ function collectFormRef(instance: any) {
   }
 }
 
+const translateComponent: string[] = ['select', 'radioGroup', 'checkboxGroup', 'commonSelect'];
+
 const transformModel = defineComponent({
+  name: 'TransformModel',
   props: {
     config: {
       type: Object as PropType<CommonFormConfig>,
@@ -119,6 +127,9 @@ const transformModel = defineComponent({
   },
   emits: ['update:field'],
   setup: (props: any, { emit }: any) => {
+    let dataHandler: DataHandlerClass;
+    const readValue = ref('');
+
     return () => {
       const modelMap: Record<string, any> = {};
       const model = props.config.model;
@@ -127,6 +138,30 @@ const transformModel = defineComponent({
         modelMap[`onUpdate:${key}`] = (val: any) => {
           emit('update:field', { field: model[key], value: val });
         };
+      }
+      //只读展示处理
+      if (formProps.value.readonly) {
+        const { valueField, labelField } = props.config.props ?? {};
+        const { readField, field, component } = props.config;
+        //如果设置了读取字段 直接返回
+        if (readField) {
+          return props.formData[readField];
+        }
+        //需要处理的组件
+        if (translateComponent.includes(component)) {
+          if (!dataHandler) {
+            dataHandler = new DataHandlerClass(props.config.props);
+            dataHandler.afterInit = (options) => {
+              readValue.value = options.find(
+                (item: any) => item[valueField ?? DEFAULT_VALUE_FIELD] === props.formData[field],
+              )?.[labelField ?? DEFAULT_LABEL_FIELD];
+            };
+          }
+          dataHandler.initOptions();
+          return readValue.value;
+        } else {
+          return props.formData[field];
+        }
       }
 
       return h(CreateComponent, {
@@ -157,7 +192,7 @@ const transformModel = defineComponent({
             style="width: 100%"
             :rules="getRules(item, { formData: toValue(formData) })"
             :prop="item.field"
-            :label="item.label"
+            :label="`${item.label}:`"
             v-bind="item.formItemProps"
           >
             <el-skeleton v-if="formProps.loading" animated :rows="0" />
