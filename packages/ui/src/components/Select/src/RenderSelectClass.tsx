@@ -134,6 +134,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
           label: this.LABEL_FIELD.value,
         }}
         {...props}
+        options={this.options.value}
         vModel={this.model.value}
       >
         {{

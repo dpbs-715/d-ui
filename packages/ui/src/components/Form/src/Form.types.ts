@@ -7,6 +7,7 @@ type hiddenFunType = (params: Record<string, any>) => boolean;
 type rulesFunType = (params: Record<string, any>) => Arrayable<FormItemRule>;
 
 export type CommonFormConfig = Omit<baseConfig, 'component'> & {
+  readField?: string;
   component?: any;
   span?: number;
   hidden?: boolean | hiddenFunType | Ref | ComputedRef;
@@ -38,6 +39,7 @@ export interface CommonFormBaseProps {
 
 export interface CommonFormProps extends CommonFormBaseProps {
   config?: CommonFormConfig[];
+  readonly?: Boolean;
   col?: {
     sm: number;
     md: number;
