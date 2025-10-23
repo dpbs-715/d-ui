@@ -41,18 +41,6 @@ const { config } = useConfigs<CommonFormConfig>([
       options: options,
     },
   },
-  {
-    field: 'test3',
-    label: '测试3',
-  },
-  {
-    field: 'test4',
-    label: '测试4',
-  },
-  {
-    field: 'test5',
-    label: '测试5',
-  },
 ]);
 const loading = ref(false);
 const formData = reactive({ test1: 1 });
