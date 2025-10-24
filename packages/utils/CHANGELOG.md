@@ -1,5 +1,11 @@
 # dlib-utils
 
+## 1.0.6
+
+### Patch Changes
+
+- 新增更多组件跟工具
+
 ## 1.0.5
 
 ### Patch Changes
