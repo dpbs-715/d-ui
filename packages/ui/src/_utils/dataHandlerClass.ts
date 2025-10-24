@@ -1,5 +1,12 @@
 import { computed, ComputedRef, Ref, ref, toValue, watch } from 'vue';
-import { asyncCacheWithHistory, CACHE_TYPE, isEmpty, isFunction } from 'dlib-utils';
+import {
+  asyncCacheWithHistory,
+  CACHE_TYPE,
+  isArray,
+  isEmpty,
+  isFunction,
+  isString,
+} from 'dlib-utils';
 import {
   commonKeysMap,
   componentDefaultPropsMap,
@@ -366,6 +373,34 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       );
     } else {
       options.value = localOptions;
+    }
+  }
+
+  getLabelByValue(value: string | number | string[] | number[]): string {
+    const options: Record<any, any> = toValue(this.options);
+    const props = toValue(this.props);
+
+    // 处理数组值或可分割的字符串值
+    if (isArray(value) || (isString(value) && !isEmpty(props.joinSplit))) {
+      let valueArr: (string | number)[];
+      if (isArray(value)) {
+        valueArr = value;
+      } else if (isString(value) && typeof props.joinSplit === 'string' && props.joinSplit) {
+        valueArr = value.split(props.joinSplit);
+      } else {
+        valueArr = [value];
+      }
+      return valueArr
+        .map((item: string | number) => {
+          const option = options.find((o: any) => o[this.VALUE_FIELD.value] === item);
+          return option ? option[this.LABEL_FIELD.value] : '';
+        })
+        .filter((label) => label !== undefined && label !== null && label !== '')
+        .join(',');
+    } else {
+      // 处理单个值的情况
+      const option = options.find((o: any) => o[this.VALUE_FIELD.value] === value);
+      return option ? option[this.LABEL_FIELD.value] : '';
     }
   }
 }

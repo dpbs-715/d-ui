@@ -29,8 +29,17 @@ const { config } = useConfigs<CommonFormConfig>([
     field: 'test1',
     label: '测试1',
     component: 'commonSelect',
+    model: {
+      label: 'label',
+    },
     props: {
       api: mockFun,
+      appendOptions: [
+        {
+          label: 'label5',
+          value: 5,
+        },
+      ],
     },
   },
   {
@@ -39,6 +48,42 @@ const { config } = useConfigs<CommonFormConfig>([
     component: 'commonSelect',
     props: {
       options: options,
+      multiple: true,
+      appendOptions: [
+        {
+          label: 'label5',
+          value: 5,
+        },
+      ],
+    },
+  },
+  {
+    field: 'test3',
+    label: '测试3',
+    component: 'checkboxGroup',
+    props: {
+      options: options,
+    },
+  },
+  {
+    field: 'test4',
+    label: '测试4',
+    component: 'commonSelectOrDialog',
+    props: {
+      options: options,
+      dialogFieldsConfig: [
+        {
+          label: '文字',
+          field: 'label',
+          table: true,
+          search: true,
+        },
+        {
+          label: '值',
+          field: 'value',
+          table: true,
+        },
+      ],
     },
   },
 ]);
