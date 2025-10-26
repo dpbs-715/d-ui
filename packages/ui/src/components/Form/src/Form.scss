@@ -74,7 +74,7 @@
 
   :deep(.el-skeleton) {
     position: absolute;
-    z-index: 1;
+    z-index: calc(var(--el-index-normal) + 1);
   }
 
   :deep(.el-skeleton),
