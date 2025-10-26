@@ -1,5 +1,11 @@
 # dlib-utils
 
+## 1.2.0
+
+### Minor Changes
+
+- 基础版本发布
+
 ## 1.0.6
 
 ### Patch Changes
