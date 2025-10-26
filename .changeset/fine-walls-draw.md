@@ -5,4 +5,4 @@
 'dlib-utils': patch
 ---
 
-集成github action
+接入action
