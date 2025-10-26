@@ -1,5 +1,11 @@
 # dlib-hooks
 
+## 1.2.0
+
+### Minor Changes
+
+- 基础版本发布
+
 ## 1.0.5
 
 ### Patch Changes
