@@ -22,7 +22,6 @@
     "build": "turbo run build",
     "build:docs": "pnpm -F @DLib/docs run build",
     "build:gulp": "gulp -f build/gulpfile.js",
-    "publish": "turbo run runPublish",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "release": "pnpm changeset:version && pnpm -r publish --access public",
