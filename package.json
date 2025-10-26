@@ -24,7 +24,7 @@
     "build:gulp": "gulp -f build/gulpfile.js",
     "changeset": "changeset",
     "changeset:version": "changeset version",
-    "publish": "turbo run runPublish",
+    "release": "turbo run runPublish",
     "lint:eslint": "eslint --max-warnings 0 \"**/*.{ts,tsx,js,jsx,cjs,mjs,vue}\" --fix",
     "lint:format": "prettier --write \"**/*.{js,jsx,cjs,ts,tsx,mjs,mts,md,vue,scss,css,less,html,json}\"",
     "lint:style": "stylelint \"**/*.{css,scss,less}\" --fix",
