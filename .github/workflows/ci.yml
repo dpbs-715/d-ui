@@ -1,4 +1,4 @@
-name: Deploy Pages
+name: 📃 Deploy Pages
 
 # 触发条件，push到master分支或者pull request到master分支
 on:
