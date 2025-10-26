@@ -34,6 +34,9 @@ jobs:
       - name: 🏗️ Build all packages
         run: pnpm run build
 
+      - name: 📌 changeset version
+        run: pnpm run changeset:version
+
       - name: 🚀 Release (Changesets)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
