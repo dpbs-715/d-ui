@@ -1,7 +1,8 @@
-import { computed, ComputedRef, onUnmounted, Reactive, reactive } from 'vue';
+import { computed, ComputedRef, getCurrentInstance, onUnmounted, Reactive, reactive } from 'vue';
 import { baseConfig } from 'dlib-ui';
 
 export interface useConfigsResultType<T> {
+  cleanup: () => void;
   config: Reactive<T[]>;
   getConfigByField: (field: string) => T | undefined;
   setPropsByField: (key: string, setProps: any) => void;
@@ -11,6 +12,7 @@ export interface useConfigsResultType<T> {
 }
 export function useConfigs<T extends Omit<baseConfig, 'component'>>(
   configData: T[],
+  autoCleanup = true,
 ): useConfigsResultType<T> {
   const config: Reactive<T[]> = reactive(configData);
   const configMap: ComputedRef<Map<string, any>> = computed(() => {
@@ -97,10 +99,16 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
     return configMap.value.get(key);
   }
 
-  onUnmounted(() => {
+  function cleanup() {
     config.splice(0);
-    configMap.value.clear();
-  });
+  }
+
+  const instance = getCurrentInstance();
+  if (instance && autoCleanup) {
+    onUnmounted(() => {
+      cleanup();
+    });
+  }
 
   return {
     setPropsByField,
@@ -109,5 +117,6 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
     setDisabled,
     setDisabledAll,
     config,
+    cleanup,
   } as useConfigsResultType<T>;
 }
