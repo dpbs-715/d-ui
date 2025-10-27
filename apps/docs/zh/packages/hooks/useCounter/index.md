@@ -4,4 +4,4 @@
 
 ## 基础用法
 
-<demo vue="hooks/useCounter/basic.vue" />
+<demo ssg="true" vue="hooks/useCounter/basic.vue" />

@@ -4,16 +4,16 @@
 
 ## 基础用法
 
-<demo vue="hooks/useConfigs/basic.vue" />
+<demo ssg="true" vue="hooks/useConfigs/basic.vue" />
 
 ## 设置字段隐藏
 
-<demo vue="hooks/useConfigs/setHidden.vue" />
+<demo ssg="true" vue="hooks/useConfigs/setHidden.vue" />
 
 ## 设置字段禁用
 
-<demo vue="hooks/useConfigs/setDisabled.vue" />
+<demo ssg="true" vue="hooks/useConfigs/setDisabled.vue" />
 
 ## 根据Field获取配置实例
 
-<demo vue="hooks/useConfigs/getConfigByField.vue" />
+<demo ssg="true" vue="hooks/useConfigs/getConfigByField.vue" />

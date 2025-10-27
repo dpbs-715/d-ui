@@ -2,13 +2,13 @@
 
 ## basic绑定数据 以绑定options为例
 
-<demo vue="ui/CommonSelectOrDialog/basic.vue" />
+<demo ssg="true" vue="ui/CommonSelectOrDialog/basic.vue" />
 
 ## dict类型
 
 > 一般getDictOptions通过全局注册的getDictOptions方法获取
 
-<demo vue="ui/CommonSelectOrDialog/dict.vue" />
+<demo ssg="true" vue="ui/CommonSelectOrDialog/dict.vue" />
 
 ## api类型
 
@@ -23,15 +23,15 @@ registerCommonKeysMap({
 });
 ```
 
-<demo vue="ui/CommonSelectOrDialog/api.vue" />
+<demo ssg="true" vue="ui/CommonSelectOrDialog/api.vue" />
 
 ## 选择数据确认前操作
 
-<demo vue="ui/CommonSelectOrDialog/beforeConfirm.vue" />
+<demo ssg="true" vue="ui/CommonSelectOrDialog/beforeConfirm.vue" />
 
 ## 多选
 
-<demo vue="ui/CommonSelectOrDialog/multiple.vue" />
+<demo ssg="true" vue="ui/CommonSelectOrDialog/multiple.vue" />
 
 ## CommonSelectDialog 属性 (Props)
 

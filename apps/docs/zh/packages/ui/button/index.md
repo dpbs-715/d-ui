@@ -4,15 +4,15 @@
 
 ## 尺寸
 
-<demo vue="ui/button/size.vue" />
+<demo ssg="true" vue="ui/button/size.vue" />
 
 ## 基础用法
 
-<demo vue="ui/button/basic.vue" />
+<demo ssg="true" vue="ui/button/basic.vue" />
 
 ## 定制化按钮
 
-<demo vue="ui/button/more.vue" />
+<demo ssg="true" vue="ui/button/more.vue" />
 
 ## Props
 

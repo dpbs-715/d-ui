@@ -18,15 +18,15 @@ registerComponentDefaultPropsMap({
 });
 ```
 
-<demo vue="ui/CommonSearch/registerProps.vue" />
+<demo ssg="true" vue="ui/CommonSearch/registerProps.vue" />
 
 ## props传入事件
 
-<demo vue="ui/CommonSearch/bindProps.vue" />
+<demo ssg="true" vue="ui/CommonSearch/bindProps.vue" />
 
 ## provide传入事件
 
-<demo vue="ui/CommonSearch/provide.vue" />
+<demo ssg="true" vue="ui/CommonSearch/provide.vue" />
 
 ## Props
 

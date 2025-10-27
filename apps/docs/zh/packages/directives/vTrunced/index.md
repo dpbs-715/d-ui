@@ -4,4 +4,4 @@
 
 ## 基础用法
 
-<demo vue="directives/vTrunced/basic.vue" />
+<demo ssg="true" vue="directives/vTrunced/basic.vue" />

@@ -4,7 +4,7 @@
 
 ## 基础使用
 
-<demo vue="ui/CommonPagination/basic.vue" />
+<demo ssg="true" vue="ui/CommonPagination/basic.vue" />
 
 ## Props
 

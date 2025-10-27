@@ -4,11 +4,11 @@
 
 ## 基础用法
 
-<demo vue="ui/dialog/basic.vue" />
+<demo ssg="true" vue="ui/dialog/basic.vue" />
 
 ## 命令式弹窗
 
-<demo vue="ui/dialog/renderDialog.vue" />
+<demo ssg="true" vue="ui/dialog/renderDialog.vue" />
 
 ## API
 

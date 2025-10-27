@@ -4,38 +4,38 @@
 
 ## 尺寸
 
-<demo vue="ui/CommonTable/size.vue" />
+<demo ssg="true" vue="ui/CommonTable/size.vue" />
 
 ## 基础使用
 
 下面案例使用了useConfigs拿到的config,内部用reactive包装了下,当然直接传入一个数组也可以
 推荐使用useConfigs后面不断扩展函数做一些数据操作
 
-<demo vue="ui/CommonTable/basic.vue" />
+<demo ssg="true" vue="ui/CommonTable/basic.vue" />
 
 ## 使用虚拟化
 
 使用虚拟化表格时注意外部容器需要确定高度宽度
 
-<demo vue="ui/CommonTable/tableV2.vue" />
+<demo ssg="true" vue="ui/CommonTable/tableV2.vue" />
 
 ## 支持原生的所有table组件用法
 
 会先渲染原生插槽 后追加config配置 操作列可以使用fixed定位到右边
 
-<demo vue="ui/CommonTable/elTable.vue" />
+<demo ssg="true" vue="ui/CommonTable/elTable.vue" />
 
 ## 启用序号
 
-<demo vue="ui/CommonTable/useIndex.vue" />
+<demo ssg="true" vue="ui/CommonTable/useIndex.vue" />
 
 ## 启用选择
 
-<demo vue="ui/CommonTable/useSelection.vue" />
+<demo ssg="true" vue="ui/CommonTable/useSelection.vue" />
 
 ## 多级表头
 
-<demo vue="ui/CommonTable/heads.vue" />
+<demo ssg="true" vue="ui/CommonTable/heads.vue" />
 
 ## 使用插槽
 
@@ -47,7 +47,7 @@
 
 需要特殊处理的可以使用插槽 根据field 作为插槽名使用
 
-<demo vue="ui/CommonTable/slots.vue" />
+<demo ssg="true" vue="ui/CommonTable/slots.vue" />
 
 ## 使用排序
 
@@ -61,13 +61,11 @@ registerComponentDefaultPropsMap({
 })
 ```
 
-<demo vue="ui/CommonTable/sort.vue" />
+<demo ssg="true" vue="ui/CommonTable/sort.vue" />
 
 ## 表头添加提示
 
-<ClientOnly>
-  <demo vue="ui/CommonTable/helpText.vue" />
-</ClientOnly>
+<demo ssg="true" vue="ui/CommonTable/helpText.vue" />
 
 ## 自定义头部渲染
 
@@ -84,7 +82,7 @@ function renderHeaderScope({ $index, column, store, _self }, { configItem, index
 }
 ```
 
-<demo vue="ui/CommonTable/renderHeaderScope.vue" />
+<demo ssg="true" vue="ui/CommonTable/renderHeaderScope.vue" />
 
 ## 单元格formatter
 
@@ -94,7 +92,7 @@ function formatter(rowData) {
 }
 ```
 
-<demo vue="ui/CommonTable/formatter.vue" />
+<demo ssg="true" vue="ui/CommonTable/formatter.vue" />
 
 ## 单元格自定义渲染
 
@@ -108,7 +106,7 @@ function cellRenderer({ cellData, column, rowData, rowIndex, tableData }) {
 }
 ```
 
-<demo vue="ui/CommonTable/cellRenderer.vue" />
+<demo ssg="true" vue="ui/CommonTable/cellRenderer.vue" />
 
 ## 隐藏列
 
@@ -121,7 +119,7 @@ function hidden({ configItem, tableData }) {
 }
 ```
 
-<demo vue="ui/CommonTable/hidden.vue" />
+<demo ssg="true" vue="ui/CommonTable/hidden.vue" />
 
 ## 组件切换
 
@@ -135,11 +133,11 @@ function component({ cellData, column, rowData, rowIndex, tableData }) {
 }
 ```
 
-<demo vue="ui/CommonTable/changeComponent.vue" />
+<demo ssg="true" vue="ui/CommonTable/changeComponent.vue" />
 
 ## 字段可编辑
 
-<demo vue="ui/CommonTable/edit.vue" />
+<demo ssg="true" vue="ui/CommonTable/edit.vue" />
 
 ## 禁用单元格
 
@@ -155,15 +153,15 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 }
 ```
 
-<demo vue="ui/CommonTable/disabled.vue" />
+<demo ssg="true" vue="ui/CommonTable/disabled.vue" />
 
 ## 字段校验
 
-<demo vue="ui/CommonTable/rules.vue" />
+<demo ssg="true" vue="ui/CommonTable/rules.vue" />
 
 ## 行拖拽排序
 
-<demo vue="ui/CommonTable/drag.vue" />
+<demo ssg="true" vue="ui/CommonTable/drag.vue" />
 
 ## Table Props
 

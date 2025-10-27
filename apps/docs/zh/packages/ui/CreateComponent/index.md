@@ -4,27 +4,27 @@
 
 ## 基础用法
 
-<demo vue="ui/CreateComponent/basic.vue" />
+<demo ssg="true" vue="ui/CreateComponent/basic.vue" />
 
 ## 未找到组件展示
 
-<demo vue="ui/CreateComponent/emptyText.vue" />
+<demo ssg="true" vue="ui/CreateComponent/emptyText.vue" />
 
 ## 设置属性
 
-<demo vue="ui/CreateComponent/props.vue" />
+<demo ssg="true" vue="ui/CreateComponent/props.vue" />
 
 ## 设置插槽
 
-<demo vue="ui/CreateComponent/slots.vue" />
+<demo ssg="true" vue="ui/CreateComponent/slots.vue" />
 
 ## 嵌套
 
-<demo vue="ui/CreateComponent/children.vue" />
+<demo ssg="true" vue="ui/CreateComponent/children.vue" />
 
 ## options
 
-<demo vue="ui/CreateComponent/options.vue" />
+<demo ssg="true" vue="ui/CreateComponent/options.vue" />
 
 ## 按需注册组件
 
@@ -42,7 +42,7 @@ const config = {
 //函数式组件切换主要针对列表使用 正常直接修改component值即可
 ```
 
-<demo vue="ui/CreateComponent/registerComponent.vue" />
+<demo ssg="true" vue="ui/CreateComponent/registerComponent.vue" />
 
 ## 统一设置属性
 
@@ -56,7 +56,7 @@ registerComponentDefaultPropsMap({
 });
 ```
 
-<demo vue="ui/CreateComponent/registerProps.vue" />
+<demo ssg="true" vue="ui/CreateComponent/registerProps.vue" />
 
 ## 统一设置插槽
 
@@ -68,7 +68,7 @@ registerComponentDefaultSlotsMap({
 });
 ```
 
-<demo vue="ui/CreateComponent/registerSlots.vue" />
+<demo ssg="true" vue="ui/CreateComponent/registerSlots.vue" />
 
 ## 统一设置事件
 
@@ -82,7 +82,7 @@ registerComponentDefaultEventsMap({
 });
 ```
 
-<demo vue="ui/CreateComponent/registerEvents.vue" />
+<demo ssg="true" vue="ui/CreateComponent/registerEvents.vue" />
 
 ## Props
 

@@ -4,4 +4,4 @@
 
 ## 基础用法
 
-<demo vue="hooks/useMixConfig/basic.vue" />
+<demo ssg="true" vue="hooks/useMixConfig/basic.vue" />
