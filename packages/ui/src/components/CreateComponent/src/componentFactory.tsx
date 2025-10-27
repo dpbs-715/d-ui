@@ -14,14 +14,16 @@ import {
  * 根据提供的配置对象渲染一个组件或返回相应的字符串
  * 主要用于动态组件的渲染，处理组件属性、事件、和插槽
  * @param config 配置对象，包含组件信息、属性和插槽
- * @param comProps
  * @param comSlots 可选参数，组件的插槽
+ * @param baseProps 基础参数
+ * @param emit 事件
  * @returns 返回渲染后的虚拟节点、字符串或null
  */
 function renderConfig(
   config: Config | string,
   comSlots?: any,
   baseProps?: any,
+  emit?: any,
 ): VNode | string | null {
   // 如果配置为空，返回null
   if (!config) return null;
@@ -102,11 +104,26 @@ function renderConfig(
    * 使用h函数创建并返回虚拟节点
    * 这里使用vue特性 将默认参数继承到了根节点  所以不用再声明了
    * */
-  return h(Comp, { ...normalProps, ...eventProps, ref: getRef }, slotsMap);
+
+  const handleInput = (value: any) => {
+    emit('update:modelValue', value);
+  };
+  return h(
+    Comp,
+    {
+      ...normalProps,
+      ...eventProps,
+      ref: getRef,
+      modelValue: baseProps.modelValue,
+      'onUpdate:modelValue': handleInput,
+    },
+    slotsMap,
+  );
 }
 
 export default defineComponent({
   name: 'CreateComponent',
+  emits: ['update:modelValue'],
   props: {
     config: {
       type: Object as PropType<Config>,
@@ -116,8 +133,12 @@ export default defineComponent({
       type: String,
       required: false,
     },
+    modelValue: {
+      type: [String, Number, Boolean, Object, Array, null] as PropType<any>,
+      default: undefined,
+    },
   },
-  setup(props, { slots }) {
-    return () => renderConfig(props.config, slots, props);
+  setup(props, { slots, emit }) {
+    return () => renderConfig(props.config, slots, props, emit);
   },
 });

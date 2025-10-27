@@ -4,19 +4,19 @@
 
 ## 基础用法
 
-<demo vue="ui/CommonDescriptions/basic.vue" />
+<demo ssg="true" vue="ui/CommonDescriptions/basic.vue" />
 
 ## 格式化
 
-<demo vue="ui/CommonDescriptions/formatter.vue" />
+<demo ssg="true" vue="ui/CommonDescriptions/formatter.vue" />
 
 ## 渲染组件
 
-<demo vue="ui/CommonDescriptions/component.vue" />
+<demo ssg="true" vue="ui/CommonDescriptions/component.vue" />
 
 ## 字段插槽
 
-<demo vue="ui/CommonDescriptions/slots.vue" />
+<demo ssg="true" vue="ui/CommonDescriptions/slots.vue" />
 
 ## Descriptions 属性
 

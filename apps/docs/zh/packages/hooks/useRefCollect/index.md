@@ -4,4 +4,4 @@
 
 ## 基础用法
 
- <demo vue="hooks/useRefCollect/basic.vue" />
+ <demo ssg="true" vue="hooks/useRefCollect/basic.vue" />

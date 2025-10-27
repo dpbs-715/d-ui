@@ -2,4 +2,4 @@
 
 ## 基础使用
 
- <demo vue="ui/CommonTableFieldsConfig/basic.vue" />
+ <demo ssg="true" vue="ui/CommonTableFieldsConfig/basic.vue" />

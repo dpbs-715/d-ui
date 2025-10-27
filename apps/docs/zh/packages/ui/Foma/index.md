@@ -12,15 +12,15 @@
 
 ## 基础使用
 
-<demo vue="ui/CommonFoma/basic.vue" />
+<demo ssg="true" vue="ui/CommonFoma/basic.vue" />
 
 ## 只读
 
-<demo vue="ui/CommonFoma/readonly.vue" />
+<demo ssg="true" vue="ui/CommonFoma/readonly.vue" />
 
 ## 关闭校验
 
-<demo vue="ui/CommonFoma/checkRules.vue" />
+<demo ssg="true" vue="ui/CommonFoma/checkRules.vue" />
 
 ### Props
 

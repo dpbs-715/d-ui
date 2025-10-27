@@ -4,80 +4,80 @@
 
 ## 基础使用
 
-<demo vue="ui/CommonSelect/basic.vue" />
+<demo ssg="true" vue="ui/CommonSelect/basic.vue" />
 
 ## 组件类型
 
-<demo vue="ui/CommonSelect/componentType.vue" />
+<demo ssg="true" vue="ui/CommonSelect/componentType.vue" />
 
 ## 多选
 
-<demo vue="ui/CommonSelect/multiple.vue" />
+<demo ssg="true" vue="ui/CommonSelect/multiple.vue" />
 
 ## 多选添加分隔符
 
-<demo vue="ui/CommonSelect/joinSplit.vue" />
+<demo ssg="true" vue="ui/CommonSelect/joinSplit.vue" />
 
 ## 获取请求数据
 
 > 下面我们模拟一个请求  
 > 内部默认做了api的包装器 如果想自定义可以通过hooks asyncCache包装后传入会进行复写
 
-<demo vue="ui/CommonSelect/api.vue" />
+<demo ssg="true" vue="ui/CommonSelect/api.vue" />
 
 ## 请求结果字段对照
 
 > 如果请求结果不是value label形式 则使用labelField valueField 获取
 
-<demo vue="ui/CommonSelect/apiResultKey.vue" />
+<demo ssg="true" vue="ui/CommonSelect/apiResultKey.vue" />
 
 ## 结果的格式转化
 
 > 比如接口给出的数据是字符串 我们业务中存的是数字 可能就匹配不上 使用valueType
 
-<demo vue="ui/CommonSelect/valueType.vue" />
+<demo ssg="true" vue="ui/CommonSelect/valueType.vue" />
 
 ## 如果请求格式不一致或者value label等需要拼接
 
 > 使用parseData当然这个可以全局注册一下 开发中如果不满足 在config中复写下
 
-<demo vue="ui/CommonSelect/parseData.vue" />
+<demo ssg="true" vue="ui/CommonSelect/parseData.vue" />
 
 ## 字典
 
 > 首先需要在main.ts中全局注册下 这个项目的字典数据获取方法 注入这个getDictOptions参数 函数返回一个Promise 下面我们模拟下
 
-<demo vue="ui/CommonSelect/dict.vue" />
+<demo ssg="true" vue="ui/CommonSelect/dict.vue" />
 
 ## 请求参数/过滤options
 
 > 在api情况下是给传入的函数添加参数 并且query返回的数据变化会触发用新参数请求
 
-<demo vue="ui/CommonSelect/apiQuery.vue" />
+<demo ssg="true" vue="ui/CommonSelect/apiQuery.vue" />
 
-<demo vue="ui/CommonSelect/optionsQuery.vue" />
+<demo ssg="true" vue="ui/CommonSelect/optionsQuery.vue" />
 
-<demo vue="ui/CommonSelect/dictQuery.vue" />
+<demo ssg="true" vue="ui/CommonSelect/dictQuery.vue" />
 
 ## 等待全部query参数都有值时 获取数据
 
-<demo vue="ui/CommonSelect/needAllQueryParams.vue" />
+<demo ssg="true" vue="ui/CommonSelect/needAllQueryParams.vue" />
 
 ## 自动选中
 
 > 当数据只有一条时自动选中 只有api跟dict 才有效
 
-<demo vue="ui/CommonSelect/autoSelectFirst.vue" />
+<demo ssg="true" vue="ui/CommonSelect/autoSelectFirst.vue" />
 
 ## 追加选项
 
 > 追加选项 内部会去重
 
-<demo vue="ui/CommonSelect/appendOptions.vue" />
+<demo ssg="true" vue="ui/CommonSelect/appendOptions.vue" />
 
 ## 排序
 
-<demo vue="ui/CommonSelect/sort.vue" />
+<demo ssg="true" vue="ui/CommonSelect/sort.vue" />
 
 ## CommonSelect 属性 (Props)
 

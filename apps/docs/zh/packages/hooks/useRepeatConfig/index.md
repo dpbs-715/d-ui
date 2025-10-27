@@ -5,4 +5,4 @@
 
 ## 基础用法
 
- <demo vue="hooks/useRepeatConfig/basic.vue" />
+ <demo ssg="true" vue="hooks/useRepeatConfig/basic.vue" />

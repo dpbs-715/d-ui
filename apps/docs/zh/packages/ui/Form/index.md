@@ -4,7 +4,7 @@
 
 ## 基础使用
 
-<demo vue="ui/CommonForm/basic.vue" />
+<demo ssg="true" vue="ui/CommonForm/basic.vue" />
 
 ## 表单默认参数
 
@@ -28,33 +28,33 @@ registerComponentDefaultPropsMap({
 
 ## span设置宽度
 
- <demo vue="ui/CommonForm/span.vue" />
+ <demo ssg="true" vue="ui/CommonForm/span.vue" />
 
 ## 隐藏字段
 
-<demo vue="ui/CommonForm/hidden.vue" />
+<demo ssg="true" vue="ui/CommonForm/hidden.vue" />
 
 ## 切换组件
 
-<demo vue="ui/CommonForm/changeComponent.vue" />
+<demo ssg="true" vue="ui/CommonForm/changeComponent.vue" />
 
 ## 禁用字段
 
-<demo vue="ui/CommonForm/disabled.vue" />
+<demo ssg="true" vue="ui/CommonForm/disabled.vue" />
 
 ## 函数式配置参数
 
 例如elSelect的change事件 commonForm统一对函数式配置追加参数
 
-<demo vue="ui/CommonForm/functionArgs.vue" />
+<demo ssg="true" vue="ui/CommonForm/functionArgs.vue" />
 
 ## 字段插槽
 
-<demo vue="ui/CommonForm/fieldSlot.vue" />
+<demo ssg="true" vue="ui/CommonForm/fieldSlot.vue" />
 
 ## 校验规则
 
-<demo vue="ui/CommonForm/rules.vue" />
+<demo ssg="true" vue="ui/CommonForm/rules.vue" />
 
 ## API
 
