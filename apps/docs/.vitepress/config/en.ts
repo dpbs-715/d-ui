@@ -30,6 +30,14 @@ export const en = defineConfig({
         items: [{ text: 'Introduction', link: '/en/guide/' }],
       },
       {
+        text: 'usingExamples',
+        items: [{ text: 'sample', link: '/en/useDemo/' }],
+      },
+      {
+        text: '基础部分',
+        items: [{ text: 'Color', link: '/en/basic/' }],
+      },
+      {
         text: 'Components (dlib-ui)',
         items: [
           { text: 'Button', link: '/en/packages/ui/button/' },
@@ -47,6 +55,7 @@ export const en = defineConfig({
           { text: 'Select', link: '/en/packages/ui/Select/' },
           { text: 'SelectOrDialog', link: '/en/packages/ui/SelectOrDialog/' },
           { text: 'Descriptions', link: '/en/packages/ui/Descriptions/' },
+          { text: 'foma', link: '/en/packages/ui/Foma/' },
         ],
       },
       {
