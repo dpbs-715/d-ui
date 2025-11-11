@@ -1,122 +1,140 @@
 import { computed, ComputedRef, getCurrentInstance, onUnmounted, Reactive, reactive } from 'vue';
-import { baseConfig } from 'dlib-ui';
+import type { baseConfig } from 'dlib-ui';
 
-export interface useConfigsResultType<T> {
-  cleanup: () => void;
-  config: Reactive<T[]>;
-  getConfigByField: (field: string) => T | undefined;
-  setPropsByField: (key: string, setProps: any) => void;
-  setHidden: (fields: string[], state: boolean) => void;
-  setDisabled: (fields: string[], state: boolean) => void;
+type FieldKey<T> = T extends { field: infer F extends string } ? F : never;
+
+export interface UseConfigsResult<Item extends Omit<baseConfig, 'component'>>
+  extends UseConfigsTuple<Item> {
+  config: Reactive<Item[]>;
+  setHidden: (fields: FieldKey<Item>[], state: boolean) => void;
+  setDisabled: (fields: (FieldKey<Item> | `*${FieldKey<Item>}`)[], state: boolean) => void;
   setDisabledAll: (state?: boolean) => void;
+  setPropsByField: (field: FieldKey<Item>, props: Record<string, any>) => void;
+  getConfigByField: (field: FieldKey<Item>) => Item | undefined;
+  filterConfigs: (predicate: (item: Item) => boolean) => Item[];
+  cleanup: () => void;
 }
-export function useConfigs<T extends Omit<baseConfig, 'component'>>(
-  configData: T[],
+type UseConfigsTuple<Item> = [
+  Reactive<Item[]>,
+  (fields: FieldKey<Item>[], state: boolean) => void,
+  (fields: (FieldKey<Item> | `*${FieldKey<Item>}`)[], state: boolean) => void,
+  (state?: boolean) => void,
+  (field: FieldKey<Item>, props: Record<string, any>) => void,
+  (field: FieldKey<Item>) => Item | undefined,
+  (predicate: (item: Item) => boolean) => Item[],
+  () => void,
+];
+export function useConfigs<const T extends readonly Omit<baseConfig, 'component'>[]>(
+  initialConfig: T,
   autoCleanup = true,
-): useConfigsResultType<T> {
-  const config: Reactive<T[]> = reactive(configData);
-  const configMap: ComputedRef<Map<string, any>> = computed(() => {
-    return new Map(config.map((item: any) => [item.field, item]));
+): UseConfigsResult<T[number]> {
+  type Item = T[number];
+  type Field = Item['field'];
+
+  const config = reactive(initialConfig as unknown as Item[]) as Reactive<Item[]>;
+
+  const configMap: ComputedRef<Map<Field, Item>> = computed(() => {
+    return new Map<Field, Item>(config.map((item) => [item.field as Field, item]));
   });
-  const alwaysDisableFields = new Set();
+
+  const alwaysDisabled = new Set<Field>();
   /**
    * 根据key设置隐藏显示
    * @param fields 字段key数组
-   * @param state  隐藏隐藏状态
+   * @param hidden  隐藏隐藏状态
    * */
-  function setHidden(fields: string[], state: boolean) {
+  const setHidden: UseConfigsResult<Item>['setHidden'] = (fields, hidden) => {
     fields.forEach((field) => {
       const item: any = configMap.value.get(field);
-      if (item) {
-        item.hidden = state;
-      }
+      if (item) item.hidden = hidden;
     });
-  }
+  };
   /**
    * 根据key设置字段禁用
    * @param fields 字段key数组
-   * @param state  禁用状态
+   * @param disabled  禁用状态
    * */
-  function setDisabled(fields: string[], state: boolean) {
-    fields.forEach((field) => {
-      let alwaysDisableField = false;
-      if (field.startsWith('*')) {
-        alwaysDisableField = true;
-        field = field.substring(1);
-      }
-      const item: any = configMap.value.get(field);
-      if (item) {
-        if (!item.props) {
-          item.props = {};
-        }
-        if (alwaysDisableField) {
-          if (state) {
-            alwaysDisableFields.add(field);
-          } else {
-            alwaysDisableFields.delete(field);
-          }
-        }
-        item.props.disabled = state;
+  const setDisabled: UseConfigsResult<Item>['setDisabled'] = (fields, disabled) => {
+    fields.forEach((key) => {
+      // key 可能以 '*' 开头表示永久禁用/解除
+      let field = key as Field;
+      const isAlways = key.toString().startsWith('*');
+      if (isAlways) field = key.toString().slice(1) as Field;
+
+      const item = configMap.value.get(field);
+      if (!item) return;
+
+      // ensure props object exists
+      item.props ||= {};
+      item.props.disabled = disabled;
+
+      if (isAlways) {
+        disabled ? alwaysDisabled.add(field) : alwaysDisabled.delete(field);
       }
     });
-  }
+  };
   /**
    * 设置全部字段禁用
-   * @param state  隐藏隐藏状态
+   * @param disabled  隐藏隐藏状态
    * */
-  function setDisabledAll(state: boolean = true) {
+  const setDisabledAll: UseConfigsResult<Item>['setDisabledAll'] = (disabled = true) => {
     Array.from(configMap.value.values()).forEach((item) => {
       if (item) {
-        if (!item.props) {
-          item.props = {};
-        }
-        if (!alwaysDisableFields.has(item.field)) {
-          item.props.disabled = state;
+        item.props ||= {};
+        if (!alwaysDisabled.has(item.field)) {
+          item.props.disabled = disabled;
         }
       }
     });
-  }
-
+  };
   /**
    * 使用key设置字段props
-   * @param key  关键字
-   * @param setProps  设置字段的props
+   * @param field  关键字
+   * @param props  设置字段的props
    * */
-  function setPropsByField(key: string, setProps: Record<any, any>) {
-    const item: any = configMap.value.get(key);
-    if (!item['props']) {
-      item.props = {};
-    }
-    for (const propsKey in setProps) {
-      item.props[propsKey] = setProps[propsKey];
-    }
-  }
-
+  const setPropsByField: UseConfigsResult<Item>['setPropsByField'] = (field, props) => {
+    const item = configMap.value.get(field);
+    if (!item) return;
+    item.props ||= {};
+    Object.assign(item.props, props);
+  };
   /**
    * 使用key获取字段config对象
    * */
-  function getConfigByField(key: string) {
-    return configMap.value.get(key);
+  const getConfigByField: UseConfigsResult<Item>['getConfigByField'] = (field) =>
+    configMap.value.get(field);
+
+  const filterConfigs: UseConfigsResult<Item>['filterConfigs'] = (predicate) => {
+    const filtered = config.filter(predicate);
+    return reactive(filtered) as Reactive<Item[]>;
+  };
+
+  const cleanup: UseConfigsResult<Item>['cleanup'] = () => config.splice(0);
+
+  if (autoCleanup && getCurrentInstance()) {
+    onUnmounted(cleanup);
   }
 
-  function cleanup() {
-    config.splice(0);
-  }
-
-  const instance = getCurrentInstance();
-  if (instance && autoCleanup) {
-    onUnmounted(() => {
-      cleanup();
-    });
-  }
-
-  return {
-    setPropsByField,
-    getConfigByField,
-    setHidden,
-    setDisabled,
-    setDisabledAll,
-    config,
-    cleanup,
-  } as useConfigsResultType<T>;
+  return Object.assign(
+    [
+      config,
+      setHidden,
+      setDisabled,
+      setDisabledAll,
+      setPropsByField,
+      getConfigByField,
+      filterConfigs,
+      cleanup,
+    ],
+    {
+      config,
+      setHidden,
+      setDisabled,
+      setDisabledAll,
+      setPropsByField,
+      getConfigByField,
+      filterConfigs,
+      cleanup,
+    },
+  ) as unknown as UseConfigsResult<Item>;
 }
