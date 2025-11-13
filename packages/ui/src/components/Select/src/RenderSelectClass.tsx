@@ -124,8 +124,11 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   renderSelect(Com: any) {
     const loading = toValue(this.loading);
     let props = toValue(this.props);
+    let moreProps = {};
     if (Com.props.options) {
-      props.options = this.options.value;
+      moreProps = {
+        options: this.options.value,
+      };
     }
     return (
       <Com
@@ -137,6 +140,7 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
           label: this.LABEL_FIELD.value,
         }}
         {...props}
+        {...moreProps}
         vModel={this.model.value}
       >
         {{
