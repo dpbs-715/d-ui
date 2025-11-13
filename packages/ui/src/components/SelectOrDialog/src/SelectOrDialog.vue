@@ -109,52 +109,39 @@ dataHandler.afterInit = (options: any[]) => {
 /**
  * 处理数据选中状态
  * */
-function handlerDataSelections() {
-  nextTick(() => {
-    tableRef.value.clearSelection();
-  });
+async function handlerDataSelections() {
+  await nextTick();
+  tableRef.value.clearSelection();
   // 处理选中
   tableData.forEach((item) => {
     if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
-      nextTick(() => {
-        tableRef.value.toggleRowSelection(item);
-      });
+      tableRef.value.toggleRowSelection(item);
     }
   });
 }
-/**
- * 根据数组获取选中的值和标签
- * */
-function getValuesAndLabels(arr: Record<any, any>) {
-  let values: any[] = [],
-    labels: any[] = [];
-  arr.forEach((item: any) => {
-    values.push(item[dataHandler.VALUE_FIELD.value]);
-    labels.push(item[dataHandler.LABEL_FIELD.value]);
-  });
-  return [values, labels];
-}
+
 /**
  * 选中项修改
  * */
-function selectChange(selection: any) {
-  // 获取选中的值和标签
-  const [values, labels] = getValuesAndLabels(tableData);
-  //先过滤到当前列表所有数据
-  selections.value = selections.value.filter((value: any) => {
-    return !values.includes(value);
-  });
+function selectChange(selection: any[]) {
+  const valueKey = dataHandler.VALUE_FIELD.value;
+  const labelKey = dataHandler.LABEL_FIELD.value;
 
-  //再过滤到当前列表所有标签
-  labelSelections.value = labelSelections.value.filter((value: any) => {
-    return !labels.includes(value);
-  });
-  //添加选中数据、标签
-  selection.forEach((o: any) => {
-    selections.value.push(o[dataHandler.VALUE_FIELD.value]);
-    labelSelections.value.push(o[dataHandler.LABEL_FIELD.value]);
+  // 当前页 value、label 的快速集合
+  const currentPageValues = new Set(tableData.map((item) => item[valueKey]));
+  const currentPageLabels = new Set(tableData.map((item) => item[labelKey]));
+
+  // 过滤掉当前页旧选中项（保持原逻辑）
+  selections.value = selections.value.filter((v: string[]) => !currentPageValues.has(v));
+  labelSelections.value = labelSelections.value.filter((l: string[]) => !currentPageLabels.has(l));
+
+  // 添加当前页新的选中项
+  selection.forEach((row) => {
+    selections.value.push(row[valueKey]);
+    labelSelections.value.push(row[labelKey]);
   });
 }
+
 /**
  * 确认
  * */
@@ -171,8 +158,8 @@ async function confirmHandler(close: Function) {
       label.value = labelSelections.value;
     }
   } else {
-    model.value = selections.value[selections.value.length - 1];
-    label.value = labelSelections.value[labelSelections.value.length - 1];
+    model.value = selections.value.at(-1) ?? '';
+    label.value = labelSelections.value.at(-1) ?? '';
   }
 
   //2.执行各种change事件
@@ -188,11 +175,12 @@ async function confirmHandler(close: Function) {
     <CommonSelect
       v-model="model"
       v-model:label="label"
+      style="flex: 1"
       v-bind="{ ...props, ...attrs }"
     />
     <CommonButton
+      style=" flex-shrink: 0;margin-left: 5px"
       :disabled="props.disabled"
-      style="margin-left: 5px"
       type="primary"
       plain
       @click="open"
