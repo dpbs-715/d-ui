@@ -1,130 +1,62 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import type { CommonFormConfig } from '~/components';
-const options = ref([
+import { ElDivider } from 'element-plus';
+import type { CommonTableLayoutConfig } from 'dlib-ui';
+import { ref } from 'vue';
+
+const model = ref('');
+const modelLabel = ref('');
+const fieldConfig: CommonTableLayoutConfig[] = [
   {
-    label: 'label1',
-    value: 1,
+    label: '文字',
+    field: 'label',
+    table: true,
+    search: true,
   },
-]);
-function mockFun() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve([
-        {
-          label: 'label1',
-          value: 1,
-        },
-        {
-          label: 'label3',
-          value: 3,
-        },
-      ]);
-    }, 1000);
+  {
+    label: '值',
+    field: 'value',
+    table: true,
+  },
+];
+
+function mockApi({ pageNo, _pageSize }) {
+  const arr = [];
+  for (let i = 10 * (pageNo - 1); i < pageNo * 10; i++) {
+    arr.push({
+      label: `label${i}`,
+      value: `value${i}`,
+    });
+  }
+  return Promise.resolve({
+    list: arr,
+    total: 50,
   });
 }
-const { config } = useConfigs<CommonFormConfig>([
-  {
-    field: 'test1',
-    label: '测试1',
-    component: 'commonSelect',
-    model: {
-      label: 'label',
-    },
-    props: {
-      api: mockFun,
-      appendOptions: [
-        {
-          label: 'label5',
-          value: 5,
-        },
-      ],
-    },
-  },
-  {
-    field: 'test2',
-    label: '测试2',
-    component: 'commonSelect',
-    props: {
-      options: options,
-      multiple: true,
-      appendOptions: [
-        {
-          label: 'label5',
-          value: 5,
-        },
-      ],
-    },
-  },
-  {
-    field: 'test3',
-    label: '测试3',
-    component: 'checkboxGroup',
-    props: {
-      options: options,
-    },
-  },
-  {
-    field: 'test4',
-    label: '测试4',
-    component: 'commonSelectOrDialog',
-    props: {
-      options: options,
-      dialogFieldsConfig: [
-        {
-          label: '文字',
-          field: 'label',
-          table: true,
-          search: true,
-        },
-        {
-          label: '值',
-          field: 'value',
-          table: true,
-        },
-      ],
-    },
-  },
-]);
-const loading = ref(false);
-const formData = reactive({ test1: 1 });
-function loadingFun() {
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-  }, 5000);
-}
-const readonlyFlg = ref(false);
-function setReadonly() {
-  readonlyFlg.value = !readonlyFlg.value;
-}
+const queryParams = ref({});
 setTimeout(() => {
-  options.value = [
-    {
-      label: 'label2',
-      value: 2,
-    },
-    {
-      label: 'label4',
-      value: 4,
-    },
-  ];
-}, 1000);
+  queryParams.value = {
+    label: '123',
+  };
+}, 3000);
 </script>
 
 <template>
-  {{ formData }}
-  <el-select :options="options" />
-  <el-button @click="loadingFun">
-    loading
-  </el-button>
   <el-divider />
-  <el-button @click="setReadonly">
-    readonly
-  </el-button>
+  值:{{ model || '-' }}
+  <br>
+  文字:{{ modelLabel || '-' }}
   <el-divider />
-  <CommonForm v-model="formData" :readonly="readonlyFlg" :loading="loading" :config="config" />
+  <CommonSelectOrDialog
+    v-model:label="modelLabel"
+    v-model="model"
+    :query="() => queryParams"
+    multiple
+    :api="mockApi"
+    :dialog-fields-config="fieldConfig"
+    :dialog-props="{
+      title: '选择数据',
+    }"
+  />
 </template>
 
 <style scoped></style>
