@@ -21,11 +21,11 @@ console.log(table, search, form);
 </script>
 
 <template>
-  {{ table }}
+  {{ table.config }}
   <el-divider />
-  {{ search }}
+  {{ search.config }}
   <el-divider />
-  {{ form }}
+  {{ form.config }}
 </template>
 
 <style scoped></style>

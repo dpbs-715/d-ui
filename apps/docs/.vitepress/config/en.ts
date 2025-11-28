@@ -60,15 +60,32 @@ export const en = defineConfig({
       },
       {
         text: 'Hooks (dlib-hooks)',
-        items: [{ text: 'useCounter', link: '/en/packages/hooks/useCounter/' }],
+        items: [
+          { text: 'useCounter', link: '/en/packages/hooks/useCounter/' },
+          { text: 'useRefCollect', link: '/en/packages/hooks/useRefCollect/' },
+          { text: 'useConfigs', link: '/en/packages/hooks/useConfigs/' },
+          { text: 'useMixConfig', link: '/en/packages/hooks/useMixConfig/' },
+          { text: 'useRepeatConfig', link: '/en/packages/hooks/useRepeatConfig/' },
+        ],
       },
       {
         text: 'Directives (dlib-directives)',
-        items: [{ text: 'vFocus', link: '/en/packages/directives/vFocus/' }],
+        items: [
+          { text: 'vFocus', link: '/en/packages/directives/vFocus/' },
+          { text: 'vTrunced', link: '/en/packages/directives/vTrunced/' },
+        ],
       },
       {
         text: 'Utilities (dlib-utils)',
-        items: [{ text: 'String Utilities', link: '/en/packages/utils/string/' }],
+        items: [
+          { text: 'String Utilities', link: '/en/packages/utils/string/' },
+          { text: 'Array Utilities', link: '/en/packages/utils/array/' },
+          { text: 'Type Checking', link: '/en/packages/utils/is/' },
+          { text: 'Async Wrapper', link: '/en/packages/utils/async/' },
+          { text: 'Cache', link: '/en/packages/utils/cache/' },
+          { text: 'Clone', link: '/en/packages/utils/clone/' },
+          { text: 'Parse Utilities', link: '/en/packages/utils/parse/' },
+        ],
       },
     ],
   },
