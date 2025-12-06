@@ -66,6 +66,8 @@ export const en = defineConfig({
           { text: 'useConfigs', link: '/en/packages/hooks/useConfigs/' },
           { text: 'useMixConfig', link: '/en/packages/hooks/useMixConfig/' },
           { text: 'useRepeatConfig', link: '/en/packages/hooks/useRepeatConfig/' },
+          { text: 'useEventListener', link: '/en/packages/hooks/useEventListener/' },
+          { text: 'createContext', link: '/en/packages/hooks/createContext/' },
         ],
       },
       {
