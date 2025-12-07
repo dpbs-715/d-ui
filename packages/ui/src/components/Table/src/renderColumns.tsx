@@ -13,7 +13,8 @@ import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';
 import { ComputedRef, type SlotsType, toValue, withModifiers } from 'vue';
 import { QuestionFilled } from '@element-plus/icons-vue';
 
-const defaultColMinWidth = componentDefaultPropsMap.CommonTable.defaultColMinWidth;
+// Lazy getter for defaultColMinWidth to avoid initialization order issues in tests
+const getDefaultColMinWidth = () => componentDefaultPropsMap.CommonTable?.defaultColMinWidth ?? 150;
 
 export class RenderColumnsClass {
   props: ComputedRef<CommonTableProps>;
@@ -231,7 +232,7 @@ export class RenderColumnsClass {
         !isHidden(configItem, { tableData: toValue(this.data) }) && (
           <ElTableColumn
             sortable={hasChildren ? false : SORTABLE.value}
-            min-width={defaultColMinWidth}
+            min-width={getDefaultColMinWidth()}
             prop={configItem.field}
             key={index}
             sortOrders={SORT_ORDERS.value}
@@ -332,7 +333,7 @@ const mousedown = (configItem: CommonTableConfig) => {
   const moveFun = (e2: MouseEvent) => {
     e2.preventDefault();
     // 传入变化量控制宽度
-    changeColumnWidth?.(e2.movementX, configItem.width || defaultColMinWidth, configItem);
+    changeColumnWidth?.(e2.movementX, configItem.width || getDefaultColMinWidth(), configItem);
   };
   //移除监听
   const removeFun = () => {
@@ -361,7 +362,7 @@ const changeColumnWidth = (
       colWidth = curColWidth + width;
     }
     // 宽度不能小于最小值
-    const W = Math.max(colWidth, configItem.minWidth || defaultColMinWidth);
+    const W = Math.max(colWidth, configItem.minWidth || getDefaultColMinWidth());
     configItem.width = W;
   }
 };

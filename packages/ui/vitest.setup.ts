@@ -1,6 +1,21 @@
-import { beforeAll } from 'vitest';
+import { beforeAll, vi } from 'vitest';
 import { config } from '@vue/test-utils';
 import ElementPlus from 'element-plus';
+import defaultComponentProps from './src/components/CreateComponent/src/defaultComponentProps';
+
+// Mock componentDefaultPropsMap globally to prevent initialization errors
+vi.mock('./src/components/CreateComponent/src/defaultMap', () => ({
+  componentDefaultEventsMap: {},
+  componentDefaultPropsMap: defaultComponentProps,
+  componentDefaultSlotsMap: {},
+  commonKeysMap: {
+    page: 'pageNo',
+    size: 'pageSize',
+    total: 'total',
+    list: 'list',
+    defaultSize: 10,
+  },
+}));
 
 beforeAll(() => {
   // 全局注册 Element Plus
