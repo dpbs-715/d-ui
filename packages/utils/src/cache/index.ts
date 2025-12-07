@@ -32,8 +32,8 @@ export class Cache {
     }
 
     o = {
+      ...cacheData,
       [this.version]: {
-        ...cacheData,
         data,
         expireTime: this.expireTime,
         time: Date.now(),
