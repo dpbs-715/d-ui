@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { componentDefaultPropsMap, type Config, CreateComponent } from '~/components';
+import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
+import type { Config } from '~/components/CreateComponent/src/cc.types';
+import { CreateComponent } from '~/components/CreateComponent';
 import type { CommonFormConfig, CommonFormProps } from './Form.types';
 import {
   computed,
@@ -95,15 +97,22 @@ function getConfig(item: CommonFormConfig): Config {
 }
 
 function collectFormRef(instance: any) {
-  if (vm) {
-    formRef.value =
-      vm.exposeProxy =
-      vm.exposed =
-        {
-          ...(instance || {}),
-          validateForm,
-          getFormData: () => toValue(formData),
-        };
+  if (vm && vm.$) {
+    const exposed = {
+      ...(instance || {}),
+      validateForm,
+      getFormData: () => toValue(formData),
+    };
+    formRef.value = exposed;
+    vm.exposeProxy = exposed;
+    vm.exposed = exposed;
+  } else if (vm) {
+    // Fallback for testing environments where vm.$ might not be available
+    formRef.value = {
+      ...(instance || {}),
+      validateForm,
+      getFormData: () => toValue(formData),
+    };
   }
 }
 
