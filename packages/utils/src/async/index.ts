@@ -51,9 +51,9 @@ export function asyncCache(
           isPending: false,
         };
       }
-      let state = map[argsKey];
-      state?.resolve.push(resolve);
-      state?.reject.push(reject);
+      const state = map[argsKey]!; // 使用 const 并断言非空
+      state.resolve.push(resolve);
+      state.reject.push(reject);
       if (state.isPending) return;
       state.isPending = true;
 
@@ -62,8 +62,9 @@ export function asyncCache(
         cache = new Cache(cacheType, `${cacheKey}-${argsKey}`, version, expireTime);
       }
       const result = cache?.get();
-      if (result) {
-        state?.resolve.forEach((resolve: Function) => {
+      // 明确检查是否有缓存：null/undefined表示无缓存，其他值（包括falsy值）都是有效缓存
+      if (result !== null && result !== undefined) {
+        state.resolve.forEach((resolve: Function) => {
           resolve(result);
         });
         delete map[argsKey];
@@ -73,12 +74,15 @@ export function asyncCache(
       asyncFun(...args)
         .then((res) => {
           cache?.set(res);
-          state?.resolve.forEach((resolve: Function) => resolve(res));
+          // 使用本地 state 引用，确保回调能正确执行
+          state.resolve.forEach((resolve: Function) => resolve(res));
+          // 立即删除map条目，避免后续调用看到isPending=true
+          delete map[argsKey];
         })
         .catch((err) => {
-          state?.reject.forEach((reject: Function) => reject(err));
-        })
-        .finally(() => {
+          // 使用本地 state 引用
+          state.reject.forEach((reject: Function) => reject(err));
+          // 错误时也要删除map条目
           delete map[argsKey];
         });
     });

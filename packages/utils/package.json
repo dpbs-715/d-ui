@@ -13,14 +13,19 @@
   },
   "scripts": {
     "build": "rimraf dist && rollup -c rollup.config.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "clean": "rimraf .turbo node_modules dist",
     "runPublish": "pnpm publish"
   },
   "devDependencies": {
     "@DLib/typescript-config": "workspace:*",
     "@rollup/plugin-json": "catalog:",
+    "@vitest/coverage-v8": "3.2.4",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
-    "rollup-plugin-esbuild": "catalog:"
+    "rollup-plugin-esbuild": "catalog:",
+    "vitest": "catalog:"
   }
 }
