@@ -109,8 +109,8 @@ describe('useRepeatConfig', () => {
     collect('key1');
     collect('key2');
 
-    const config1 = getConfig('key1');
-    const config2 = getConfig('key2');
+    const config1: any = getConfig('key1');
+    const config2: any = getConfig('key2');
 
     config1?.setHidden(['name'], true);
 
