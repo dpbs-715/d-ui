@@ -126,7 +126,7 @@ export default defineComponent({
   emits: ['update:modelValue'],
   props: {
     config: {
-      type: Object as PropType<Config>,
+      type: [Object, String] as PropType<Config | string>,
       required: true,
     },
     emptyText: {
