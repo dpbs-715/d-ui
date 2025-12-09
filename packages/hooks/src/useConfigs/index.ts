@@ -12,6 +12,7 @@ export interface useConfigsResultType<T extends Omit<baseConfig, 'component'>>
   filterConfigs: (predicate: (item: T) => boolean) => Reactive<T[]>;
   cleanup: () => void;
 }
+
 type UseConfigsTuple<T> = [
   Reactive<T[]>,
   (fields: string[], state: boolean) => void,
@@ -22,6 +23,7 @@ type UseConfigsTuple<T> = [
   (predicate: (item: T) => boolean) => T[],
   () => void,
 ];
+
 export function useConfigs<T extends Omit<baseConfig, 'component'>>(
   initialConfig: T[],
   autoCleanup = true,
@@ -33,33 +35,23 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
   });
 
   const alwaysDisabled = new Set<string>();
-  /**
-   * 根据key设置隐藏显示
-   * @param fields 字段key数组
-   * @param hidden  隐藏隐藏状态
-   * */
+
   const setHidden: useConfigsResultType<T>['setHidden'] = (fields, hidden) => {
     fields.forEach((field) => {
       const item: any = configMap.value.get(field);
       if (item) item.hidden = hidden;
     });
   };
-  /**
-   * 根据key设置字段禁用
-   * @param fields 字段key数组
-   * @param disabled  禁用状态
-   * */
+
   const setDisabled: useConfigsResultType<T>['setDisabled'] = (fields, disabled) => {
     fields.forEach((key) => {
-      // key 可能以 '*' 开头表示永久禁用/解除
       let field = key as string;
-      const isAlways = key.toString().startsWith('*');
-      if (isAlways) field = key.toString().slice(1) as string;
+      const isAlways = key.startsWith('*');
+      if (isAlways) field = key.slice(1);
 
       const item = configMap.value.get(field);
       if (!item) return;
 
-      // ensure props object exists
       item.props ||= {};
       item.props.disabled = disabled;
 
@@ -68,34 +60,23 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
       }
     });
   };
-  /**
-   * 设置全部字段禁用
-   * @param disabled  隐藏隐藏状态
-   * */
+
   const setDisabledAll: useConfigsResultType<T>['setDisabledAll'] = (disabled = true) => {
-    Array.from(configMap.value.values()).forEach((item) => {
-      if (item) {
-        item.props ||= {};
-        if (!alwaysDisabled.has(item.field)) {
-          item.props.disabled = disabled;
-        }
+    config.forEach((item) => {
+      item.props ||= {};
+      if (!alwaysDisabled.has(item.field)) {
+        item.props.disabled = disabled;
       }
     });
   };
-  /**
-   * 使用key设置字段props
-   * @param field  关键字
-   * @param props  设置字段的props
-   * */
+
   const setPropsByField: useConfigsResultType<T>['setPropsByField'] = (field, props) => {
     const item = configMap.value.get(field);
     if (!item) return;
     item.props ||= {};
     Object.assign(item.props, props);
   };
-  /**
-   * 使用key获取字段config对象
-   * */
+
   const getConfigByField: useConfigsResultType<T>['getConfigByField'] = (field) =>
     configMap.value.get(field);
 
@@ -110,26 +91,29 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
     onUnmounted(cleanup);
   }
 
-  return Object.assign(
-    [
-      config,
-      setHidden,
-      setDisabled,
-      setDisabledAll,
-      setPropsByField,
-      getConfigByField,
-      filterConfigs,
-      cleanup,
-    ],
-    {
-      config,
-      setHidden,
-      setDisabled,
-      setDisabledAll,
-      setPropsByField,
-      getConfigByField,
-      filterConfigs,
-      cleanup,
+  // 核心：使用对象封装 + iterator 支持 tuple 解构
+  const api = {
+    config,
+    setHidden,
+    setDisabled,
+    setDisabledAll,
+    setPropsByField,
+    getConfigByField,
+    filterConfigs,
+    cleanup,
+
+    // tuple iterator（保持你的原有数组返回结构）
+    *[Symbol.iterator](): Iterator<any> {
+      yield config;
+      yield setHidden;
+      yield setDisabled;
+      yield setDisabledAll;
+      yield setPropsByField;
+      yield getConfigByField;
+      yield filterConfigs;
+      yield cleanup;
     },
-  ) as unknown as useConfigsResultType<T>;
+  };
+
+  return api as useConfigsResultType<T>;
 }
