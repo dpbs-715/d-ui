@@ -24,6 +24,14 @@ describe('useConfigs', () => {
     expect(config).toHaveLength(3);
     expect(config[0].field).toBe('name');
   });
+  it('should initialize with config', () => {
+    const initialConfig = createInitialConfig();
+    const [config, setHidden] = useConfigs(initialConfig);
+    expect(config).toHaveLength(3);
+    expect(config[0].field).toBe('name');
+    setHidden(['name'], true);
+    expect(config[0].hidden).toBe(true);
+  });
 
   it('should set hidden state for fields', () => {
     const initialConfig = createInitialConfig();
