@@ -97,22 +97,15 @@ function getConfig(item: CommonFormConfig): Config {
 }
 
 function collectFormRef(instance: any) {
-  if (vm && vm.$) {
-    const exposed = {
-      ...(instance || {}),
-      validateForm,
-      getFormData: () => toValue(formData),
-    };
-    formRef.value = exposed;
-    vm.exposeProxy = exposed;
-    vm.exposed = exposed;
-  } else if (vm) {
-    // Fallback for testing environments where vm.$ might not be available
-    formRef.value = {
-      ...(instance || {}),
-      validateForm,
-      getFormData: () => toValue(formData),
-    };
+  if (vm) {
+    formRef.value =
+      vm.exposeProxy =
+      vm.exposed =
+        {
+          ...(instance || {}),
+          validateForm,
+          getFormData: () => toValue(formData),
+        };
   }
 }
 
