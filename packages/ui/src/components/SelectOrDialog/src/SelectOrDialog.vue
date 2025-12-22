@@ -27,6 +27,7 @@ const labelSelections = ref<any>([]);
 const tableRef = ref();
 
 const dataHandler = new DataHandlerClass(props);
+dataHandler.init();
 const loading: Ref<Boolean> = dataHandler.loading;
 
 function open() {
@@ -102,7 +103,6 @@ dataHandler.afterInit = (options: any[]) => {
     tableData.splice(0, tableData.length, ...options);
     total.value = dataHandler.total;
   }
-
   handlerDataSelections();
 };
 
@@ -179,7 +179,7 @@ async function confirmHandler(close: Function) {
       v-bind="{ ...props, ...attrs }"
     />
     <CommonButton
-      style=" flex-shrink: 0;margin-left: 5px"
+      style="flex-shrink: 0; margin-left: 5px"
       :disabled="props.disabled"
       type="primary"
       plain
@@ -211,7 +211,6 @@ async function confirmHandler(close: Function) {
         <template #table>
           <CommonTable
             ref="tableRef"
-            v-model="tableData"
             :loading="dataHandler.loading"
             reserve-selection
             use-index
