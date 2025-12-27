@@ -68,3 +68,7 @@ catalog:
   'codemirror': ^6.0.2
   'jsep': ^1.4.0
   'resize-observer-polyfill': ^1.5.1
+  '@element-plus/icons-vue': ^2.3.1
+  '@vitest/coverage-v8': ^3.2.4
+  '@vue/test-utils': ^2.4.6
+  'jsdom': ^25.0.1

@@ -23,6 +23,7 @@ const label: any = defineModel('label');
 const visible = ref(false);
 const selections = ref<any>([]);
 const labelSelections = ref<any>([]);
+const isSettingSelection = ref(false); // 标志位：是否正在程序化设置选中状态
 
 const tableRef = ref();
 
@@ -32,9 +33,7 @@ const loading: Ref<Boolean> = dataHandler.loading;
 
 function open() {
   visible.value = true;
-  if (!isEmpty(model.value)) {
-    initSelection();
-  }
+  initSelection(); // 总是初始化选中状态，包括清空的情况
   searchFun();
 }
 /**
@@ -43,13 +42,19 @@ function open() {
 function initSelection() {
   selections.value = [];
   labelSelections.value = [];
+
+  // 如果 model.value 为空，保持 selections 为空数组
+  if (isEmpty(model.value)) {
+    return;
+  }
+
   if (props.multiple) {
     if (props.joinSplit) {
-      selections.value = model.value?.split(props.joinSplit);
-      labelSelections.value = label.value?.split(props.joinSplit);
+      selections.value = model.value.split(props.joinSplit);
+      labelSelections.value = label.value?.split(props.joinSplit) || [];
     } else {
       selections.value = model.value;
-      labelSelections.value = label.value;
+      labelSelections.value = label.value || [];
     }
   } else {
     selections.value = [model.value];
@@ -111,19 +116,28 @@ dataHandler.afterInit = (options: any[]) => {
  * */
 async function handlerDataSelections() {
   await nextTick();
+  if (!tableRef.value) return;
+
+  isSettingSelection.value = true; // 开始程序化设置选中状态
+
   tableRef.value.clearSelection();
   // 处理选中
   tableData.forEach((item) => {
     if (selections.value.includes(item[dataHandler.VALUE_FIELD.value])) {
-      tableRef.value.toggleRowSelection(item);
+      tableRef.value.toggleRowSelection(item, true);
     }
   });
+
+  isSettingSelection.value = false; // 结束程序化设置选中状态
 }
 
 /**
  * 选中项修改
  * */
 function selectChange(selection: any[]) {
+  // 如果是程序化设置选中状态，不处理，避免干扰 selections.value
+  if (isSettingSelection.value) return;
+
   const valueKey = dataHandler.VALUE_FIELD.value;
   const labelKey = dataHandler.LABEL_FIELD.value;
 
