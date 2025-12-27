@@ -31,7 +31,8 @@ const dataHandler = new DataHandlerClass(props);
 dataHandler.init();
 const loading: Ref<Boolean> = dataHandler.loading;
 
-function open() {
+async function open() {
+  await props.beforeOpen?.();
   visible.value = true;
   initSelection(); // 总是初始化选中状态，包括清空的情况
   searchFun();
