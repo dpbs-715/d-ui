@@ -22,9 +22,9 @@
   "devDependencies": {
     "@DLib/typescript-config": "workspace:*",
     "@rollup/plugin-json": "catalog:",
-    "@vitest/coverage-v8": "3.2.4",
-    "@vue/test-utils": "2.4.6",
-    "jsdom": "25.0.1",
+    "@vitest/coverage-v8": "catalog:",
+    "@vue/test-utils": "catalog:",
+    "jsdom": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "rollup-plugin-esbuild": "catalog:",

@@ -16,7 +16,7 @@
     "vue": "catalog:",
     "vue-router": "catalog:",
     "element-plus": "catalog:",
-    "@element-plus/icons-vue": "^2.3.1"
+    "@element-plus/icons-vue": "catalog:"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "catalog:",

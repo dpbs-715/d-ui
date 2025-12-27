@@ -22,7 +22,7 @@
   "devDependencies": {
     "@DLib/typescript-config": "workspace:*",
     "@rollup/plugin-json": "catalog:",
-    "@vitest/coverage-v8": "3.2.4",
+    "@vitest/coverage-v8": "catalog:",
     "rollup": "catalog:",
     "rollup-plugin-dts": "catalog:",
     "rollup-plugin-esbuild": "catalog:",
