@@ -103,10 +103,10 @@ watch(
  * 获取字典数据或者手动绑定的数据结果
  * */
 dataHandler.afterInit = (options: any[]) => {
+  tableData.splice(0, tableData.length, ...options);
   if (!props.api) {
-    tableData.splice(0, tableData.length, ...dataHandler.filterByQuery(options, queryParams));
+    total.value = 0;
   } else {
-    tableData.splice(0, tableData.length, ...options);
     total.value = dataHandler.total;
   }
   handlerDataSelections();
@@ -225,6 +225,7 @@ async function confirmHandler(close: Function) {
         </template>
         <template #table>
           <CommonTable
+            v-bind="props.tableProps"
             ref="tableRef"
             :loading="dataHandler.loading"
             reserve-selection
