@@ -6,8 +6,8 @@ import { CommonTableLayout } from '../../TableLayout';
 import { CommonSearch } from '../../Search';
 import { CommonTable } from '../../Table';
 import { CommonPagination } from '../../Pagination';
-import { defineModel, ref, nextTick, watch, type Ref, useAttrs } from 'vue';
-import type { SelectOrDialogProps } from './SelectOrDialog.types';
+import { defineModel, ref, watch, type Ref, useAttrs } from 'vue';
+import type { SelectOrDialogEmits, SelectOrDialogProps } from './SelectOrDialog.types';
 import { useMixConfig } from 'dlib-hooks';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { commonKeysMap } from '../../CreateComponent';
@@ -17,6 +17,9 @@ defineOptions({
   inheritAttrs: false,
 });
 const props = withDefaults(defineProps<SelectOrDialogProps>(), {});
+
+const emits = defineEmits<SelectOrDialogEmits>();
+
 const attrs = useAttrs();
 const model: any = defineModel();
 const label: any = defineModel('label');
@@ -103,10 +106,10 @@ watch(
  * 获取字典数据或者手动绑定的数据结果
  * */
 dataHandler.afterInit = (options: any[]) => {
+  tableData.splice(0, tableData.length, ...options);
   if (!props.api) {
-    tableData.splice(0, tableData.length, ...dataHandler.filterByQuery(options, queryParams));
+    total.value = 0;
   } else {
-    tableData.splice(0, tableData.length, ...options);
     total.value = dataHandler.total;
   }
   handlerDataSelections();
@@ -116,7 +119,6 @@ dataHandler.afterInit = (options: any[]) => {
  * 处理数据选中状态
  * */
 async function handlerDataSelections() {
-  await nextTick();
   if (!tableRef.value) return;
 
   isSettingSelection.value = true; // 开始程序化设置选中状态
@@ -147,8 +149,8 @@ function selectChange(selection: any[]) {
   const currentPageLabels = new Set(tableData.map((item) => item[labelKey]));
 
   // 过滤掉当前页旧选中项（保持原逻辑）
-  selections.value = selections.value.filter((v: string[]) => !currentPageValues.has(v));
-  labelSelections.value = labelSelections.value.filter((l: string[]) => !currentPageLabels.has(l));
+  selections.value = selections.value.filter((v: any[]) => !currentPageValues.has(v));
+  labelSelections.value = labelSelections.value.filter((l: any[]) => !currentPageLabels.has(l));
 
   // 添加当前页新的选中项
   selection.forEach((row) => {
@@ -178,10 +180,26 @@ async function confirmHandler(close: Function) {
   }
 
   //2.执行各种change事件
-  props.onChange?.(selections.value, labelSelections.value);
-  props.onChangeObj?.(tableRef.value.getSelectionRows());
-
+  emits('change', selections.value, labelSelections.value);
+  emits('changeObj', tableRef.value.getSelectionRows());
   close();
+}
+
+function selectHandler(_selection: any[], row: Record<any, any>) {
+  if (selections.value.some((v: any[]) => v === row[dataHandler.VALUE_FIELD.value])) {
+    emits('removeRow', row, tableData);
+  } else {
+    emits('addRow', row, tableData);
+  }
+}
+
+//当前页面选择全部
+function selectAllHandler(selection: any[]) {
+  if (selection.length === 0) {
+    emits('removePageRows', tableData);
+  } else {
+    emits('addPageRows', tableData);
+  }
 }
 </script>
 
@@ -204,6 +222,7 @@ async function confirmHandler(close: Function) {
     </CommonButton>
     <CommonDialog
       v-model="visible"
+      width="800px"
       title="数据选择"
       v-bind="props.dialogProps"
       @confirm="confirmHandler"
@@ -225,6 +244,7 @@ async function confirmHandler(close: Function) {
         </template>
         <template #table>
           <CommonTable
+            v-bind="props.tableProps"
             ref="tableRef"
             :loading="dataHandler.loading"
             reserve-selection
@@ -235,6 +255,8 @@ async function confirmHandler(close: Function) {
             :config="table.config"
             :data="tableData"
             @selection-change="selectChange"
+            @select="selectHandler"
+            @select-all="selectAllHandler"
           />
         </template>
         <template #pagination>

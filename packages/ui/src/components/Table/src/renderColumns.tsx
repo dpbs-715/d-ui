@@ -274,7 +274,14 @@ export class RenderColumnsClass {
    * */
   renderSelection() {
     if (this.props.value.useSelection) {
-      return <ElTableColumn align={'center'} type="selection" width={45} />;
+      return (
+        <ElTableColumn
+          align={'center'}
+          type="selection"
+          width={45}
+          selectable={this.props.value.selectable}
+        />
+      );
     }
   }
 }

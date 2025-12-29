@@ -128,4 +128,5 @@ export interface CommonTableProps {
   sortBy?: object;
   sortState?: object;
   useDrag?: Boolean;
+  selectable?: Function;
 }
