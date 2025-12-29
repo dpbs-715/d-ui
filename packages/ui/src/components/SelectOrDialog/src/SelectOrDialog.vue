@@ -183,6 +183,10 @@ async function confirmHandler(close: Function) {
 
   close();
 }
+
+function selectHandler(selection: any[], row: Record<any, any>) {
+  console.log(selection, row);
+}
 </script>
 
 <template>
@@ -204,6 +208,7 @@ async function confirmHandler(close: Function) {
     </CommonButton>
     <CommonDialog
       v-model="visible"
+      width="800px"
       title="数据选择"
       v-bind="props.dialogProps"
       @confirm="confirmHandler"
@@ -236,6 +241,7 @@ async function confirmHandler(close: Function) {
             :config="table.config"
             :data="tableData"
             @selection-change="selectChange"
+            @select="selectHandler"
           />
         </template>
         <template #pagination>
