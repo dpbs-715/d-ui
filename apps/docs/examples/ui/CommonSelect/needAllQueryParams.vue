@@ -46,11 +46,8 @@ const { form } = useMixConfig([
 </script>
 
 <template>
-  <el-divider>第一个字段是第二个字段的搜索条件</el-divider>
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <el-divider>等待全部参数加载完成,获取选项</el-divider>
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>
