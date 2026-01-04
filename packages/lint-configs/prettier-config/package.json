@@ -15,9 +15,9 @@
     "clean": "rimraf .turbo node_modules"
   },
   "devDependencies": {
-    "prettier": "catalog:"
+    "prettier": "catalog:dev"
   },
   "peerDependencies": {
-    "prettier": "catalog:"
+    "prettier": "catalog:dev"
   }
 }

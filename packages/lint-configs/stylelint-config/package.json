@@ -15,17 +15,17 @@
     "clean": "rimraf .turbo node_modules"
   },
   "devDependencies": {
-    "postcss": "catalog:",
-    "postcss-html": "catalog:",
-    "postcss-scss": "catalog:",
-    "stylelint": "catalog:",
-    "stylelint-config-recess-order": "catalog:",
-    "stylelint-config-recommended-vue": "catalog:",
-    "stylelint-config-standard": "catalog:",
-    "stylelint-config-standard-scss": "catalog:",
-    "stylelint-scss": "catalog:"
+    "postcss": "catalog:styles",
+    "postcss-html": "catalog:styles",
+    "postcss-scss": "catalog:styles",
+    "stylelint": "catalog:dev",
+    "stylelint-config-recess-order": "catalog:dev",
+    "stylelint-config-recommended-vue": "catalog:dev",
+    "stylelint-config-standard": "catalog:dev",
+    "stylelint-config-standard-scss": "catalog:dev",
+    "stylelint-scss": "catalog:dev"
   },
   "peerDependencies": {
-    "stylelint": "catalog:"
+    "stylelint": "catalog:dev"
   }
 }

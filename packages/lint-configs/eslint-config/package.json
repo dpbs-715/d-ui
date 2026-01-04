@@ -15,11 +15,11 @@
     "clean": "rimraf .turbo node_modules"
   },
   "devDependencies": {
-    "@eslint/js": "catalog:",
-    "eslint-plugin-vue": "catalog:",
-    "typescript-eslint": "catalog:"
+    "@eslint/js": "catalog:dev",
+    "eslint-plugin-vue": "catalog:dev",
+    "typescript-eslint": "catalog:dev"
   },
   "peerDependencies": {
-    "eslint": "catalog:"
+    "eslint": "catalog:dev"
   }
 }

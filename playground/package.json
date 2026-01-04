@@ -15,14 +15,14 @@
     "dlib-utils": "workspace:*",
     "vue": "catalog:",
     "vue-router": "catalog:",
-    "element-plus": "catalog:",
-    "@element-plus/icons-vue": "catalog:"
+    "element-plus": "catalog:ui",
+    "@element-plus/icons-vue": "catalog:ui"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "catalog:",
-    "sass": "catalog:",
+    "@vitejs/plugin-vue": "catalog:build",
+    "sass": "catalog:styles",
     "typescript": "catalog:",
-    "vite": "catalog:",
-    "@vitejs/plugin-vue-jsx": "catalog:"
+    "vite": "catalog:build",
+    "@vitejs/plugin-vue-jsx": "catalog:build"
   }
 }

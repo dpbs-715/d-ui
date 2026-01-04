@@ -21,14 +21,14 @@
   },
   "devDependencies": {
     "@DLib/typescript-config": "workspace:*",
-    "@rollup/plugin-json": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
-    "@vue/test-utils": "catalog:",
-    "jsdom": "catalog:",
-    "rollup": "catalog:",
-    "rollup-plugin-dts": "catalog:",
-    "rollup-plugin-esbuild": "catalog:",
-    "vitest": "catalog:",
+    "@rollup/plugin-json": "catalog:build",
+    "@vitest/coverage-v8": "catalog:dev",
+    "@vue/test-utils": "catalog:dev",
+    "jsdom": "catalog:dev",
+    "rollup": "catalog:build",
+    "rollup-plugin-dts": "catalog:build",
+    "rollup-plugin-esbuild": "catalog:build",
+    "vitest": "catalog:dev",
     "vue": "catalog:"
   },
   "peerDependencies": {
