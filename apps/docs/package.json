@@ -13,19 +13,19 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@element-plus/icons-vue": "catalog:",
+    "@element-plus/icons-vue": "catalog:ui",
     "dlib-directives": "workspace:*",
     "dlib-hooks": "workspace:*",
     "@DLib/typescript-config": "workspace:*",
     "dlib-ui": "workspace:*",
     "dlib-utils": "workspace:*",
-    "element-plus": "catalog:",
+    "element-plus": "catalog:ui",
     "vue": "catalog:"
   },
   "devDependencies": {
-    "sass": "catalog:",
+    "sass": "catalog:styles",
     "typescript": "catalog:",
-    "vitepress": "catalog:",
-    "vitepress-demo-plugin": "catalog:"
+    "vitepress": "catalog:docs",
+    "vitepress-demo-plugin": "catalog:docs"
   }
 }

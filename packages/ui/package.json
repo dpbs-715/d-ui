@@ -32,37 +32,37 @@
   },
   "devDependencies": {
     "@DLib/typescript-config": "workspace:*",
-    "@element-plus/icons-vue": "catalog:",
+    "@element-plus/icons-vue": "catalog:ui",
     "@types/node": "catalog:",
-    "@vitejs/plugin-vue": "catalog:",
-    "@vitejs/plugin-vue-jsx": "catalog:",
-    "@vitest/coverage-v8": "catalog:",
-    "@vue/test-utils": "catalog:",
-    "element-plus": "catalog:",
-    "jsdom": "catalog:",
-    "sass": "catalog:",
+    "@vitejs/plugin-vue": "catalog:build",
+    "@vitejs/plugin-vue-jsx": "catalog:build",
+    "@vitest/coverage-v8": "catalog:dev",
+    "@vue/test-utils": "catalog:dev",
+    "element-plus": "catalog:ui",
+    "jsdom": "catalog:dev",
+    "sass": "catalog:styles",
     "typescript": "catalog:",
-    "unplugin-vue-components": "catalog:",
-    "vite": "catalog:",
-    "vite-plugin-dts": "catalog:",
-    "vitest": "catalog:",
+    "unplugin-vue-components": "catalog:build",
+    "vite": "catalog:build",
+    "vite-plugin-dts": "catalog:build",
+    "vitest": "catalog:dev",
     "vue": "catalog:",
-    "vue-draggable-plus": "catalog:"
+    "vue-draggable-plus": "catalog:ui"
   },
   "peerDependencies": {
-    "@element-plus/icons-vue": "^2.3.1",
-    "element-plus": "catalog:",
-    "vue": "catalog:"
+    "@element-plus/icons-vue": "^2.3.0",
+    "element-plus": "^2.6.1",
+    "vue": "^3.5.0"
   },
   "dependencies": {
-    "@codemirror/autocomplete": "catalog:",
-    "@codemirror/commands": "catalog:",
-    "@codemirror/language": "catalog:",
-    "@codemirror/lint": "catalog:",
-    "@codemirror/search": "catalog:",
-    "@codemirror/state": "catalog:",
-    "@codemirror/view": "catalog:",
-    "codemirror": "catalog:",
-    "jsep": "catalog:"
+    "@codemirror/autocomplete": "catalog:ui",
+    "@codemirror/commands": "catalog:ui",
+    "@codemirror/language": "catalog:ui",
+    "@codemirror/lint": "catalog:ui",
+    "@codemirror/search": "catalog:ui",
+    "@codemirror/state": "catalog:ui",
+    "@codemirror/view": "catalog:ui",
+    "codemirror": "catalog:ui",
+    "jsep": "catalog:ui"
   }
 }

@@ -5,70 +5,90 @@ packages:
   - 'playground'
   - 'build'
 catalog:
-  'vue': ^3.5.13
-  'typescript': ^5.7.3
-  'vite': ^6.1.0
-  '@vitejs/plugin-vue': ^5.2.1
-  '@vitejs/plugin-vue-jsx': ^4.1.1
+  # Core Framework - 核心框架（使用 catalog: 引用）
+  vue: ^3.5.13
+  vue-router: ^4.5.1
+  typescript: ^5.7.3
   '@types/node': ^22.13.4
-  'sass': ^1.85.0
-  'vite-plugin-dts': ^4.5.0
-  'eslint': ^9.20.1
-  'prettier': ^3.5.1
-  'stylelint': ^16.14.1
-  'turbo': ^2.4.2
-  'rollup': ^4.34.7
-  '@rollup/plugin-json': ^6.1.0
-  '@rollup/plugin-terser': ^0.4.4
-  'rollup-plugin-dts': ^6.1.1
-  'rollup-plugin-esbuild': 6.2.0
-  'vitepress': ^1.6.3
-  'vitepress-demo-plugin': ^1.2.3
-  '@babel/preset-env': ^7.26.9
-  '@rollup/plugin-alias': ^5.1.1
-  '@rollup/plugin-babel': ^6.0.4
-  '@rollup/plugin-node-resolve': ^16.0.0
-  'gulp': ^5.0.0
-  'gulp-clean': ^0.4.0
-  'rollup-plugin-copy': ^3.5.0
-  'rollup-plugin-scss': ^4.0.1
-  'postcss': ^8.5.2
-  'postcss-html': ^1.8.0
-  'postcss-scss': ^4.0.9
-  'stylelint-config-recess-order': ^6.0.0
-  'stylelint-config-recommended-vue': ^1.6.0
-  'stylelint-config-standard': ^37.0.0
-  'stylelint-config-standard-scss': ^14.0.0
-  'stylelint-scss': ^6.11.0
-  '@eslint/js': 9.20.0
-  'eslint-plugin-vue': ^9.32.0
-  'typescript-eslint': ^8.24.0
-  '@changesets/cli': ^2.27.12
-  '@commitlint/cli': ^19.7.1
-  '@commitlint/config-conventional': ^19.7.1
-  'husky': ^9.1.7
-  'lint-staged': ^15.4.3
-  'vitest': ^3.0.5
-  '@ant-design/icons-vue': ^7.0.1
-  'ant-design-vue': ^4.2.6
-  'vue-router': ^4.5.1
-  'rimraf': ^6.0.1
-  'ts-node':  ^10.9.2
-  'element-plus': ^2.6.1
-  'unplugin-vue-components': ^0.27.1
-  'vue-draggable-plus': ^0.6.0
-  '@codemirror/lang-javascript': ^6.2.4
-  '@codemirror/state': ^6.5.2
-  '@codemirror/view': ^6.38.5
-  '@codemirror/autocomplete': ^6.19.0
-  '@codemirror/commands': ^6.9.0
-  '@codemirror/language': ^6.11.3
-  '@codemirror/lint': ^6.9.0
-  '@codemirror/search': ^6.5.11
-  'codemirror': ^6.0.2
-  'jsep': ^1.4.0
-  'resize-observer-polyfill': ^1.5.1
-  '@element-plus/icons-vue': ^2.3.1
-  '@vitest/coverage-v8': ^3.2.4
-  '@vue/test-utils': ^2.4.6
-  'jsdom': ^25.0.1
+
+catalogs:
+  # Build Tools - 构建工具（使用 catalog:build 引用）
+  build:
+    vite: ^7.1.11
+    '@vitejs/plugin-vue': ^5.2.1
+    '@vitejs/plugin-vue-jsx': ^4.1.1
+    vite-plugin-dts: ^4.5.0
+    unplugin-vue-components: ^0.27.1
+    turbo: ^2.4.2
+    rollup: ^4.34.7
+    '@rollup/plugin-json': ^6.1.0
+    '@rollup/plugin-terser': ^0.4.4
+    '@rollup/plugin-alias': ^5.1.1
+    '@rollup/plugin-babel': ^6.0.4
+    '@rollup/plugin-node-resolve': ^16.0.0
+    rollup-plugin-dts: ^6.1.1
+    rollup-plugin-esbuild: 6.2.0
+    rollup-plugin-copy: ^3.5.0
+    rollup-plugin-scss: ^4.0.1
+    '@babel/preset-env': ^7.26.9
+    gulp: ^5.0.0
+    gulp-clean: ^0.4.0
+    rimraf: ^6.0.1
+    ts-node: ^10.9.2
+
+  # UI Frameworks - UI 框架（使用 catalog:ui 引用）
+  ui:
+    element-plus: ^2.13.0
+    '@element-plus/icons-vue': ^2.3.1
+    ant-design-vue: ^4.2.6
+    '@ant-design/icons-vue': ^7.0.1
+    vue-draggable-plus: ^0.6.0
+    codemirror: ^6.0.2
+    '@codemirror/autocomplete': ^6.19.0
+    '@codemirror/commands': ^6.9.0
+    '@codemirror/lang-javascript': ^6.2.4
+    '@codemirror/language': ^6.11.3
+    '@codemirror/lint': ^6.9.0
+    '@codemirror/search': ^6.5.11
+    '@codemirror/state': ^6.5.2
+    '@codemirror/view': ^6.38.5
+    jsep: ^1.4.0
+    resize-observer-polyfill: ^1.5.1
+
+  # Development Tools - 开发工具（使用 catalog:dev 引用）
+  dev:
+    # Linting
+    eslint: ^9.20.1
+    '@eslint/js': 9.20.0
+    eslint-plugin-vue: ^9.32.0
+    typescript-eslint: ^8.24.0
+    prettier: ^3.5.1
+    stylelint: ^16.14.1
+    stylelint-config-recess-order: ^6.0.0
+    stylelint-config-recommended-vue: ^1.6.0
+    stylelint-config-standard: ^37.0.0
+    stylelint-config-standard-scss: ^14.0.0
+    stylelint-scss: ^6.11.0
+    # Git Hooks
+    '@changesets/cli': ^2.27.12
+    '@commitlint/cli': ^19.7.1
+    '@commitlint/config-conventional': ^19.7.1
+    husky: ^9.1.7
+    lint-staged: ^15.4.3
+    # Testing
+    vitest: ^3.0.5
+    '@vitest/coverage-v8': ^3.2.4
+    '@vue/test-utils': ^2.4.6
+    jsdom: ^25.0.1
+
+  # Styles - 样式工具（使用 catalog:styles 引用）
+  styles:
+    sass: ^1.85.0
+    postcss: ^8.5.2
+    postcss-html: ^1.8.0
+    postcss-scss: ^4.0.9
+
+  # Documentation - 文档工具（使用 catalog:docs 引用）
+  docs:
+    vitepress: ^1.6.3
+    vitepress-demo-plugin: ^1.2.3
