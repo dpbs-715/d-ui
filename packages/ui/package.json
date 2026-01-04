@@ -50,9 +50,9 @@
     "vue-draggable-plus": "catalog:ui"
   },
   "peerDependencies": {
-    "@element-plus/icons-vue": "catalog:ui",
-    "element-plus": "catalog:ui",
-    "vue": "catalog:"
+    "@element-plus/icons-vue": "^2.3.0",
+    "element-plus": "^2.6.1",
+    "vue": "^3.5.0"
   },
   "dependencies": {
     "@codemirror/autocomplete": "catalog:ui",

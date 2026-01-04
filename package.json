@@ -37,17 +37,19 @@
     "rename-pkg:mac": "bash ./scripts/rename-package.sh"
   },
   "devDependencies": {
-    "@changesets/cli": "catalog:dev",
-    "@commitlint/cli": "catalog:dev",
     "@DLib/commitlint-config": "workspace:*",
-    "dlib-directives": "workspace:*",
     "@DLib/eslint-config": "workspace:*",
-    "dlib-hooks": "workspace:*",
     "@DLib/prettier-config": "workspace:*",
     "@DLib/stylelint-config": "workspace:*",
     "@DLib/typescript-config": "workspace:*",
+    "@changesets/cli": "catalog:dev",
+    "@commitlint/cli": "catalog:dev",
+    "@element-plus/icons-vue": "^2.3.1",
+    "dlib-directives": "workspace:*",
+    "dlib-hooks": "workspace:*",
     "dlib-ui": "workspace:*",
     "dlib-utils": "workspace:*",
+    "element-plus": "catalog:ui",
     "eslint": "catalog:dev",
     "husky": "catalog:dev",
     "lint-staged": "catalog:dev",
@@ -58,9 +60,7 @@
     "ts-node": "catalog:build",
     "turbo": "catalog:build",
     "typescript": "catalog:",
-    "vue": "catalog:",
-    "element-plus": "catalog:ui",
-    "@element-plus/icons-vue": "^2.3.1"
+    "vue": "catalog:"
   },
   "engines": {
     "node": ">=18",
