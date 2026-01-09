@@ -1,14 +1,14 @@
 import { baseConfig } from '~/components';
 import type { Arrayable } from 'element-plus/es/utils';
 import type { Column, FormItemRule } from 'element-plus';
-import { Ref, ComputedRef } from 'vue';
+import { MaybeRef } from 'vue';
 
 type hiddenFunType = (_params: Record<string, any>) => Boolean;
 type rulesFunType = (_params: Record<string, any>) => Arrayable<FormItemRule>;
 
 export type CommonTableConfig = Omit<baseConfig, 'component'> & {
   component?: any;
-  hidden?: Boolean | hiddenFunType | Ref | ComputedRef;
+  hidden?: MaybeRef<Boolean> | hiddenFunType;
   isDisabled?: Function;
   labelField?: string;
   rules?: Arrayable<FormItemRule> | rulesFunType;
@@ -59,7 +59,7 @@ export interface CommonTableProps {
   config?: CommonTableConfig[];
   v2?: Boolean | undefined;
   data?: DataType;
-  loading?: Boolean | Ref<Boolean>;
+  loading?: MaybeRef<Boolean>;
   emptyText?: string;
   empty?: string;
   useIndex?: Boolean;
