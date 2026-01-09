@@ -1,7 +1,7 @@
 import { baseConfig, ComponentFunctionType, ComponentType } from '~/components';
 import { Arrayable } from 'element-plus/es/utils';
 import { FormItemRule, FormRules } from 'element-plus';
-import { Ref, ComputedRef } from 'vue';
+import { MaybeRef } from 'vue';
 
 type hiddenFunType = (params: Record<string, any>) => boolean;
 type rulesFunType = (params: Record<string, any>) => Arrayable<FormItemRule>;
@@ -10,7 +10,7 @@ export type CommonFormConfig = Omit<baseConfig, 'component'> & {
   readField?: string;
   component?: string | ComponentFunctionType | ComponentType;
   span?: number;
-  hidden?: boolean | hiddenFunType | Ref | ComputedRef;
+  hidden?: MaybeRef<Boolean> | hiddenFunType;
   isDisabled?: Function;
   labelField?: string;
   formItemProps?: {
@@ -34,7 +34,7 @@ export interface CommonFormBaseProps {
   showMessage?: Boolean;
   validateOnRuleChange?: Boolean;
   hideRequiredAsterisk?: Boolean;
-  loading?: Boolean | Ref<Boolean>;
+  loading?: MaybeRef<Boolean>;
 }
 
 export interface CommonFormProps extends CommonFormBaseProps {
