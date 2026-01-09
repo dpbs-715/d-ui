@@ -6,8 +6,12 @@ export const capitalize = (str: string): string => {
 };
 
 /**
- * 将驼峰命名转换为短横线命名
+ * 将驼峰命名转换为短横线命名或其他
  */
-export const camelToKebab = (str: string): string => {
-  return str.replace(/([A-Z])/g, '-$1').toLowerCase();
+export const camelToKebab = (str: string, separator = '-'): string => {
+  return str
+    .replace(/(?<!^)([A-Z])/g, (match, p1) => {
+      return separator + p1.toLowerCase();
+    })
+    .toLowerCase();
 };
