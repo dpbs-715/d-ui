@@ -6,4 +6,5 @@ export * from './cache';
 export * from './clone';
 export * from './translate';
 export * from './parse';
+export * from './ep';
 export { version } from './version';

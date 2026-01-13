@@ -34,7 +34,7 @@ describe('string utils', () => {
     });
 
     it('should convert PascalCase to kebab-case', () => {
-      expect(camelToKebab('PascalCase')).toBe('-pascal-case');
+      expect(camelToKebab('PascalCase')).toBe('pascal-case');
     });
 
     it('should handle multiple capital letters', () => {
@@ -50,12 +50,17 @@ describe('string utils', () => {
     });
 
     it('should handle single capital letter', () => {
-      expect(camelToKebab('A')).toBe('-a');
+      expect(camelToKebab('A')).toBe('a');
     });
 
     it('should handle complex component names', () => {
-      expect(camelToKebab('CommonButton')).toBe('-common-button');
+      expect(camelToKebab('CommonButton')).toBe('common-button');
       expect(camelToKebab('myAwesomeComponent')).toBe('my-awesome-component');
+    });
+    it('should use underscores as separators', () => {
+      expect(camelToKebab('ButtonGroup', '_')).toBe('button_group');
+      expect(camelToKebab('myComponent', '_')).toBe('my_component');
+      expect(camelToKebab('XMLHttpRequest', '_')).toBe('x_m_l_http_request');
     });
   });
 });

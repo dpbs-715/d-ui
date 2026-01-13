@@ -386,7 +386,7 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       if (isArray(value)) {
         valueArr = value;
       } else if (isString(value) && typeof props.joinSplit === 'string' && props.joinSplit) {
-        valueArr = value.split(props.joinSplit);
+        valueArr = value.split(props.joinSplit).map((s) => s.trim());
       } else {
         valueArr = [value];
       }
