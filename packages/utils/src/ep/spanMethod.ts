@@ -1,3 +1,5 @@
+import { MaybeRef, toValue } from 'vue';
+
 /**
  * ElementPlus Table span-method 配置接口
  */
@@ -5,7 +7,7 @@ export interface SpanMethodConfig {
   /** 需要合并的列的 prop 名称数组，按优先级排序 */
   mergeColumns: string[];
   /** 数据数组 */
-  data: any[];
+  data: MaybeRef<any[]>;
   /** 是否启用缓存（默认 true） */
   cache?: boolean;
 }
@@ -50,18 +52,15 @@ interface SpanCache {
  * @returns span-method 函数
  */
 export function createSpanMethod(config: SpanMethodConfig) {
-  const { mergeColumns, data, cache = true } = config;
-
-  if (!mergeColumns.length || !data.length) {
-    return () => ({ rowspan: 1, colspan: 1 });
-  }
+  const { mergeColumns, cache = true } = config;
 
   let spanCache: SpanCache | null = null;
+  let cachedDataLength = 0;
 
   /**
    * 计算合并信息
    */
-  function calculateSpans(): SpanCache {
+  function calculateSpans(data: any[]): SpanCache {
     const spans: SpanCache = {};
     const mergeInfo: Map<string, { start: number; count: number }[]> = new Map();
 
@@ -138,6 +137,14 @@ export function createSpanMethod(config: SpanMethodConfig) {
    * span-method 函数
    */
   return function spanMethod({ column, rowIndex }: SpanMethodProps) {
+    // 每次调用时获取最新数据
+    const data = toValue(config.data);
+
+    // 如果没有合并列或数据为空，返回默认值
+    if (!mergeColumns.length || !data.length) {
+      return { rowspan: 1, colspan: 1 };
+    }
+
     const columnProp = column.property;
 
     // 如果该列不需要合并，返回默认值
@@ -145,13 +152,19 @@ export function createSpanMethod(config: SpanMethodConfig) {
       return { rowspan: 1, colspan: 1 };
     }
 
+    // 检测数据是否变化（通过长度判断）
+    if (cache && data.length !== cachedDataLength) {
+      spanCache = null;
+      cachedDataLength = data.length;
+    }
+
     // 使用缓存或计算合并信息
     if (cache) {
       if (!spanCache) {
-        spanCache = calculateSpans();
+        spanCache = calculateSpans(data);
       }
     } else {
-      spanCache = calculateSpans();
+      spanCache = calculateSpans(data);
     }
 
     const key = `${rowIndex}-${columnProp}`;
