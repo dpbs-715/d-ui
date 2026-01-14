@@ -171,26 +171,3 @@ export function createSpanMethod(config: SpanMethodConfig) {
     return spanCache[key] || { rowspan: 1, colspan: 1 };
   };
 }
-
-/**
- * 简单的单列合并（性能更优）
- *
- * @example
- * ```ts
- * const spanMethod = createSimpleSpanMethod({
- *   mergeColumn: 'category',
- *   data: tableData
- * });
- * ```
- */
-export function createSimpleSpanMethod(config: {
-  mergeColumn: string;
-  data: any[];
-  cache?: boolean;
-}) {
-  return createSpanMethod({
-    mergeColumns: [config.mergeColumn],
-    data: config.data,
-    cache: config.cache,
-  });
-}
