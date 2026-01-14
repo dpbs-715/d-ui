@@ -10,6 +10,21 @@ export interface SpanMethodConfig {
   data: MaybeRef<any[]>;
   /** 是否启用缓存（默认 true） */
   cache?: boolean;
+  /**
+   * 缓存键（可选）
+   * - 提供时：数据变化时更新此值即可精确控制缓存失效（性能最优）
+   * - 不提供时：自动检测合并列数据变化（智能模式）
+   * @example
+   * ```ts
+   * const version = ref(0)
+   * const spanMethod = createSpanMethod({
+   *   mergeColumns: ['province'],
+   *   data: tableData,
+   *   cacheKey: version  // 数据变化时 version.value++
+   * })
+   * ```
+   */
+  cacheKey?: MaybeRef<string | number>;
 }
 
 /**
@@ -55,7 +70,20 @@ export function createSpanMethod(config: SpanMethodConfig) {
   const { mergeColumns, cache = true } = config;
 
   let spanCache: SpanCache | null = null;
-  let cachedDataLength = 0;
+  let lastCacheKey: string | number | undefined = undefined;
+  let cachedFingerprint = '';
+
+  // 渲染周期内的临时指纹缓存（避免重复计算）
+  let tempFingerprint = '';
+  let tempFingerprintValid = false;
+
+  /**
+   * 计算合并列数据的指纹
+   * 仅计算需要合并的列，减少计算量
+   */
+  function calculateFingerprint(data: any[]): string {
+    return data.map((row) => mergeColumns.map((col) => String(row[col] ?? '')).join('|')).join(',');
+  }
 
   /**
    * 计算合并信息
@@ -152,13 +180,41 @@ export function createSpanMethod(config: SpanMethodConfig) {
       return { rowspan: 1, colspan: 1 };
     }
 
-    // 检测数据是否变化（通过长度判断）
-    if (cache && data.length !== cachedDataLength) {
-      spanCache = null;
-      cachedDataLength = data.length;
+    // 检测数据是否变化，决定是否失效缓存
+    if (cache) {
+      // 策略1：优先使用用户提供的 cacheKey（性能最优）
+      if (config.cacheKey !== undefined) {
+        const currentCacheKey = toValue(config.cacheKey);
+        if (currentCacheKey !== lastCacheKey) {
+          spanCache = null;
+          lastCacheKey = currentCacheKey;
+          // 重置指纹缓存
+          cachedFingerprint = '';
+          tempFingerprintValid = false;
+        }
+      }
+      // 策略2：自动检测合并列数据变化（智能模式）
+      else {
+        // 同一渲染周期内复用指纹计算结果（避免重复计算）
+        if (!tempFingerprintValid) {
+          tempFingerprint = calculateFingerprint(data);
+          tempFingerprintValid = true;
+
+          // 使用微任务清除临时缓存，确保下一次渲染重新计算
+          queueMicrotask(() => {
+            tempFingerprintValid = false;
+          });
+        }
+
+        // 比较指纹，数据变化时失效缓存
+        if (tempFingerprint !== cachedFingerprint) {
+          spanCache = null;
+          cachedFingerprint = tempFingerprint;
+        }
+      }
     }
 
-    // 使用缓存或计算合并信息
+    // 使用缓存或重新计算合并信息
     if (cache) {
       if (!spanCache) {
         spanCache = calculateSpans(data);
