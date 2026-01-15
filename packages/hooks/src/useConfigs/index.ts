@@ -24,9 +24,12 @@ type UseConfigsTuple<T> = [
   () => void,
 ];
 
-export function useConfigs<T extends Omit<baseConfig, 'component'>>(
+/**
+ * 创建配置管理器（工厂函数）
+ * 不依赖 Vue 生命周期，可在任何地方调用
+ */
+export function createConfigsManager<T extends Omit<baseConfig, 'component'>>(
   initialConfig: T[],
-  autoCleanup = true,
 ): useConfigsResultType<T> {
   const config = reactive(initialConfig as unknown as T[]) as Reactive<T[]>;
 
@@ -87,10 +90,6 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
 
   const cleanup: useConfigsResultType<T>['cleanup'] = () => config.splice(0);
 
-  if (autoCleanup && getCurrentInstance()) {
-    onUnmounted(cleanup);
-  }
-
   // 核心：使用对象封装 + iterator 支持 tuple 解构
   const api = {
     config,
@@ -116,4 +115,21 @@ export function useConfigs<T extends Omit<baseConfig, 'component'>>(
   };
 
   return api as useConfigsResultType<T>;
+}
+
+/**
+ * 配置管理组合式函数（支持自动清理）
+ * 应在 Vue 组件的 setup 中调用
+ */
+export function useConfigs<T extends Omit<baseConfig, 'component'>>(
+  initialConfig: T[],
+  autoCleanup = true,
+): useConfigsResultType<T> {
+  const manager = createConfigsManager(initialConfig);
+
+  if (autoCleanup && getCurrentInstance()) {
+    onUnmounted(manager.cleanup);
+  }
+
+  return manager;
 }

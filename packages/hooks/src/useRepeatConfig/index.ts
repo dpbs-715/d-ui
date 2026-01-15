@@ -1,5 +1,5 @@
 import { deepClone } from 'dlib-utils';
-import { useConfigs, useConfigsResultType } from '../useConfigs';
+import { createConfigsManager, useConfigsResultType } from '../useConfigs';
 import { onUnmounted, Reactive } from 'vue';
 import { baseConfig } from 'dlib-ui';
 
@@ -26,16 +26,19 @@ export function useRepeatConfig<T extends Omit<baseConfig, 'component'>>(
   const collectConfigs = new Map<any, useConfigsResultType<T>>();
 
   function collect(key: any): Reactive<ConfigWithKey<T>[]> {
-    const has = getConfig(key);
-    if (has) {
-      return has.config as Reactive<ConfigWithKey<T>[]>;
+    const existing = getConfig(key);
+    if (existing) {
+      return existing.config as Reactive<ConfigWithKey<T>[]>;
     }
-    const o = useConfigs<T>(deepClone(configData), false);
-    o.config.forEach((item: any) => {
+
+    // 使用工厂函数创建配置管理器（符合 Vue 3 规范）
+    const manager = createConfigsManager<T>(deepClone(configData));
+    manager.config.forEach((item: any) => {
       item.$key = key;
     });
-    collectConfigs.set(key, o);
-    return o.config as Reactive<ConfigWithKey<T>[]>;
+
+    collectConfigs.set(key, manager);
+    return manager.config as Reactive<ConfigWithKey<T>[]>;
   }
 
   function getConfig(key: any) {
@@ -44,9 +47,7 @@ export function useRepeatConfig<T extends Omit<baseConfig, 'component'>>(
 
   onUnmounted(() => {
     collectConfigs.forEach((configInstance) => {
-      if (configInstance.cleanup) {
-        configInstance.cleanup();
-      }
+      configInstance.cleanup();
     });
     collectConfigs.clear();
   });

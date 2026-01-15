@@ -8,41 +8,50 @@ export interface mixResultType {
   form: useConfigsResultType<CommonFormConfig>;
   search: useConfigsResultType<CommonFormConfig>;
   data: {
-    tableData: Reactive<Record<any, any>[]>;
-    queryParams: Reactive<Record<any, any>>;
+    tableData: Reactive<any[]>;
+    queryParams: Reactive<Record<string, any>>;
     total: Ref<number>;
   };
 }
 export function useMixConfig(configData?: CommonTableLayoutConfig[]): mixResultType {
-  const o: any = {
+  type BucketKey = 'table' | 'form' | 'search';
+  const buckets: Record<BucketKey, any[]> = {
     table: [],
     form: [],
     search: [],
   };
 
-  configData?.forEach((item: any) => {
-    for (let k in o) {
-      if (item[k]) {
-        const obj = {
-          ...deepClone(item),
-          ...item[k],
+  configData?.forEach((item) => {
+    (Object.keys(buckets) as BucketKey[]).forEach((key) => {
+      const specificConfig = (item as any)[key];
+      if (specificConfig) {
+        // 使用解构排除 table/form/search，避免 delete 操作
+        const { table, form, search, ...baseConfig } = deepClone(item);
+        const mergedConfig = {
+          ...baseConfig,
+          ...specificConfig,
         };
-        delete obj.table;
-        delete obj.form;
-        delete obj.search;
-        o[k].push(obj);
+        buckets[key].push(mergedConfig);
       }
-    }
+    });
   });
 
+  const table = useConfigs(buckets.table);
+  const form = useConfigs(buckets.form);
+  const search = useConfigs(buckets.search);
+
+  const tableData: Reactive<any[]> = reactive([]);
+  const queryParams = reactive<Record<string, any>>({});
+  const total = ref(0);
+
   return {
-    table: useConfigs(o.table),
-    search: useConfigs(o.search),
-    form: useConfigs(o.form),
+    table,
+    form,
+    search,
     data: {
-      tableData: reactive([]),
-      queryParams: reactive({}),
-      total: ref(0),
+      tableData,
+      queryParams,
+      total,
     },
-  } as mixResultType;
+  };
 }
