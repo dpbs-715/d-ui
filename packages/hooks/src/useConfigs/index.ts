@@ -26,7 +26,6 @@ type UseConfigsTuple<T> = [
 
 /**
  * 创建配置管理器（工厂函数）
- * 不依赖 Vue 生命周期，可在任何地方调用
  */
 export function createConfigsManager<T extends Omit<baseConfig, 'component'>>(
   initialConfig: T[],

@@ -25,7 +25,6 @@ export function useMixConfig(configData?: CommonTableLayoutConfig[]): mixResultT
     (Object.keys(buckets) as BucketKey[]).forEach((key) => {
       const specificConfig = (item as any)[key];
       if (specificConfig) {
-        // 使用解构排除 table/form/search，避免 delete 操作
         const { table, form, search, ...baseConfig } = deepClone(item);
         const mergedConfig = {
           ...baseConfig,
