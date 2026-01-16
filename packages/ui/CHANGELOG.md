@@ -1,5 +1,11 @@
 # dlib-ui
 
+## 1.2.2
+
+### Patch Changes
+
+- 版本升级
+
 ## 1.2.1
 
 ### Patch Changes
