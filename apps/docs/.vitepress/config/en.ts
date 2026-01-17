@@ -87,6 +87,7 @@ export const en = defineConfig({
           { text: 'Cache', link: '/en/packages/utils/cache/' },
           { text: 'Clone', link: '/en/packages/utils/clone/' },
           { text: 'Parse Utilities', link: '/en/packages/utils/parse/' },
+          { text: 'ElementPlus Utilities', link: '/en/packages/utils/ep/' },
         ],
       },
     ],
