@@ -65,7 +65,7 @@ export const zh = defineConfig({
           { text: 'useRefCollect 收集器', link: '/packages/hooks/useRefCollect/' },
           { text: 'useConfigs 配置器', link: '/packages/hooks/useConfigs/' },
           { text: 'useMixConfig 收集器', link: '/packages/hooks/useMixConfig/' },
-          { text: 'useRepeatConfig 收集器', link: '/packages/hooks/useRepeatConfig/' },
+          { text: 'useRepeatConfig 重复配置器', link: '/packages/hooks/useRepeatConfig/' },
           { text: 'useEventListener 事件监听', link: '/packages/hooks/useEventListener/' },
           { text: 'createContext 上下文', link: '/packages/hooks/createContext/' },
         ],
