@@ -227,3 +227,248 @@ export function createSpanMethod(config: SpanMethodConfig) {
     return spanCache[key] || { rowspan: 1, colspan: 1 };
   };
 }
+
+/**
+ * 合并组配置
+ */
+export type MergeGroup = string[]; // 列名数组：['a', 'b', 'c']
+
+/**
+ * 列合并配置接口
+ */
+export interface ColSpanMethodConfig {
+  /** 需要合并的行（索引数组 或 判断函数） */
+  rows: boolean | number[] | ((rowIndex: number, row: any) => boolean);
+
+  /**
+   * 合并分组配置
+   * 支持：
+   * 1. 静态配置数组
+   * 2. 函数动态返回（根据行数据决定合并规则）
+   */
+  mergeGroups: MergeGroup[] | ((rowIndex: number, row: any) => MergeGroup[]);
+
+  /** 数据数组（用于条件判断时获取 row 数据） */
+  data?: MaybeRef<any[]>;
+
+  /** 是否启用缓存（默认 true） */
+  cache?: boolean;
+
+  /** 缓存键 */
+  cacheKey?: MaybeRef<string | number>;
+}
+
+/**
+ * 列合并信息缓存
+ */
+interface ColSpanCache {
+  [rowIndex: number]: {
+    [columnProp: string]: { rowspan: number; colspan: number };
+  };
+}
+
+/**
+ * 创建列合并的 span-method
+ *
+ * @description 支持同一行内多组独立的列合并
+ *
+ * @example
+ * ```ts
+ * // 简单用法：第一行合并两组列
+ * const spanMethod = createColSpanMethod({
+ *   rows: [0],
+ *   mergeGroups: [
+ *     ['q1', 'q2'],      // 第一组
+ *     ['q3', 'q4']       // 第二组
+ *   ]
+ * })
+ *
+ * // 条件判断：小计行合并列
+ * const spanMethod = createColSpanMethod({
+ *   rows: (rowIndex, row) => row.type === '小计',
+ *   mergeGroups: [
+ *     ['a', 'b'],           // AB组
+ *     ['c', 'd', 'e']       // CDE组
+ *   ]
+ * })
+ *
+ * // 动态配置：根据行数据决定合并规则
+ * const spanMethod = createColSpanMethod({
+ *   rows: [0, 5, 10],
+ *   mergeGroups: (rowIndex, row) => {
+ *     if (rowIndex === 0) return [['a', 'b'], ['c', 'd']]
+ *     if (rowIndex === 5) return [['a', 'b', 'c']]
+ *     return [['d', 'e']]
+ *   }
+ * })
+ * ```
+ *
+ * @param config - 列合并配置
+ * @returns span-method 函数
+ */
+export function createColSpanMethod(config: ColSpanMethodConfig) {
+  const { rows, mergeGroups, cache = true } = config;
+
+  let colSpanCache: ColSpanCache | null = null;
+  let lastCacheKey: string | number | undefined = undefined;
+
+  /**
+   * 检查指定行是否需要合并
+   */
+  function shouldMergeRow(rowIndex: number, row: any): boolean {
+    if (typeof rows === 'boolean') {
+      return rows;
+    } else if (Array.isArray(rows)) {
+      return rows.includes(rowIndex);
+    }
+    return rows(rowIndex, row);
+  }
+
+  /**
+   * 获取指定行的合并组配置
+   */
+  function getMergeGroups(rowIndex: number, row: any): MergeGroup[] {
+    if (typeof mergeGroups === 'function') {
+      return mergeGroups(rowIndex, row);
+    }
+    return mergeGroups;
+  }
+
+  /**
+   * 计算列合并信息
+   */
+  function calculateColSpans(data: any[]): ColSpanCache {
+    const spans: ColSpanCache = {};
+
+    data.forEach((row, rowIndex) => {
+      // 检查该行是否需要合并
+      if (!shouldMergeRow(rowIndex, row)) {
+        return;
+      }
+
+      // 获取该行的合并组配置
+      const groups = getMergeGroups(rowIndex, row);
+
+      // 初始化该行的缓存
+      spans[rowIndex] = {};
+
+      groups.forEach((columns) => {
+        // 至少需要2列才合并
+        if (columns.length < 2) {
+          return;
+        }
+
+        // 第一列：设置 colspan
+        const firstCol = columns[0];
+        spans[rowIndex][firstCol] = {
+          rowspan: 1,
+          colspan: columns.length,
+        };
+
+        // 其他列：设置为 0（隐藏）
+        for (let i = 1; i < columns.length; i++) {
+          spans[rowIndex][columns[i]] = {
+            rowspan: 0,
+            colspan: 0,
+          };
+        }
+      });
+    });
+
+    return spans;
+  }
+
+  /**
+   * span-method 函数
+   */
+  return function spanMethod({ row, column, rowIndex }: SpanMethodProps) {
+    const columnProp = column.property;
+
+    // 检测缓存失效
+    if (cache && config.cacheKey !== undefined) {
+      const currentCacheKey = toValue(config.cacheKey);
+      if (currentCacheKey !== lastCacheKey) {
+        colSpanCache = null;
+        lastCacheKey = currentCacheKey;
+      }
+    }
+
+    // 获取数据
+    const data = config.data ? toValue(config.data) : [];
+
+    // 如果该行不需要合并，返回默认值
+    if (data.length > 0 && !shouldMergeRow(rowIndex, row)) {
+      return { rowspan: 1, colspan: 1 };
+    }
+
+    // 使用缓存或重新计算
+    if (cache) {
+      if (!colSpanCache) {
+        colSpanCache = calculateColSpans(data.length > 0 ? data : [row]);
+      }
+    } else {
+      colSpanCache = calculateColSpans(data.length > 0 ? data : [row]);
+    }
+
+    // 查找该单元格的合并信息
+    const rowSpans = colSpanCache[rowIndex];
+    if (rowSpans && rowSpans[columnProp]) {
+      const spanInfo = rowSpans[columnProp];
+      return {
+        rowspan: spanInfo.rowspan,
+        colspan: spanInfo.colspan,
+      };
+    }
+
+    // 默认不合并
+    return { rowspan: 1, colspan: 1 };
+  };
+}
+
+/**
+ * Span-method 函数类型
+ */
+export type SpanMethod = (props: SpanMethodProps) => { rowspan: number; colspan: number };
+
+/**
+ * 组合多个 span-method 函数
+ *
+ * @description
+ * 允许同时使用多个合并规则（如行合并 + 列合并）
+ * 按顺序执行，第一个返回非默认值的结果将被使用
+ *
+ * @example
+ * ```ts
+ * const spanMethod = composeSpanMethods(
+ *   // 行合并：省份列纵向合并
+ *   createSpanMethod({
+ *     mergeColumns: ['province'],
+ *     data: tableData
+ *   }),
+ *
+ *   // 列合并：第一行横向合并
+ *   createColSpanMethod({
+ *     rows: [0],
+ *     mergeGroups: [['q1', 'q2', 'q3']]
+ *   })
+ * )
+ * ```
+ *
+ * @param methods - span-method 函数数组
+ * @returns 组合后的 span-method 函数
+ */
+export function composeSpanMethods(...methods: SpanMethod[]): SpanMethod {
+  return (props: SpanMethodProps) => {
+    for (const method of methods) {
+      const result = method(props);
+
+      // 如果某个方法返回了合并（rowspan !== 1 或 colspan !== 1），使用该结果
+      if (result.rowspan !== 1 || result.colspan !== 1) {
+        return result;
+      }
+    }
+
+    // 所有方法都返回默认值，返回默认值
+    return { rowspan: 1, colspan: 1 };
+  };
+}
