@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
 import type { Config } from '~/components/CreateComponent/src/cc.types';
 import { CreateComponent } from '~/components/CreateComponent';
 import type { CommonFormConfig, CommonFormProps } from './Form.types';
 import {
-  computed,
   getCurrentInstance,
   toValue,
   ref,
@@ -15,7 +13,7 @@ import {
   reactive,
 } from 'vue';
 import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
-import { configIterator, getRules, isHidden } from '~/_utils/componentUtils.ts';
+import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 defineOptions({
   name: 'CommonForm',
@@ -23,18 +21,8 @@ defineOptions({
 });
 const vm = getCurrentInstance();
 const props = defineProps<CommonFormProps>();
-const formProps = computed(() => {
-  const cleaned = Object.fromEntries(
-    Object.entries(props).filter(([_, v]) => {
-      return v !== undefined;
-    }),
-  );
-  delete cleaned.config;
-  return {
-    ...componentDefaultPropsMap.CommonForm,
-    ...cleaned,
-  };
-});
+const formProps: any = useComponentProps(props, 'CommonForm', ['config']);
+
 const formData: Record<string, any> = defineModel('modelValue', {
   type: Object,
   default: () => reactive({}),

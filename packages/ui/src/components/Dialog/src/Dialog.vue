@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ElDialog } from 'element-plus';
-import { computed, h, useSlots, getCurrentInstance } from 'vue';
+import { h, useSlots, getCurrentInstance } from 'vue';
 import type { DialogEmits, DialogPropsWithEvents } from './Dialog.types';
 import { CommonButton } from '../../Button';
-import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap.ts';
+import { useComponentProps } from '~/_utils/componentUtils.ts';
 defineOptions({
   name: 'CommonDialog',
 });
@@ -14,17 +14,7 @@ const props = withDefaults(defineProps<DialogPropsWithEvents>(), {
 
 const emits: any = defineEmits<DialogEmits>();
 
-const dialogProps = computed(() => {
-  const cleaned = Object.fromEntries(
-    Object.entries(props).filter(([_, v]) => {
-      return v !== undefined;
-    }),
-  );
-  return {
-    ...componentDefaultPropsMap.CommonDialog,
-    ...cleaned,
-  };
-});
+const dialogProps: any = useComponentProps(props, 'CommonDialog');
 
 const dialogVisible = defineModel<boolean>();
 

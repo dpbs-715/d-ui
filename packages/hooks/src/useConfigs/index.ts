@@ -1,4 +1,16 @@
-import { computed, ComputedRef, getCurrentInstance, onUnmounted, Reactive, reactive } from 'vue';
+import {
+  computed,
+  ComputedRef,
+  getCurrentInstance,
+  onUnmounted,
+  Reactive,
+  reactive,
+  isReactive,
+  isRef,
+  MaybeRef,
+  unref,
+  watch,
+} from 'vue';
 import type { baseConfig } from 'dlib-ui';
 
 export interface useConfigsResultType<T extends Omit<baseConfig, 'component'>>
@@ -9,7 +21,7 @@ export interface useConfigsResultType<T extends Omit<baseConfig, 'component'>>
   setDisabledAll: (state?: boolean) => void;
   setPropsByField: (field: string, props: Record<string, any>) => void;
   getConfigByField: (field: string) => T | undefined;
-  filterConfigs: (predicate: (item: T) => boolean) => Reactive<T[]>;
+  filterConfigs: (predicate: (item: T) => boolean) => T[];
   cleanup: () => void;
 }
 
@@ -28,9 +40,22 @@ type UseConfigsTuple<T> = [
  * 创建配置管理器（工厂函数）
  */
 export function createConfigsManager<T extends Omit<baseConfig, 'component'>>(
-  initialConfig: T[],
+  initialConfig: MaybeRef<T[]>,
 ): useConfigsResultType<T> {
-  const config = reactive(initialConfig as unknown as T[]) as Reactive<T[]>;
+  const unwrapped = unref(initialConfig);
+  const config = isReactive(unwrapped)
+    ? (unwrapped as Reactive<T[]>)
+    : (reactive(unwrapped as unknown as T[]) as Reactive<T[]>);
+
+  if (isRef(initialConfig)) {
+    watch(
+      () => initialConfig.value,
+      (newValue) => {
+        config.splice(0, config.length, ...(newValue as any[]));
+      },
+      { deep: true },
+    );
+  }
 
   const configMap: ComputedRef<Map<string, T>> = computed(() => {
     return new Map<string, any>(config.map((item) => [item.field as string, item as any]));
@@ -83,8 +108,7 @@ export function createConfigsManager<T extends Omit<baseConfig, 'component'>>(
     configMap.value.get(field);
 
   const filterConfigs: useConfigsResultType<T>['filterConfigs'] = (predicate) => {
-    const filtered = config.filter(predicate as any);
-    return reactive(filtered) as Reactive<T[]>;
+    return config.filter(predicate as any) as T[];
   };
 
   const cleanup: useConfigsResultType<T>['cleanup'] = () => config.splice(0);
@@ -121,7 +145,7 @@ export function createConfigsManager<T extends Omit<baseConfig, 'component'>>(
  * 应在 Vue 组件的 setup 中调用
  */
 export function useConfigs<T extends Omit<baseConfig, 'component'>>(
-  initialConfig: T[],
+  initialConfig: MaybeRef<T[]>,
   autoCleanup = true,
 ): useConfigsResultType<T> {
   const manager = createConfigsManager(initialConfig);
