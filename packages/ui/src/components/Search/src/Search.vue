@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { CommonForm, CommonButton } from '~/components';
 import type { CommonSearchEmits, CommonSearchProps } from './Search.types';
-import { computed, getCurrentInstance, ref, inject } from 'vue';
+import { getCurrentInstance, ref, inject } from 'vue';
 import { ElCol, ElFormItem } from 'element-plus';
 import {
   commonKeysMap,
   componentDefaultPropsMap,
 } from '~/components/CreateComponent/src/defaultMap.ts';
+import { useComponentProps } from '~/_utils/componentUtils.ts';
 
 defineOptions({
   name: 'CommonSearch',
@@ -16,17 +17,7 @@ defineOptions({
 const emits = defineEmits<CommonSearchEmits>();
 const vm = getCurrentInstance();
 const props = defineProps<CommonSearchProps>();
-const searchProps = computed(() => {
-  const cleaned = Object.fromEntries(
-    Object.entries(props).filter(([_, v]) => {
-      return v !== undefined;
-    }),
-  );
-  return {
-    ...componentDefaultPropsMap.CommonSearch,
-    ...cleaned,
-  };
-});
+const searchProps: any = useComponentProps(props, 'CommonSearch');
 const queryParams: any = defineModel();
 const search: Function | null = inject<(() => void) | null>('search', null);
 /**
@@ -93,11 +84,7 @@ function collectFormRef(instance: any) {
         :span="componentDefaultPropsMap.CommonSearch.actionCol"
       >
         <el-form-item>
-          <CommonButton
-            :loading="searchProps.loading"
-            type="primary"
-            @click="queryHandler"
-          >
+          <CommonButton :loading="searchProps.loading" type="primary" @click="queryHandler">
             搜索
           </CommonButton>
           <CommonButton

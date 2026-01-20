@@ -1,5 +1,8 @@
 import type { CommonFormConfig, CommonTableConfig } from '~/components';
 import { isArray, isFunction, isObject } from 'dlib-utils/src';
+import { computed, type ComputedRef } from 'vue';
+import { componentDefaultPropsMap } from '~/components/CreateComponent/src/defaultMap';
+import type { registerPropsMap } from '~/components';
 
 const ignoreFunction = ['api'];
 /**
@@ -90,4 +93,25 @@ export function getRules(
   } else if (typeof item.rules === 'function') {
     return item.rules({ configItem: item, ...otherCallBackArgs });
   }
+}
+
+export function useComponentProps<T extends Record<string, any>>(
+  props: T,
+  componentName: keyof registerPropsMap,
+  excludeKeys: (keyof T)[] = [],
+): ComputedRef<Partial<T>> {
+  const excludeSet = new Set(excludeKeys);
+
+  return computed(() => {
+    const defaults = componentDefaultPropsMap[componentName] || {};
+    const result: any = { ...defaults };
+
+    for (const key in props) {
+      if (!excludeSet.has(key) && props[key] !== undefined) {
+        result[key] = props[key];
+      }
+    }
+
+    return result;
+  });
 }
