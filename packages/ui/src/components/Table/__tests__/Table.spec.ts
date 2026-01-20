@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { h, defineComponent } from 'vue';
+import { h, defineComponent, ref } from 'vue';
 import { ElTable } from 'element-plus';
 
 // Mock CreateComponent to avoid circular dependency issues
@@ -50,6 +50,7 @@ vi.mock('~/_utils/componentUtils.ts', () => ({
     return !!item.hidden;
   }),
   setDefaultSlotColumnProps: vi.fn((config) => config),
+  useComponentProps: vi.fn((props) => ref(props)),
 }));
 
 // Mock DataHandlerClass

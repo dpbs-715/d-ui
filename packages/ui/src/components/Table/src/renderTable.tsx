@@ -1,8 +1,8 @@
 import { ElTable, ElTableV2, ElAutoResizer } from 'element-plus';
 import type { CommonTableConfig, CommonTableProps, DataType, RowDataType } from './Table.types';
 import { SORT_ORDERS, SORTABLE, sortChange, useTableV2Sort } from './useTableSort.ts';
-import { computed, ComputedRef, SlotsType, toValue } from 'vue';
-import { setDefaultSlotColumnProps } from '~/_utils/componentUtils.ts';
+import { ComputedRef, SlotsType, toValue } from 'vue';
+import { setDefaultSlotColumnProps, useComponentProps } from '~/_utils/componentUtils.ts';
 import { RenderColumnsClass } from './renderColumns.tsx';
 import { VueDraggable } from 'vue-draggable-plus';
 
@@ -16,19 +16,13 @@ export class RenderTableClass {
   tableRef: any;
   data: DataType;
   constructor(props: CommonTableProps, attrs: any, slots: SlotsType, emits: any) {
-    this.props = computed(() => {
-      const cleaned = Object.fromEntries(
-        Object.entries(props).filter(([_, v]) => {
-          return v !== undefined;
-        }),
-      );
-      return {
-        ...componentDefaultPropsMap.CommonTable,
+    this.props = useComponentProps(
+      {
+        ...props,
         ...attrs,
-        ...cleaned,
-        onSelectionChange: null,
-      } as CommonTableProps;
-    });
+      },
+      'CommonTable',
+    );
     this.data = props.data || [];
     this.slots = slots;
     this.emits = emits;
