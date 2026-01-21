@@ -1,6 +1,6 @@
 import type { PropType, VNode } from 'vue';
 import { defineComponent, h, ref, watch } from 'vue';
-import { useIntersectionObserver } from 'dlib-hooks/src';
+import { useIntersectionObserver } from 'dlib-hooks';
 
 export interface LazyRenderProps extends IntersectionObserverInit {
   /**
@@ -49,39 +49,51 @@ export const LazyRender = defineComponent<LazyRenderProps>({
   emits: ['change'],
   setup(props, { slots, emit }) {
     const containerRef = ref<HTMLElement | null>(null);
-    const { isVisible } = useIntersectionObserver(containerRef, {
+    const { isVisible, stop } = useIntersectionObserver(containerRef, {
       root: props.root,
       rootMargin: props.rootMargin,
       threshold: props.threshold,
     });
 
+    // eslint-disable-next-line ts/no-unsafe-function-type
     let render: Function | null;
     let currentVNode: VNode | null = null;
     let called = false;
-    watch(
+
+    const stopWatch = watch(
       isVisible,
       (visible) => {
         if (currentVNode) {
           const component: any = currentVNode.component!;
           containerRef.value = currentVNode.el as HTMLElement;
-          if (!visible) {
-            const _render = component.render;
-            component.render = () => {
-              called = true;
-              return component.subTree;
-            };
-            render = _render;
-          } else {
-            component.render = render || component.render;
-            if (called) {
-              component.update();
+          if (component) {
+            if (!visible) {
+              const _render = component.render;
+              component.render = () => {
+                called = true;
+                return component.subTree;
+              };
+              render = _render;
+            } else {
+              component.render = render || component.render;
+              if (called) {
+                component.update();
+              }
             }
+          } else {
+            cleanup();
           }
+
           emit('change', visible);
         }
       },
       { flush: 'post' },
     );
+
+    function cleanup() {
+      stop();
+      stopWatch();
+    }
 
     return () => {
       if (!isVisible.value && !currentVNode) {
