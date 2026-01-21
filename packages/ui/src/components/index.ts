@@ -11,3 +11,4 @@ export * from './Select';
 export * from './SelectOrDialog';
 export * from './Descriptions';
 export * from './Foma';
+export * from './LazyRender';

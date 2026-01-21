@@ -5,4 +5,5 @@ export * from './useMixConfig';
 export * from './useRepeatConfig';
 export * from './useEventListener';
 export * from './createContext';
+export * from './useIntersectionObserver';
 export { version } from './version';
