@@ -56,24 +56,27 @@ export default defineComponent<CommonTableProps>({
           get(target: any, key: string) {
             //首先寻找组件提供的方法
             if (key in target) {
-              return target[key];
+              return Reflect.get(target, key, target);
             }
             const tableRef = renderTable.getTableRef();
             //如果组件没有提供方法，则寻找table提供的方法
-            if (tableRef && key in (tableRef || {})) {
-              return tableRef?.[key];
+            if (tableRef && key in tableRef) {
+              return Reflect.get(tableRef, key, tableRef);
             }
             //寻找form提供的方法
-            if (key in (formRef.value || {})) {
-              return formRef.value?.[key];
+            if (formRef.value && key in formRef.value) {
+              return Reflect.get(formRef.value, key, formRef.value);
             }
-            return null;
+            return undefined;
           },
           has(target, key) {
             const tableRef = renderTable.getTableRef();
-
             //判断是否存在
-            return key in target || key in (tableRef || {}) || key in (formRef.value || {});
+            return (
+              key in target ||
+              (tableRef && key in tableRef) ||
+              (formRef.value && key in formRef.value)
+            );
           },
         },
       ),
