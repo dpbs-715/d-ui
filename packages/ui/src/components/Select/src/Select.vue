@@ -70,22 +70,18 @@ export default defineComponent<CommonSelectProps>({
       new Proxy(
         {},
         {
-          get(target: any, key: string) {
-            //首先寻找组件提供的方法
-            if (key in target) {
-              return target[key];
-            }
+          get(_target: any, key: string) {
             const selectRef = renderSelect.getRef();
-            //如果组件没有提供方法，则寻找table提供的方法
-            if (selectRef && key in (selectRef || {})) {
-              return selectRef?.[key];
+            //转发到selectRef提供的方法
+            if (selectRef && key in selectRef) {
+              return Reflect.get(selectRef, key, selectRef);
             }
-            return null;
+            return undefined;
           },
-          has(target, key) {
+          has(_target, key) {
             const selectRef = renderSelect.getRef();
             //判断是否存在
-            return key in target || key in (selectRef || {});
+            return selectRef ? key in selectRef : false;
           },
         },
       ),

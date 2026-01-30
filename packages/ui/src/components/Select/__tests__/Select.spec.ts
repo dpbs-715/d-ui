@@ -484,7 +484,7 @@ describe('CommonSelect', () => {
 
       expect(wrapper.exists()).toBe(true);
 
-      // With joinSplit, emit an array and it will be joined to a string
+      // With joinSplit, emit an array it will be joined to a string
       wrapper.vm.$emit('update:modelValue', ['1', '2']);
       await nextTick();
 
