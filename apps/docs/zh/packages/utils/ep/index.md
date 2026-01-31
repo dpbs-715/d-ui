@@ -1,6 +1,6 @@
 # ElementPlus 工具函数
 
-## createSpanMethod
+## spanMethodBuilder
 
 > 为 ElementPlus Table 组件创建智能单元格合并函数，支持行合并、列合并以及混合使用，提供流畅的链式 API。
 
@@ -11,7 +11,7 @@
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { createSpanMethod } from 'dlib-utils/ep';
+import { spanMethodBuilder } from 'dlib-utils/ep';
 
 const tableData = ref([
   { province: '浙江', city: '杭州', area: '西湖区' },
@@ -20,7 +20,7 @@ const tableData = ref([
   { province: '江苏', city: '南京', area: '玄武区' },
 ]);
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeRows(['province', 'city']) // 省市联动合并
   .build();
@@ -42,7 +42,7 @@ const spanMethod = createSpanMethod()
 多个列按优先级联动合并，前一列必须在同一区域内，后续列才能合并：
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeRows(['dept', 'team', 'group']) // 部门 → 团队 → 小组，层层嵌套
   .build();
@@ -66,7 +66,7 @@ const tableData = [
   { province: '江苏', city: '南京', status: 'inactive', category: 'B' },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeRows(['province', 'city']) // 第1组：省市联动合并
   .mergeRows(['status']) // 第2组：状态独立合并（不受省市影响）
@@ -92,7 +92,7 @@ const tableData = [
   { name: '数据2', q1: 150, q2: 250, q3: 350, q4: 450 },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeCols({
     rows: [0], // 第一行（索引从 0 开始）
@@ -106,7 +106,7 @@ const spanMethod = createSpanMethod()
 同一行可以分成多个独立的合并组：
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeCols({
     rows: [0],
@@ -130,7 +130,7 @@ const tableData = [
   { type: 'total', name: '总计', a: 1000, b: 2000, c: 3000 },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   // header 行：合并所有列
   .mergeCols({
@@ -155,7 +155,7 @@ const spanMethod = createSpanMethod()
 合并分组也可以根据行数据动态返回：
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeCols({
     rows: [0, 1, 2],
@@ -184,7 +184,7 @@ const tableData = [
   { name: '小计', q1: 370, q2: 670, q3: 970, q4: 1270 },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   // 行合并：name 列相同值合并
   .mergeRows(['name'])
@@ -211,7 +211,7 @@ const spanMethod = createSpanMethod()
 默认启用智能缓存，自动检测数据变化：
 
 ```ts
-const spanMethod = createSpanMethod().withData(tableData).mergeRows(['province']).build(); // 默认启用缓存
+const spanMethod = spanMethodBuilder().withData(tableData).mergeRows(['province']).build(); // 默认启用缓存
 ```
 
 #### 手动缓存控制（推荐）
@@ -222,7 +222,7 @@ const spanMethod = createSpanMethod().withData(tableData).mergeRows(['province']
 const version = ref(0);
 const tableData = ref([...]);
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .withCacheKey(version)  // 提供缓存键
   .mergeRows(['province', 'city'])
@@ -240,7 +240,7 @@ function updateData(newData) {
 如果数据变化非常频繁，可以禁用缓存：
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .noCache() // 禁用缓存
   .mergeRows(['province'])
@@ -252,7 +252,7 @@ const spanMethod = createSpanMethod()
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { createSpanMethod } from 'dlib-utils/ep';
+import { spanMethodBuilder } from 'dlib-utils/ep';
 
 const version = ref(0);
 const tableData = ref([
@@ -262,7 +262,7 @@ const tableData = ref([
   { province: '江苏', city: '南京', status: 'inactive', area: '玄武区', population: 80 },
 ]);
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .withCacheKey(version)
   .mergeRows(['province', 'city']) // 省市联动合并
@@ -304,13 +304,13 @@ function updateRow(index: number) {
 
 ### API 参考
 
-#### createSpanMethod()
+#### spanMethodBuilder()
 
 创建链式构建器，用于配置 ElementPlus Table 的单元格合并规则。
 
-**返回值：** `TableSpanBuilder`
+**返回值：** `spanMethodBuilder`
 
-#### TableSpanBuilder 方法
+#### spanMethodBuilder 方法
 
 ##### withData(data)
 
@@ -341,7 +341,7 @@ function updateRow(index: number) {
 **示例：**
 
 ```ts
-createSpanMethod()
+spanMethodBuilder()
   .mergeRows(['province', 'city']) // 第1组：省市联动
   .mergeRows(['status']); // 第2组：状态独立合并
 ```
@@ -370,7 +370,7 @@ createSpanMethod()
 **示例：**
 
 ```ts
-createSpanMethod()
+spanMethodBuilder()
   // 表头行合并
   .mergeCols({
     rows: [0],
@@ -399,7 +399,7 @@ createSpanMethod()
 
 ```ts
 const version = ref(0);
-createSpanMethod().withCacheKey(version);
+spanMethodBuilder().withCacheKey(version);
 // 数据变化时：version.value++
 ```
 
@@ -443,19 +443,19 @@ createSpanMethod().withCacheKey(version);
 
 ### 与旧版 API 的区别
 
-如果你之前使用的是 `createSpanMethod()` 和 `createColSpanMethod()`，新的链式 API 提供了更优雅的使用方式：
+如果你之前使用的是 `spanMethodBuilder()` 和 `createColSpanMethod()`，新的链式 API 提供了更优雅的使用方式：
 
 ```ts
 // ❌ 旧方式 - 繁琐、重复配置
-import { createSpanMethod, createColSpanMethod, composeSpanMethods } from 'dlib-utils/ep';
+import { spanMethodBuilder, createColSpanMethod, composeSpanMethods } from 'dlib-utils/ep';
 
 const spanMethod = composeSpanMethods(
-  createSpanMethod({
+  spanMethodBuilder({
     mergeColumns: ['province', 'city'],
     data: tableData,
     cacheKey: version,
   }),
-  createSpanMethod({
+  spanMethodBuilder({
     mergeColumns: ['status'],
     data: tableData,
     cacheKey: version,
@@ -469,9 +469,9 @@ const spanMethod = composeSpanMethods(
 );
 
 // ✅ 新方式 - 优雅、清晰
-import { createSpanMethod } from 'dlib-utils/ep';
+import { spanMethodBuilder } from 'dlib-utils/ep';
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .withCacheKey(version)
   .mergeRows(['province', 'city']) // 省市联动
@@ -482,7 +482,7 @@ const spanMethod = createSpanMethod()
 
 **新 API 的优势：**
 
-- ✅ 统一的入口 API（`createSpanMethod()`）
+- ✅ 统一的入口 API（`spanMethodBuilder()`）
 - ✅ 链式调用，代码更易读
 - ✅ 多次调用 `mergeRows()` 解决列之间的依赖问题
 - ✅ 配置复用，`data` 和 `cacheKey` 只需配置一次

@@ -10,7 +10,7 @@ import {
 /**
  * 链式构建器接口
  */
-export interface TableSpanBuilder {
+export interface spanMethodBuilder {
   /**
    * 设置数据源（必须）
    *
@@ -19,7 +19,7 @@ export interface TableSpanBuilder {
    * @example
    * ```ts
    * const tableData = ref([...])
-   * createSpanMethod().withData(tableData)
+   * spanMethodBuilder().withData(tableData)
    * ```
    */
   withData(data: MaybeRef<any[]>): this;
@@ -36,7 +36,7 @@ export interface TableSpanBuilder {
    *
    * @example
    * ```ts
-   * createSpanMethod()
+   * spanMethodBuilder()
    *   .mergeRows(['province', 'city'])  // 第1组：省市联动合并
    *   .mergeRows(['status'])            // 第2组：状态独立合并
    * ```
@@ -56,7 +56,7 @@ export interface TableSpanBuilder {
    *
    * @example
    * ```ts
-   * createSpanMethod()
+   * spanMethodBuilder()
    *   // 表头行合并
    *   .mergeCols({
    *     rows: [0],
@@ -90,7 +90,7 @@ export interface TableSpanBuilder {
    * @example
    * ```ts
    * const version = ref(0)
-   * createSpanMethod()
+   * spanMethodBuilder()
    *   .withCacheKey(version)
    * // 数据变化时：version.value++
    * ```
@@ -106,9 +106,9 @@ export interface TableSpanBuilder {
 }
 
 /**
- * TableSpanBuilder 实现类
+ * spanMethodBuilder 实现类
  */
-class TableSpanBuilderImpl implements TableSpanBuilder {
+class spanMethodBuilderImpl implements spanMethodBuilder {
   private data: MaybeRef<any[]> | null = null;
   private rowMergeGroups: string[][] = [];
   private colMergeRules: Array<{
@@ -150,7 +150,7 @@ class TableSpanBuilderImpl implements TableSpanBuilder {
 
   build(): SpanMethod {
     if (!this.data) {
-      throw new Error('[TableSpanBuilder] data is required. Please call withData() first.');
+      throw new Error('[spanMethodBuilder] data is required. Please call withData() first.');
     }
 
     const methods: SpanMethod[] = [];
@@ -192,7 +192,7 @@ class TableSpanBuilderImpl implements TableSpanBuilder {
  * @example
  * ```ts
  * // 场景1: 多组独立的行合并
- * const spanMethod = createSpanMethod()
+ * const spanMethod = spanMethodBuilder()
  *   .withData(tableData)
  *   .mergeRows(['province', 'city'])      // 第1组：省市联动
  *   .mergeRows(['status'])                 // 第2组：状态独立合并
@@ -200,7 +200,7 @@ class TableSpanBuilderImpl implements TableSpanBuilder {
  *   .build()
  *
  * // 场景2: 行合并 + 列合并
- * const spanMethod = createSpanMethod()
+ * const spanMethod = spanMethodBuilder()
  *   .withData(tableData)
  *   .mergeRows(['province', 'city'])
  *   .mergeCols({
@@ -214,14 +214,14 @@ class TableSpanBuilderImpl implements TableSpanBuilder {
  *   .build()
  *
  * // 场景3: 简单场景
- * const spanMethod = createSpanMethod()
+ * const spanMethod = spanMethodBuilder()
  *   .withData(tableData)
  *   .mergeRows(['province'])
  *   .build()
  *
  * // 场景4: 自定义缓存键
  * const version = ref(0)
- * const spanMethod = createSpanMethod()
+ * const spanMethod = spanMethodBuilder()
  *   .withData(tableData)
  *   .withCacheKey(version)
  *   .mergeRows(['province'])
@@ -229,8 +229,8 @@ class TableSpanBuilderImpl implements TableSpanBuilder {
  * // 数据变化时：version.value++
  * ```
  *
- * @returns TableSpanBuilder 实例
+ * @returns spanMethodBuilder 实例
  */
-export function createSpanMethod(): TableSpanBuilder {
-  return new TableSpanBuilderImpl();
+export function spanMethodBuilder(): spanMethodBuilder {
+  return new spanMethodBuilderImpl();
 }

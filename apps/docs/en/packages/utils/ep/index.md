@@ -1,6 +1,6 @@
 # ElementPlus Utilities
 
-## createSpanMethod
+## spanMethodBuilder
 
 > Create an intelligent cell merging function for ElementPlus Table component, supporting row merging, column merging, and mixed usage with a fluent chainable API.
 
@@ -11,7 +11,7 @@ The simplest way to merge rows with identical values:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { createSpanMethod } from 'dlib-utils/ep';
+import { spanMethodBuilder } from 'dlib-utils/ep';
 
 const tableData = ref([
   { province: 'Zhejiang', city: 'Hangzhou', area: 'Xihu' },
@@ -20,7 +20,7 @@ const tableData = ref([
   { province: 'Jiangsu', city: 'Nanjing', area: 'Xuanwu' },
 ]);
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeRows(['province', 'city']) // Merge province and city
   .build();
@@ -42,7 +42,7 @@ const spanMethod = createSpanMethod()
 Multiple columns merge by priority with dependencies - subsequent columns only merge when previous columns are in the same merge area:
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeRows(['dept', 'team', 'group']) // dept → team → group, nested hierarchy
   .build();
@@ -66,7 +66,7 @@ const tableData = [
   { province: 'Jiangsu', city: 'Nanjing', status: 'inactive', category: 'B' },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeRows(['province', 'city']) // Group 1: Province-city linkage
   .mergeRows(['status']) // Group 2: Status merges independently
@@ -92,7 +92,7 @@ const tableData = [
   { name: 'Data 2', q1: 150, q2: 250, q3: 350, q4: 450 },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeCols({
     rows: [0], // First row (0-indexed)
@@ -106,7 +106,7 @@ const spanMethod = createSpanMethod()
 Same row can have multiple independent merge groups:
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeCols({
     rows: [0],
@@ -130,7 +130,7 @@ const tableData = [
   { type: 'total', name: 'Total', a: 1000, b: 2000, c: 3000 },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   // Header row: merge all columns
   .mergeCols({
@@ -155,7 +155,7 @@ const spanMethod = createSpanMethod()
 Merge groups can also be dynamically returned based on row data:
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .mergeCols({
     rows: [0, 1, 2],
@@ -184,7 +184,7 @@ const tableData = [
   { name: 'Subtotal', q1: 370, q2: 670, q3: 970, q4: 1270 },
 ];
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   // Row merge: merge identical name values
   .mergeRows(['name'])
@@ -211,7 +211,7 @@ const spanMethod = createSpanMethod()
 Smart caching is enabled by default and automatically detects data changes:
 
 ```ts
-const spanMethod = createSpanMethod().withData(tableData).mergeRows(['province']).build(); // Cache enabled by default
+const spanMethod = spanMethodBuilder().withData(tableData).mergeRows(['province']).build(); // Cache enabled by default
 ```
 
 #### Manual Cache Control (Recommended)
@@ -222,7 +222,7 @@ For large datasets, it's recommended to use `cacheKey` for manual cache control 
 const version = ref(0);
 const tableData = ref([...]);
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .withCacheKey(version)  // Provide cache key
   .mergeRows(['province', 'city'])
@@ -240,7 +240,7 @@ function updateData(newData) {
 If data changes very frequently, you can disable caching:
 
 ```ts
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .noCache() // Disable cache
   .mergeRows(['province'])
@@ -252,7 +252,7 @@ const spanMethod = createSpanMethod()
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue';
-import { createSpanMethod } from 'dlib-utils/ep';
+import { spanMethodBuilder } from 'dlib-utils/ep';
 
 const version = ref(0);
 const tableData = ref([
@@ -262,7 +262,7 @@ const tableData = ref([
   { province: 'Jiangsu', city: 'Nanjing', status: 'inactive', area: 'Xuanwu', population: 80 },
 ]);
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .withCacheKey(version)
   .mergeRows(['province', 'city']) // Province-city linkage
@@ -304,13 +304,13 @@ function updateRow(index: number) {
 
 ### API Reference
 
-#### createSpanMethod()
+#### spanMethodBuilder()
 
 Creates a chainable builder for configuring ElementPlus Table cell merge rules.
 
-**Returns:** `TableSpanBuilder`
+**Returns:** `spanMethodBuilder`
 
-#### TableSpanBuilder Methods
+#### spanMethodBuilder Methods
 
 ##### withData(data)
 
@@ -341,7 +341,7 @@ Add a group of row merge rules (vertical merging).
 **Example:**
 
 ```ts
-createSpanMethod()
+spanMethodBuilder()
   .mergeRows(['province', 'city']) // Group 1: province-city linkage
   .mergeRows(['status']); // Group 2: status merges independently
 ```
@@ -370,7 +370,7 @@ Add column merge rules (horizontal merging).
 **Example:**
 
 ```ts
-createSpanMethod()
+spanMethodBuilder()
   // Header row merge
   .mergeCols({
     rows: [0],
@@ -399,7 +399,7 @@ Set cache key for precise cache invalidation control.
 
 ```ts
 const version = ref(0);
-createSpanMethod().withCacheKey(version);
+spanMethodBuilder().withCacheKey(version);
 // When data changes: version.value++
 ```
 
@@ -443,19 +443,19 @@ Build the final span-method function.
 
 ### Differences from Legacy API
 
-If you previously used `createSpanMethod()` and `createColSpanMethod()`, the new chainable API provides a more elegant approach:
+If you previously used `spanMethodBuilder()` and `createColSpanMethod()`, the new chainable API provides a more elegant approach:
 
 ```ts
 // ❌ Old Way - Verbose, repeated configuration
-import { createSpanMethod, createColSpanMethod, composeSpanMethods } from 'dlib-utils/ep';
+import { spanMethodBuilder, createColSpanMethod, composeSpanMethods } from 'dlib-utils/ep';
 
 const spanMethod = composeSpanMethods(
-  createSpanMethod({
+  spanMethodBuilder({
     mergeColumns: ['province', 'city'],
     data: tableData,
     cacheKey: version,
   }),
-  createSpanMethod({
+  spanMethodBuilder({
     mergeColumns: ['status'],
     data: tableData,
     cacheKey: version,
@@ -469,9 +469,9 @@ const spanMethod = composeSpanMethods(
 );
 
 // ✅ New Way - Elegant, clear
-import { createSpanMethod } from 'dlib-utils/ep';
+import { spanMethodBuilder } from 'dlib-utils/ep';
 
-const spanMethod = createSpanMethod()
+const spanMethod = spanMethodBuilder()
   .withData(tableData)
   .withCacheKey(version)
   .mergeRows(['province', 'city']) // Province-city linkage
@@ -482,7 +482,7 @@ const spanMethod = createSpanMethod()
 
 **Advantages of New API:**
 
-- ✅ Unified entry point API (`createSpanMethod()`)
+- ✅ Unified entry point API (`spanMethodBuilder()`)
 - ✅ Chainable calls, more readable code
 - ✅ Multiple `mergeRows()` calls solve column dependency issues
 - ✅ Configuration reuse - `data` and `cacheKey` configured once

@@ -2,7 +2,7 @@
 import { reactive } from 'vue';
 import type { CommonTableConfig } from '~/dlib-ui';
 import { useConfigs } from 'dlib-hooks';
-import { createSpanMethod } from 'dlib-utils/src';
+import { spanMethodBuilder } from 'dlib-utils/src';
 
 const { config } = useConfigs<CommonTableConfig>([
   {
@@ -54,7 +54,7 @@ const tableData = reactive([
   },
 ]);
 
-const spanMethod = createSpanMethod({
+const spanMethod = spanMethodBuilder({
   mergeColumns: ['field1', 'field2', 'field3'],
   data: tableData,
 });
