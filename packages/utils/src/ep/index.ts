@@ -1,1 +1,1 @@
-export * from './spanMethod';
+export * from './spanMethod/index';
