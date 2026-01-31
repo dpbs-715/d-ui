@@ -1,8 +1,9 @@
 import { describe, expect, it, beforeEach } from 'vitest';
 import { ref } from 'vue';
-import { createTableSpan, type SpanMethodProps } from '../spanMethod';
+import { createSpanMethod } from '../spanMethod';
+import { SpanMethodProps } from '../spanMethod/methods';
 
-describe('createTableSpan', () => {
+describe('createSpanMethod', () => {
   // 辅助函数：创建 SpanMethodProps
   const createProps = (
     row: any,
@@ -19,13 +20,13 @@ describe('createTableSpan', () => {
   describe('基础功能', () => {
     it('应该抛出错误：未设置 data', () => {
       expect(() => {
-        createTableSpan().mergeRows(['province']).build();
+        createSpanMethod().mergeRows(['province']).build();
       }).toThrow('[TableSpanBuilder] data is required. Please call withData() first.');
     });
 
     it('应该返回默认值：没有配置任何合并规则', () => {
       const data = [{ name: 'test' }];
-      const spanMethod = createTableSpan().withData(data).build();
+      const spanMethod = createSpanMethod().withData(data).build();
 
       const result = spanMethod(createProps(data[0], { property: 'name' }, 0, 0));
       expect(result).toEqual({ rowspan: 1, colspan: 1 });
@@ -33,7 +34,7 @@ describe('createTableSpan', () => {
 
     it('应该返回默认值：空数据数组', () => {
       const data: any[] = [];
-      const spanMethod = createTableSpan().withData(data).mergeRows(['province']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['province']).build();
 
       const result = spanMethod(createProps({}, { property: 'province' }, 0, 0));
       expect(result).toEqual({ rowspan: 1, colspan: 1 });
@@ -53,7 +54,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该合并单列相同值', () => {
-      const spanMethod = createTableSpan().withData(data).mergeRows(['province']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['province']).build();
 
       // 浙江第一行：rowspan=3
       expect(spanMethod(createProps(data[0], { property: 'province' }, 0, 0))).toEqual({
@@ -81,7 +82,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该合并多列联动（有依赖关系）', () => {
-      const spanMethod = createTableSpan().withData(data).mergeRows(['province', 'city']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['province', 'city']).build();
 
       // province 列 - 浙江第一行：rowspan=3
       expect(spanMethod(createProps(data[0], { property: 'province' }, 0, 0))).toEqual({
@@ -109,7 +110,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该不合并不在配置中的列', () => {
-      const spanMethod = createTableSpan().withData(data).mergeRows(['province']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['province']).build();
 
       // area 列不在合并配置中
       expect(spanMethod(createProps(data[0], { property: 'area' }, 0, 0))).toEqual({
@@ -128,7 +129,7 @@ describe('createTableSpan', () => {
         { province: '江苏', city: '南京', status: 'B', category: 'Y' },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeRows(['province', 'city']) // 第1组：省市联动
         .mergeRows(['status']) // 第2组：状态独立合并
@@ -173,7 +174,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该合并指定行的列（索引数组）', () => {
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeCols({
           rows: [0], // 第一行
@@ -201,7 +202,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该合并多组列', () => {
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeCols({
           rows: [0],
@@ -232,7 +233,7 @@ describe('createTableSpan', () => {
         { type: 'summary', name: '小计', a: 100, b: 200 },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(dataWithType)
         .mergeCols({
           rows: (idx, row) => row.type === 'header',
@@ -264,7 +265,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该支持 boolean 类型的 rows 参数', () => {
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeCols({
           rows: true, // 所有行
@@ -285,7 +286,7 @@ describe('createTableSpan', () => {
     });
 
     it('应该忽略只有一个列的合并组', () => {
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeCols({
           rows: [0],
@@ -308,7 +309,7 @@ describe('createTableSpan', () => {
         { name: '浙江', q1: 150, q2: 250 },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeRows(['name']) // 行合并
         .mergeCols({ rows: [0], groups: [['q1', 'q2']] }) // 列合并
@@ -341,7 +342,7 @@ describe('createTableSpan', () => {
         { province: '浙江', city: '杭州' },
       ]);
 
-      const spanMethod = createTableSpan().withData(data).mergeRows(['province']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['province']).build();
 
       // 初始数据：rowspan=2
       expect(spanMethod(createProps(data.value[0], { property: 'province' }, 0, 0))).toEqual({
@@ -359,7 +360,7 @@ describe('createTableSpan', () => {
       ];
       const cacheKey = ref(0);
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .withCacheKey(cacheKey)
         .mergeRows(['province'])
@@ -388,7 +389,11 @@ describe('createTableSpan', () => {
         { province: '浙江', city: '杭州' },
       ];
 
-      const spanMethod = createTableSpan().withData(data).noCache().mergeRows(['province']).build();
+      const spanMethod = createSpanMethod()
+        .withData(data)
+        .noCache()
+        .mergeRows(['province'])
+        .build();
 
       // 每次调用都应该重新计算（无缓存）
       const result1 = spanMethod(createProps(data[0], { property: 'province' }, 0, 0));
@@ -407,7 +412,7 @@ describe('createTableSpan', () => {
         { name: 'Data', q1: 1, q2: 2 },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeCols({ rows: [0], groups: [['q1', 'q2']] })
         .build();
@@ -421,7 +426,7 @@ describe('createTableSpan', () => {
   describe('边界情况', () => {
     it('应该处理空的列名数组', () => {
       const data = [{ name: 'test' }];
-      const spanMethod = createTableSpan().withData(data).mergeRows([]).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows([]).build();
 
       expect(spanMethod(createProps(data[0], { property: 'name' }, 0, 0))).toEqual({
         rowspan: 1,
@@ -435,7 +440,7 @@ describe('createTableSpan', () => {
         { province: '浙江', city: '杭州' },
       ];
 
-      const spanMethod = createTableSpan().withData(data).mergeRows(['nonexistent']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['nonexistent']).build();
 
       // 不存在的列也应该尝试合并（值都是 undefined）
       expect(spanMethod(createProps(data[0], { property: 'nonexistent' }, 0, 0))).toEqual({
@@ -450,7 +455,7 @@ describe('createTableSpan', () => {
         { province: '浙江', city: '杭州' },
       ];
 
-      const spanMethod = createTableSpan().withData(data).mergeRows(['province']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['province']).build();
 
       // 操作列等没有 property 的列应该返回默认值
       expect(spanMethod(createProps(data[0], { property: undefined } as any, 0, 0))).toEqual({
@@ -462,7 +467,7 @@ describe('createTableSpan', () => {
     it('应该处理所有值都不同的情况', () => {
       const data = [{ name: 'A' }, { name: 'B' }, { name: 'C' }];
 
-      const spanMethod = createTableSpan().withData(data).mergeRows(['name']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['name']).build();
 
       // 所有行都不合并
       expect(spanMethod(createProps(data[0], { property: 'name' }, 0, 0))).toEqual({
@@ -482,7 +487,7 @@ describe('createTableSpan', () => {
     it('应该处理所有值都相同的情况', () => {
       const data = [{ name: 'A' }, { name: 'A' }, { name: 'A' }];
 
-      const spanMethod = createTableSpan().withData(data).mergeRows(['name']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['name']).build();
 
       // 所有行合并成一个
       expect(spanMethod(createProps(data[0], { property: 'name' }, 0, 0))).toEqual({
@@ -502,7 +507,7 @@ describe('createTableSpan', () => {
     it('应该处理 null 和 undefined 值', () => {
       const data = [{ value: null }, { value: null }, { value: undefined }, { value: undefined }];
 
-      const spanMethod = createTableSpan().withData(data).mergeRows(['value']).build();
+      const spanMethod = createSpanMethod().withData(data).mergeRows(['value']).build();
 
       // null 值应该合并
       expect(spanMethod(createProps(data[0], { property: 'value' }, 0, 0))).toEqual({
@@ -528,7 +533,7 @@ describe('createTableSpan', () => {
         { province: '江苏', city: '南京', district: '玄武区', street: '中山路' },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeRows(['province', 'city', 'district'])
         .build();
@@ -570,7 +575,7 @@ describe('createTableSpan', () => {
         { type: 'B', a: 4, b: 5, c: 6 },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeCols({
           rows: [0, 1],
@@ -610,10 +615,10 @@ describe('createTableSpan', () => {
       const data = [{ name: 'test' }];
 
       // 顺序1
-      const spanMethod1 = createTableSpan().withData(data).noCache().mergeRows(['name']).build();
+      const spanMethod1 = createSpanMethod().withData(data).noCache().mergeRows(['name']).build();
 
       // 顺序2
-      const spanMethod2 = createTableSpan().mergeRows(['name']).noCache().withData(data).build();
+      const spanMethod2 = createSpanMethod().mergeRows(['name']).noCache().withData(data).build();
 
       expect(spanMethod1).toBeDefined();
       expect(spanMethod2).toBeDefined();
@@ -625,7 +630,7 @@ describe('createTableSpan', () => {
         { a: 'A', b: 'B', c: 'C' },
       ];
 
-      const spanMethod = createTableSpan()
+      const spanMethod = createSpanMethod()
         .withData(data)
         .mergeRows(['a'])
         .mergeRows(['b'])

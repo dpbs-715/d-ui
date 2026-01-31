@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { createTableSpan } from './spanMethod';
+import { createSpanMethod } from './index';
 
 // ==================== 场景1: 简单的行合并 ====================
 const simpleData = ref([
@@ -8,7 +8,7 @@ const simpleData = ref([
   { province: '浙江', city: '宁波', area: '鄞州区' },
 ]);
 
-const simpleSpanMethod = createTableSpan()
+const simpleSpanMethod = createSpanMethod()
   .withData(simpleData)
   .mergeRows(['province', 'city']) // 省市联动合并
   .build();
@@ -23,7 +23,7 @@ const multiGroupData = ref([
 
 // 之前的问题：status 必须等 province 和 city 都在同一区域才能合并
 // 现在的解决方案：通过多次调用 mergeRows 创建独立的合并组
-const multiGroupSpanMethod = createTableSpan()
+const multiGroupSpanMethod = createSpanMethod()
   .withData(multiGroupData)
   .mergeRows(['province', 'city']) // 第1组：省市联动
   .mergeRows(['status']) // 第2组：状态独立合并（不受省市影响）
@@ -39,7 +39,7 @@ const mixedData = ref([
   { name: '小计', q1: 370, q2: 670, q3: 970, q4: 1270 },
 ]);
 
-const mixedSpanMethod = createTableSpan()
+const mixedSpanMethod = createSpanMethod()
   .withData(mixedData)
   // 行合并：name 列相同值合并
   .mergeRows(['name'])
@@ -66,16 +66,16 @@ const dynamicData = ref([
   { type: 'total', name: '总计', a: 1000, b: 2000, c: 3000, d: 4000 },
 ]);
 
-const dynamicSpanMethod = createTableSpan()
+const dynamicSpanMethod = createSpanMethod()
   .withData(dynamicData)
   // 条件判断：header 行合并 a-d
   .mergeCols({
-    rows: (idx, row) => row.type === 'header',
+    rows: (idx: any, row: any) => row.type === 'header',
     groups: [['a', 'b', 'c', 'd']],
   })
   // 条件判断：summary 行合并 a-b 和 c-d
   .mergeCols({
-    rows: (idx, row) => row.type === 'summary',
+    rows: (idx: any, row: any) => row.type === 'summary',
     groups: [
       ['a', 'b'],
       ['c', 'd'],
@@ -83,7 +83,7 @@ const dynamicSpanMethod = createTableSpan()
   })
   // 条件判断：total 行合并所有列
   .mergeCols({
-    rows: (idx, row) => row.type === 'total',
+    rows: (idx: any, row: any) => row.type === 'total',
     groups: [['name', 'a', 'b', 'c', 'd']],
   })
   .build();
@@ -92,7 +92,7 @@ const dynamicSpanMethod = createTableSpan()
 
 // 方式1：使用自定义缓存键（性能最优）
 const version = ref(0);
-const cachedSpanMethod = createTableSpan()
+const cachedSpanMethod = createSpanMethod()
   .withData(simpleData)
   .withCacheKey(version) // 提供缓存键
   .mergeRows(['province', 'city'])
@@ -105,14 +105,14 @@ function updateData() {
 }
 
 // 方式2：禁用缓存（数据频繁变化的场景）
-const noCacheSpanMethod = createTableSpan()
+const noCacheSpanMethod = createSpanMethod()
   .withData(simpleData)
   .noCache() // 禁用缓存
   .mergeRows(['province', 'city'])
   .build();
 
 // 方式3：智能模式（默认，自动检测数据变化）
-const autoSpanMethod = createTableSpan()
+const autoSpanMethod = createSpanMethod()
   .withData(simpleData)
   .mergeRows(['province', 'city'])
   .build(); // 自动检测合并列数据变化
@@ -122,7 +122,7 @@ const autoSpanMethod = createTableSpan()
 /*
 <script setup lang="ts">
 import { ref } from 'vue'
-import { createTableSpan } from 'dlib-utils/ep'
+import { createSpanMethod } from 'dlib-utils/ep'
 
 const tableData = ref([
   { province: '浙江', city: '杭州', area: '西湖区' },
@@ -130,7 +130,7 @@ const tableData = ref([
   { province: '浙江', city: '宁波', area: '鄞州区' },
 ])
 
-const spanMethod = createTableSpan()
+const spanMethod = createSpanMethod()
   .withData(tableData)
   .mergeRows(['province', 'city'])
   .build()
@@ -172,7 +172,7 @@ const oldSpanMethod = composeSpanMethods(
 */
 
 // ✅ 新方式（优雅）
-const newSpanMethod = createTableSpan()
+const newSpanMethod = createSpanMethod()
   .withData(multiGroupData)
   .withCacheKey(version)
   .mergeRows(['province', 'city']) // 省市联动
