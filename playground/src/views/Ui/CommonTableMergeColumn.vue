@@ -47,17 +47,17 @@ const tableData = reactive([
   },
   {
     field1: '2',
-    field2: '名称2',
-    field3: '名称3',
+    field2: '名称21',
+    field3: '名称32',
     field4: '名称4',
     field5: '名称6',
   },
 ]);
 
-const spanMethod = spanMethodBuilder({
-  mergeColumns: ['field1', 'field2', 'field3'],
-  data: tableData,
-});
+const spanMethod = spanMethodBuilder()
+  .withData(tableData)
+  .mergeRows(['field1', 'field2', 'field3'])
+  .build();
 </script>
 
 <template>
