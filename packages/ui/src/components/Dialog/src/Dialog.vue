@@ -55,6 +55,7 @@ const comSlots: any = {
         {
           ...$attrs,
           ...dialogProps,
+          modalClass: `${dialogProps.modalBlur && 'modalBlur'} ${dialogProps.modalClass ?? ''}`,
           class: 'CommonDialog',
           modelValue: dialogVisible,
           'onUpdate:modelValue': updateModel,

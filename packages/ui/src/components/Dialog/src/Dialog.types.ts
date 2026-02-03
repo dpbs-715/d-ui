@@ -9,6 +9,7 @@ export interface DialogProps {
   destroyOnClose?: Boolean;
   center?: Boolean;
   alignCenter?: Boolean;
+  modalBlur?: Boolean;
 }
 
 export interface DialogEmits {
