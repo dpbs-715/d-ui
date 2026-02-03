@@ -43,7 +43,7 @@ registerCommonKeysMap({
 | `valueField`           | 值字段的对照字段名                                    | `string`                                 | -       |
 | `labelField`           | 文本字段的对照字段名                                  | `string`                                 | -       |
 | `parseData`            | 转化请求结果的方法                                    | `Function`                               | -       |
-| `autoSelectFirst`      | 只有一条数据时是否自动选中                            | `boolean`                                | `false` |
+| `autoSelect`           | 只有一条数据时是否自动选中                            | `boolean`                                | `false` |
 | `multiple`             | 是否为多选                                            | `boolean`                                | `false` |
 | `needAllQueryParams`   | 是否需要传递所有查询参数                              | `boolean`                                | `false` |
 | `appendOptions`        | 追加的选项列表或方法                                  | `Record<any, any>[] \| Function`         | -       |

@@ -15,6 +15,8 @@ import {
 import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
+import { provideFormContext } from './formContext.ts';
+
 defineOptions({
   name: 'CommonForm',
   inheritAttrs: false,
@@ -28,6 +30,25 @@ const formData: Record<string, any> = defineModel('modelValue', {
   default: () => reactive({}),
 });
 const formRef = ref();
+
+// 使用 createContext 收集子组件的 ready Promise
+const childrenReadyPromises: Promise<void>[] = [];
+provideFormContext({
+  registerComponentReady: (promise: Promise<void>) => {
+    childrenReadyPromises.push(promise);
+  },
+});
+
+/**
+ * 等待所有子组件（如 Select）准备就绪
+ * 在填充表单数据前调用此方法，确保所有 Select 的 options 已加载完成
+ *
+ * @returns {Promise<void>} 当所有子组件准备就绪时 resolve
+ */
+async function waitForReady() {
+  await Promise.all(childrenReadyPromises);
+}
+
 /**
  * 表单验证函数
  * 在表单提交前调用此函数，以验证表单是否符合规则
@@ -93,6 +114,7 @@ function collectFormRef(instance: any) {
           ...(instance || {}),
           validateForm,
           getFormData: () => toValue(formData),
+          waitForReady,
         };
   }
 }

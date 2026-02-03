@@ -65,9 +65,16 @@ Public selector supporting select, selectV2, and treeSelect.
 
 ## Auto Selection
 
-> Automatically select when there is only one data item. Only valid for API and dict
+> Supports multiple auto-selection strategies. Only valid for API and dict
+>
+> - `false`: No auto-selection
+> - `true` or `'one'`: Auto-select when there's only one option (default behavior)
+> - `'first'`: Always auto-select the first option
+> - `'last'`: Always auto-select the last option
+>
+> **Note**: If model already has a value, auto-selection won't execute (prevents overwriting user data)
 
-<demo vue="ui/CommonSelect/autoSelectFirst.vue" />
+<demo vue="ui/CommonSelect/autoSelect.vue" />
 
 ## Append Options
 
@@ -81,23 +88,23 @@ Public selector supporting select, selectV2, and treeSelect.
 
 ## CommonSelect Attributes (Props)
 
-| Attribute            | Description                                                        | Type                                           | Default      |
-| -------------------- | ------------------------------------------------------------------ | ---------------------------------------------- | ------------ |
-| `api`                | Request API interface method                                       | `Function`                                     | -            |
-| `dict`               | Dictionary name, used to get options from dictionary               | `string \| string[]`                           | -            |
-| `query`              | Request parameter configuration method                             | `Function`                                     | -            |
-| `valueField`         | Value field mapping field name                                     | `string`                                       | -            |
-| `labelField`         | Text field mapping field name                                      | `string`                                       | -            |
-| `parseData`          | Method to transform request results                                | `Function`                                     | -            |
-| `autoSelectFirst`    | Whether to automatically select when there is only one data item   | `boolean`                                      | `false`      |
-| `multiple`           | Whether it is multiple selection                                   | `boolean`                                      | `false`      |
-| `needAllQueryParams` | Whether to pass all query parameters                               | `boolean`                                      | `false`      |
-| `appendOptions`      | Appended option list or method                                     | `Record<any, any>[] \| Function`               | -            |
-| `valueType`          | Value type, supports 'string', 'String', 'int', 'Int'              | `'string' \| 'String' \| 'int' \| 'Int'`       | -            |
-| `options`            | Bound option list                                                  | `Record<any, any>[]`                           | -            |
-| `ignoreByLabel`      | Ignored label list                                                 | `string[]`                                     | -            |
-| `componentType`      | Component type, supports 'ElSelectV2', 'ElSelect', 'ElTreeSelect'  | `'ElSelectV2' \| 'ElSelect' \| 'ElTreeSelect'` | `'ElSelect'` |
-| `joinSplit`          | Concatenation delimiter when merging results in multiple selection | `string`                                       | None         |
-| `orderBy`            | Sort field name                                                    | `string`                                       | -            |
-| `orderType`          | Sort order, supports 'asc' or 'desc'                               | `'asc' \| 'desc'`                              | -            |
-| `getDictOptions`     | Method to get dictionary options                                   | `Function`                                     | -            |
+| Attribute            | Description                                                                                                                   | Type                                           | Default      |
+| -------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------ |
+| `api`                | Request API interface method                                                                                                  | `Function`                                     | -            |
+| `dict`               | Dictionary name, used to get options from dictionary                                                                          | `string \| string[]`                           | -            |
+| `query`              | Request parameter configuration method                                                                                        | `Function`                                     | -            |
+| `valueField`         | Value field mapping field name                                                                                                | `string`                                       | -            |
+| `labelField`         | Text field mapping field name                                                                                                 | `string`                                       | -            |
+| `parseData`          | Method to transform request results                                                                                           | `Function`                                     | -            |
+| `autoSelect`         | Auto-selection strategy: `false` no selection / `true\|'one'` select when one / `'first'` always first / `'last'` always last | `boolean \| 'one' \| 'first' \| 'last'`        | `false`      |
+| `multiple`           | Whether it is multiple selection                                                                                              | `boolean`                                      | `false`      |
+| `needAllQueryParams` | Whether to pass all query parameters                                                                                          | `boolean`                                      | `false`      |
+| `appendOptions`      | Appended option list or method                                                                                                | `Record<any, any>[] \| Function`               | -            |
+| `valueType`          | Value type, supports 'string', 'String', 'int', 'Int'                                                                         | `'string' \| 'String' \| 'int' \| 'Int'`       | -            |
+| `options`            | Bound option list                                                                                                             | `Record<any, any>[]`                           | -            |
+| `ignoreByLabel`      | Ignored label list                                                                                                            | `string[]`                                     | -            |
+| `componentType`      | Component type, supports 'ElSelectV2', 'ElSelect', 'ElTreeSelect'                                                             | `'ElSelectV2' \| 'ElSelect' \| 'ElTreeSelect'` | `'ElSelect'` |
+| `joinSplit`          | Concatenation delimiter when merging results in multiple selection                                                            | `string`                                       | None         |
+| `orderBy`            | Sort field name                                                                                                               | `string`                                       | -            |
+| `orderType`          | Sort order, supports 'asc' or 'desc'                                                                                          | `'asc' \| 'desc'`                              | -            |
+| `getDictOptions`     | Method to get dictionary options                                                                                              | `Function`                                     | -            |
