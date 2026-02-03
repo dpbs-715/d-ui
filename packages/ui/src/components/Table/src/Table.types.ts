@@ -61,7 +61,7 @@ export interface CommonTableProps {
   data?: DataType;
   loading?: MaybeRef<Boolean>;
   emptyText?: string;
-  empty?: string;
+  emptyValue?: string;
   useIndex?: Boolean;
   useSelection?: Boolean;
   singleSelection?: Boolean;
