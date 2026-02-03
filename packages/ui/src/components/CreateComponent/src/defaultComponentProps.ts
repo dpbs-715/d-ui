@@ -22,6 +22,7 @@ export default {
   },
   //表单配置
   CommonForm: {
+    emptyValue: '/',
     labelWidth: 'auto',
     col: {
       sm: 24,

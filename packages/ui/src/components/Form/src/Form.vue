@@ -16,6 +16,7 @@ import { ElForm, ElFormItem, ElRow, ElCol } from 'element-plus';
 import { configIterator, getRules, isHidden, useComponentProps } from '~/_utils/componentUtils.ts';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
 import { provideFormContext } from './formContext.ts';
+import { isEmpty } from 'dlib-utils';
 
 defineOptions({
   name: 'CommonForm',
@@ -160,6 +161,7 @@ const transformModel = defineComponent({
         if (readField) {
           return props.formData[readField];
         }
+        let v;
         //需要处理的组件
         if (translateComponent.includes(component)) {
           if (!dataHandler) {
@@ -169,9 +171,15 @@ const transformModel = defineComponent({
             };
           }
           dataHandler.initOptions();
-          return readValue.value;
+          v = readValue.value;
         } else {
-          return props.formData[field];
+          v = props.formData[field];
+        }
+
+        if (isEmpty(v)) {
+          return toValue(formProps).emptyValue;
+        } else {
+          return v;
         }
       }
 

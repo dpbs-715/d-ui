@@ -39,7 +39,9 @@ export interface CommonFormBaseProps {
 
 export interface CommonFormProps extends CommonFormBaseProps {
   config?: CommonFormConfig[];
-  readonly?: Boolean;
+  readonly?: boolean;
+  loading?: boolean;
+  emptyValue?: String;
   col?: {
     sm: number;
     md: number;

@@ -131,13 +131,9 @@ onMounted(async () => {
     readonly
   </el-button>
   <el-divider />
-  <CommonForm
-    ref="formRef"
-    v-model="formData"
-    :readonly="readonlyFlg"
-    :loading="loading"
-    :config="config"
-  />
+
+  <!-- :readonly="readonlyFlg" -->
+  <CommonForm ref="formRef" v-model="formData" readonly :loading="loading" :config="config" />
 </template>
 
 <style scoped></style>
