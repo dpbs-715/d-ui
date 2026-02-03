@@ -174,7 +174,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | v2              | `boolean`             | `false` | Whether to enable v2 version style and functionality (compatible with old version).       |
 | data            | `DataType`            | -       | Table data source, usually an array of objects.                                           |
 | loading         | `boolean`             | `false` | Whether to show loading state.                                                            |
-| empty           | `string`              | -       | Text displayed when data is empty.                                                        |
+| emptyValue      | `string`              | -       | Text displayed when data is empty.                                                        |
 | useIndex        | `boolean`             | `false` | Whether to show index column.                                                             |
 | useSelection    | `boolean`             | `false` | Whether to show selection column.                                                         |
 | singleSelection | `boolean`             | `false` | Enable selection single selection.                                                        |

@@ -171,7 +171,7 @@ function isDisabled({ cellData, column, rowData, rowIndex, tableData }) {
 | v2              | `boolean`             | `false` | 是否启用 v2 版本样式与功能（兼容旧版）。   |
 | data            | `DataType`            | -       | 表格数据源，通常是一个对象数组。           |
 | loading         | `boolean`             | `false` | 是否显示加载状态。                         |
-| empty           | `string`              | -       | 数据为空时显示的文本。                     |
+| emptyValue      | `string`              | -       | 数据为空时显示的文本。                     |
 | useIndex        | `boolean`             | `false` | 是否显示索引列。                           |
 | useSelection    | `boolean`             | `false` | 是否显示多选列。                           |
 | singleSelection | `boolean`             | `false` | 启用selection单选。                        |
