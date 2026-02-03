@@ -1,139 +1,71 @@
 <script setup lang="ts">
-import { ref, reactive, onMounted } from 'vue';
-import { useConfigs } from 'dlib-hooks/src/useConfigs';
-import type { CommonFormConfig } from '~/components';
-const options = ref([
+import { reactive } from 'vue';
+import type { CommonTableConfig } from '~/dlib-ui';
+import { useConfigs } from 'dlib-hooks';
+import { spanMethodBuilder } from 'dlib-utils/src';
+
+const { config } = useConfigs<CommonTableConfig>([
   {
-    label: 'label1',
-    value: 1,
+    label: '名称',
+    field: 'field1',
+  },
+  {
+    label: '名称2',
+    field: 'field2',
+    align: 'center',
+  },
+  {
+    label: '名称3',
+    field: 'field3',
+  },
+  {
+    label: '名称4',
+    field: 'field4',
   },
 ]);
-function mockFun() {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      console.log('ok');
-      resolve([
-        {
-          label: 'label1',
-          value: 1,
-        },
-        {
-          label: 'label3',
-          value: 3,
-        },
-      ]);
-    }, 1000);
-  });
-}
-const { config } = useConfigs<CommonFormConfig>([
+const tableData = reactive([
   {
-    field: 'test1',
-    label: '测试1',
-    component: 'commonSelect',
-    model: {
-      label: 'label',
-    },
-    props: {
-      api: mockFun,
-      appendOptions: [
-        {
-          label: 'label5',
-          value: 5,
-        },
-      ],
-    },
+    field1: '1',
+    field2: '名称2',
+    field3: '名称3',
+    field4: '名称4',
+    field5: '名称5',
   },
   {
-    field: 'test2',
-    label: '测试2',
-    component: 'commonSelect',
-    props: {
-      options: options,
-      multiple: true,
-      appendOptions: [
-        {
-          label: 'label5',
-          value: 5,
-        },
-      ],
-    },
+    field1: '1',
+    field2: '名称21',
+    field3: '名称33',
+    field4: '名称4',
+    field5: '名称5',
   },
   {
-    field: 'test3',
-    label: '测试3',
-    component: 'checkboxGroup',
-    props: {
-      options: options,
-    },
+    field1: '1',
+    field2: '名称21',
+    field3: '名称32',
+    field4: '名称4',
+    field5: '名称5',
   },
   {
-    field: 'test4',
-    label: '测试4',
-    component: 'commonSelectOrDialog',
-    props: {
-      options: options,
-      dialogFieldsConfig: [
-        {
-          label: '文字',
-          field: 'label',
-          table: true,
-          search: true,
-        },
-        {
-          label: '值',
-          field: 'value',
-          table: true,
-        },
-      ],
-    },
+    field1: '2',
+    field2: '名称21',
+    field3: '名称32',
+    field4: '名称4',
+    field5: '名称6',
   },
 ]);
-const loading = ref(false);
-const formData = reactive({ test1: 1 });
-function loadingFun() {
-  loading.value = true;
-  setTimeout(() => {
-    loading.value = false;
-  }, 5000);
-}
-const readonlyFlg = ref(false);
-function setReadonly() {
-  readonlyFlg.value = !readonlyFlg.value;
-}
-setTimeout(() => {
-  console.log('ok2');
-  options.value = [
-    {
-      label: 'label2',
-      value: 2,
-    },
-    {
-      label: 'label4',
-      value: 4,
-    },
-  ];
-}, 2000);
-const formRef = ref();
-onMounted(async () => {
-  await formRef.value.waitForReady();
-  console.log('form ok');
-});
+
+const spanMethod = spanMethodBuilder()
+  .withData(tableData)
+  .mergeRows(['field1', 'field2', 'field3'])
+  .mergeCols({
+    rows: [0],
+    groups: [['field3', 'field4']],
+  })
+  .build();
 </script>
 
 <template>
-  {{ formData }}
-  <el-select :options="options" />
-  <el-button @click="loadingFun">
-    loading
-  </el-button>
-  <el-divider />
-  <el-button @click="setReadonly">
-    readonly
-  </el-button>
-  <el-divider />
-
-  <!-- :readonly="readonlyFlg" -->
-  <CommonForm ref="formRef" v-model="formData" readonly :loading="loading" :config="config" />
+  <CommonTable :data="tableData" :config="config" :span-method="spanMethod" />
 </template>
 
 <style scoped></style>
