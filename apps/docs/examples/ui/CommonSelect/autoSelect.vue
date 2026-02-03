@@ -18,7 +18,7 @@ const { form } = useMixConfig([
     span: 12,
     props: {
       api: mockApi,
-      autoSelectFirst: true,
+      autoSelect: true,
     },
     form: true,
   },
@@ -28,10 +28,7 @@ const { form } = useMixConfig([
 <template>
   {{ formData }}
   <el-divider />
-  <CommonForm
-    v-model="formData"
-    :config="form.config"
-  />
+  <CommonForm v-model="formData" :config="form.config" />
 </template>
 
 <style scoped></style>

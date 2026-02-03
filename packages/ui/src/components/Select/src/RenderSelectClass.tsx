@@ -2,6 +2,7 @@ import { Ref, SlotsType, ref, toValue } from 'vue';
 import { CommonSelectProps } from './Select.types.ts';
 import { ElSelect, ElSelectV2, ElTreeSelect, ElOption } from 'element-plus';
 import { DataHandlerClass } from '~/_utils/dataHandlerClass.ts';
+import { injectFormContext } from '~/components/Form/src/formContext.ts';
 
 export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
   slots: any;
@@ -31,6 +32,13 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
     this.label = label;
     this.attrs = attrs;
     this.slots = slots;
+
+    // 尝试向父组件（Form）注册 ready Promise
+    const formContext = injectFormContext(null);
+    if (formContext) {
+      formContext.registerComponentReady(this.getReadyPromise());
+    }
+
     this.init();
   }
 
@@ -52,27 +60,71 @@ export class RenderSelectClass extends DataHandlerClass<CommonSelectProps> {
     }
   }
   /**
-   * 当数据只有一条时默认选中
+   * 自动选择策略
+   * - false: 不自动选择
+   * - true | 'one': 只有一个选项时自动选择（默认）
+   * - 'first': 总是自动选择第一个
+   * - 'last': 总是自动选择最后一个
    * */
   selectFirst() {
     let props = toValue(this.props);
     let options = this.options;
 
-    if (options.value?.length === 1 && props.autoSelectFirst) {
-      const firstOption = options.value[0];
-      const firstValue = firstOption[this.VALUE_FIELD.value];
+    // 如果 model 已经有值，不执行自动选择
+    const hasValue =
+      this.model.value !== undefined && this.model.value !== null && this.model.value !== '';
+    if (hasValue) {
+      return;
+    }
 
-      this.model.value = firstValue;
+    // 未配置自动选择策略，直接返回
+    if (!props.autoSelect) {
+      return;
+    }
 
-      this.changeSelect(firstValue);
+    const strategy = props.autoSelect === true ? 'one' : props.autoSelect;
+    const optionsLength = options.value?.length || 0;
 
+    // 没有选项，直接返回
+    if (optionsLength === 0) {
+      return;
+    }
+
+    let targetOption: any = null;
+
+    // 根据策略选择目标选项
+    switch (strategy) {
+      case 'one':
+        // 只有一个选项时自动选择
+        if (optionsLength === 1) {
+          targetOption = options.value[0];
+        }
+        break;
+      case 'first':
+        // 总是选择第一个
+        targetOption = options.value[0];
+        break;
+      case 'last':
+        // 总是选择最后一个
+        targetOption = options.value[optionsLength - 1];
+        break;
+    }
+
+    // 执行自动选择
+    if (targetOption) {
+      const targetValue = targetOption[this.VALUE_FIELD.value];
+
+      this.model.value = targetValue;
+      this.changeSelect(targetValue);
+
+      // 触发 onChange 回调
       if (this.attrs.onChange) {
         if (Array.isArray(this.attrs.onChange)) {
           this.attrs.onChange.forEach((changeFun: any) => {
-            changeFun(firstValue);
+            changeFun(targetValue);
           });
         } else {
-          this.attrs.onChange(firstValue);
+          this.attrs.onChange(targetValue);
         }
       }
     }

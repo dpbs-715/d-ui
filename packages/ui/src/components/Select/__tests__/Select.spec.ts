@@ -282,12 +282,12 @@ describe('CommonSelect', () => {
   });
 
   describe('Auto select first', () => {
-    it('should render with autoSelectFirst enabled', () => {
+    it('should render with autoSelect enabled', () => {
       const singleOption = [{ value: '1', label: 'Only Option' }];
       const wrapper = mount(Select, {
         props: {
           options: singleOption,
-          autoSelectFirst: true,
+          autoSelect: true,
           modelValue: '',
         },
       });
@@ -295,12 +295,12 @@ describe('CommonSelect', () => {
       expect(wrapper.exists()).toBe(true);
     });
 
-    it('should render with autoSelectFirst disabled', () => {
+    it('should render with autoSelect disabled', () => {
       const singleOption = [{ value: '1', label: 'Only Option' }];
       const wrapper = mount(Select, {
         props: {
           options: singleOption,
-          autoSelectFirst: false,
+          autoSelect: false,
           modelValue: '',
         },
       });
@@ -444,7 +444,7 @@ describe('CommonSelect', () => {
           modelValue: modelValue.value,
           label: label.value,
           multiple: false,
-          autoSelectFirst: false,
+          autoSelect: false,
           onChange,
           'onUpdate:modelValue': onUpdateModelValue,
           'onUpdate:label': onUpdateLabel,

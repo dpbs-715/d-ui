@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import { useConfigs } from 'dlib-hooks/src/useConfigs';
 import { CommonForm } from 'dlib-ui';
 import type { CommonFormConfig } from 'dlib-ui';
-const formData = ref({});
+const formData = ref({ field1: '1' });
 const { config } = useConfigs<CommonFormConfig>([
   {
     field: 'field1',
@@ -31,28 +31,17 @@ const { config } = useConfigs<CommonFormConfig>([
 
 <template>
   <el-divider>默认</el-divider>
-  <CommonForm
-    v-model="formData"
-    :config="config"
-  />
+  <CommonForm v-model="formData" :config="config" />
   <el-divider>small</el-divider>
-  <CommonForm
-    v-model="formData"
-    size="small"
-    :config="config"
-  />
+  <CommonForm v-model="formData" size="small" :config="config" />
   <el-divider>default</el-divider>
-  <CommonForm
-    v-model="formData"
-    size="default"
-    :config="config"
-  />
+  <CommonForm v-model="formData" size="default" :config="config" />
   <el-divider>large</el-divider>
-  <CommonForm
-    v-model="formData"
-    size="large"
-    :config="config"
-  />
+  <CommonForm v-model="formData" size="large" :config="config" />
+  <el-divider>loading</el-divider>
+  <CommonForm v-model="formData" loading :config="config" />
+  <el-divider>readonly</el-divider>
+  <CommonForm v-model="formData" empty readonly :config="config" />
 </template>
 
 <style scoped></style>

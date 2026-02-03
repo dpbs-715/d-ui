@@ -5,7 +5,7 @@ import { CommonTableProps } from '../../Table';
 
 export interface SelectOrDialogProps extends DataHandlerType {
   //只有一条数据时自动选中
-  autoSelectFirst?: boolean;
+  autoSelect?: boolean;
   //是否多选
   multiple?: boolean;
   //组件类型

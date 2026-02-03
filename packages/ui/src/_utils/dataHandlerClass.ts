@@ -61,6 +61,8 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
   loading: Ref<Boolean> = ref(false);
   moreQueryParams: Record<any, any> = {};
   total: number = 0;
+  private readyPromise: Promise<void> | null = null;
+  private readyResolve: (() => void) | null = null;
 
   LABEL_FIELD = computed(
     () => this.props.value.props?.label || this.props.value.labelField || DEFAULT_LABEL_FIELD,
@@ -82,10 +84,20 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
         ...cleaned,
       } as T;
     });
+    // 创建 ready Promise
+    this.readyPromise = new Promise<void>((resolve) => {
+      this.readyResolve = resolve;
+    });
   }
 
   setMoreQueryParams(params: Record<any, any>) {
     this.moreQueryParams = params;
+  }
+  /**
+   * 获取 ready Promise，用于等待 options 加载完成
+   * */
+  getReadyPromise(): Promise<void> {
+    return this.readyPromise || Promise.resolve();
   }
   /**
    * 子类可以重写这个方法用于处理后续操作
@@ -373,6 +385,11 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
       );
     } else {
       options.value = localOptions;
+    }
+    // options 处理完成，resolve ready promise
+    if (this.readyResolve) {
+      this.readyResolve();
+      this.readyResolve = null;
     }
   }
 

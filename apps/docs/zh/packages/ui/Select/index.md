@@ -65,9 +65,16 @@
 
 ## 自动选中
 
-> 当数据只有一条时自动选中 只有api跟dict 才有效
+> 支持多种自动选择策略，只有 api 和 dict 才有效
+>
+> - `false`: 不自动选择
+> - `true` 或 `'one'`: 只有一个选项时自动选择（默认行为）
+> - `'first'`: 总是自动选择第一个选项
+> - `'last'`: 总是自动选择最后一个选项
+>
+> **注意**: 如果 model 已经有值，不会执行自动选择（防止覆盖用户数据）
 
-<demo ssg="true" vue="ui/CommonSelect/autoSelectFirst.vue" />
+<demo ssg="true" vue="ui/CommonSelect/autoSelect.vue" />
 
 ## 追加选项
 
@@ -81,23 +88,23 @@
 
 ## CommonSelect 属性 (Props)
 
-| 属性                 | 说明                                                          | 类型                                           | 默认值       |
-| -------------------- | ------------------------------------------------------------- | ---------------------------------------------- | ------------ |
-| `api`                | 请求 API 接口方法                                             | `Function`                                     | -            |
-| `dict`               | 字典名称，用于从字典中获取选项                                | `string \| string[]`                           | -            |
-| `query`              | 请求参数配置方法                                              | `Function`                                     | -            |
-| `valueField`         | 值字段的对照字段名                                            | `string`                                       | -            |
-| `labelField`         | 文本字段的对照字段名                                          | `string`                                       | -            |
-| `parseData`          | 转化请求结果的方法                                            | `Function`                                     | -            |
-| `autoSelectFirst`    | 只有一条数据时是否自动选中                                    | `boolean`                                      | `false`      |
-| `multiple`           | 是否为多选                                                    | `boolean`                                      | `false`      |
-| `needAllQueryParams` | 是否需要传递所有查询参数                                      | `boolean`                                      | `false`      |
-| `appendOptions`      | 追加的选项列表或方法                                          | `Record<any, any>[] \| Function`               | -            |
-| `valueType`          | 值类型，支持 `'string'`, `'String'`, `'int'`, `'Int'`         | `'string' \| 'String' \| 'int' \| 'Int'`       | -            |
-| `options`            | 绑定的选项列表                                                | `Record<any, any>[]`                           | -            |
-| `ignoreByLabel`      | 忽略的标签列表                                                | `string[]`                                     | -            |
-| `componentType`      | 组件类型，支持 `'ElSelectV2'`, `'ElSelect'`, `'ElTreeSelect'` | `'ElSelectV2' \| 'ElSelect' \| 'ElTreeSelect'` | `'ElSelect'` |
-| `joinSplit`          | 多选时结果合并的拼接符                                        | `string`                                       | 无           |
-| `orderBy`            | 排序字段名                                                    | `string`                                       | -            |
-| `orderType`          | 排序方式，支持 `'asc'` 或 `'desc'`                            | `'asc' \| 'desc'`                              | -            |
-| `getDictOptions`     | 获取字典选项的方法                                            | `Function`                                     | -            |
+| 属性                 | 说明                                                                                                         | 类型                                           | 默认值       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------- | ------------ |
+| `api`                | 请求 API 接口方法                                                                                            | `Function`                                     | -            |
+| `dict`               | 字典名称，用于从字典中获取选项                                                                               | `string \| string[]`                           | -            |
+| `query`              | 请求参数配置方法                                                                                             | `Function`                                     | -            |
+| `valueField`         | 值字段的对照字段名                                                                                           | `string`                                       | -            |
+| `labelField`         | 文本字段的对照字段名                                                                                         | `string`                                       | -            |
+| `parseData`          | 转化请求结果的方法                                                                                           | `Function`                                     | -            |
+| `autoSelect`         | 自动选择策略：`false` 不选择 / `true\|'one'` 仅一个时选择 / `'first'` 总是选第一个 / `'last'` 总是选最后一个 | `boolean \| 'one' \| 'first' \| 'last'`        | `false`      |
+| `multiple`           | 是否为多选                                                                                                   | `boolean`                                      | `false`      |
+| `needAllQueryParams` | 是否需要传递所有查询参数                                                                                     | `boolean`                                      | `false`      |
+| `appendOptions`      | 追加的选项列表或方法                                                                                         | `Record<any, any>[] \| Function`               | -            |
+| `valueType`          | 值类型，支持 `'string'`, `'String'`, `'int'`, `'Int'`                                                        | `'string' \| 'String' \| 'int' \| 'Int'`       | -            |
+| `options`            | 绑定的选项列表                                                                                               | `Record<any, any>[]`                           | -            |
+| `ignoreByLabel`      | 忽略的标签列表                                                                                               | `string[]`                                     | -            |
+| `componentType`      | 组件类型，支持 `'ElSelectV2'`, `'ElSelect'`, `'ElTreeSelect'`                                                | `'ElSelectV2' \| 'ElSelect' \| 'ElTreeSelect'` | `'ElSelect'` |
+| `joinSplit`          | 多选时结果合并的拼接符                                                                                       | `string`                                       | 无           |
+| `orderBy`            | 排序字段名                                                                                                   | `string`                                       | -            |
+| `orderType`          | 排序方式，支持 `'asc'` 或 `'desc'`                                                                           | `'asc' \| 'desc'`                              | -            |
+| `getDictOptions`     | 获取字典选项的方法                                                                                           | `Function`                                     | -            |

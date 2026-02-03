@@ -43,7 +43,7 @@ registerCommonKeysMap({
 | `valueField`           | Value field mapping field name                                     | `string`                                 | -       |
 | `labelField`           | Text field mapping field name                                      | `string`                                 | -       |
 | `parseData`            | Method to transform request results                                | `Function`                               | -       |
-| `autoSelectFirst`      | Whether to automatically select when there is only one data item   | `boolean`                                | `false` |
+| `autoSelect`           | Whether to automatically select when there is only one data item   | `boolean`                                | `false` |
 | `multiple`             | Whether it is multiple selection                                   | `boolean`                                | `false` |
 | `needAllQueryParams`   | Whether to pass all query parameters                               | `boolean`                                | `false` |
 | `appendOptions`        | Appended option list or method                                     | `Record<any, any>[] \| Function`         | -       |
