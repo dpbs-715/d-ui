@@ -69,12 +69,8 @@ function initSelection() {
  * 获取数据
  * */
 function searchFun() {
-  if (!props.api) {
-    dataHandler.preInitOptions();
-  } else {
-    dataHandler.setMoreQueryParams(queryParams);
-    dataHandler.preInitOptions();
-  }
+  dataHandler.setMoreQueryParams(queryParams);
+  dataHandler.preInitOptions();
 }
 
 const { search, table, data } = useMixConfig(props.dialogFieldsConfig);
