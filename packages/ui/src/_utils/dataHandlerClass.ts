@@ -259,14 +259,14 @@ export class DataHandlerClass<T extends DataHandlerType = DataHandlerType> {
    * @param queryParams 额外的查询参数，会与组件内的 query 合并
    * @returns 过滤后的选项数组，如果没有匹配项或无 query，则返回空数组
    */
-  filterByQuery(localOptions: any, queryParams: Record<any, any> = {}) {
+  filterByQuery(localOptions: any) {
     const props = toValue(this.props);
     // 获取 query：优先使用 props.query()，再合并传入的 queryParams
     let query: Record<string, any> = {};
     if (props.query) {
       query = props.query();
     }
-    query = { ...query, ...queryParams };
+    query = { ...query, ...this.moreQueryParams };
     const keys = Object.keys(query);
     if (keys.length === 0) {
       // 如果没有有效的查询条件，返回全部或空数组
