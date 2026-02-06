@@ -9,11 +9,8 @@ import { deepClone } from '../clone';
  * @example
  * const obj = { a: 1, b: { c: 2 }, d: 3 };
  * omit(obj, ['a', 'b.c']) // { b: {}, d: 3 }
- *
- * // 指定返回类型
- * const result = omit<typeof obj, { d: number }>(obj, ['a', 'b']);
  */
-export function omit<T extends object, R = Partial<T>>(obj: T, paths: readonly Path[]): R {
+export function omit<T extends object>(obj: T, paths: readonly Path[]): Partial<T> {
   const result = deepClone(obj);
 
   for (const path of paths) {

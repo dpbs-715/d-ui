@@ -8,11 +8,8 @@ import { getByPath, setByPath, type Path } from './path';
  * @example
  * const obj = { a: 1, b: { c: 2 }, d: 3 };
  * pick(obj, ['a', 'b.c']) // { a: 1, b: { c: 2 } }
- *
- * // 指定返回类型
- * const result = pick<typeof obj, { a: number }>(obj, ['a']);
  */
-export function pick<T extends object, R = Partial<T>>(obj: T, paths: readonly Path[]): R {
+export function pick<T extends object>(obj: T, paths: readonly Path[]): Partial<T> {
   const result: any = {};
 
   for (const path of paths) {
